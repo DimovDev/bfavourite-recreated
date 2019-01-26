@@ -11,5 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+mix.js('resources/js/app.js', 'public/js/site.js')
+   .scripts('node_modules/popper.js/dist/popper.js', 'public/js/popper.js')
+   .scripts('node_modules/jquery/dist/jquery.js', 'public/js/jquery.js')
+   .scripts('node_modules/feather-icons/dist/feather.js', 'public/js/feather.js')
+   .scripts('resources/js/custom.js', 'public/js/custom.js')
+   .sass('resources/sass/app.scss', 'public/css/site.css')
+   .options({
+       
+      processCssUrls: false
+
+   });

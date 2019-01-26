@@ -1,0 +1,43 @@
+
+.admin-table .link {
+
+  cursor: pointer;
+
+}
+
+.admin-table .link a {
+    
+    visibility: hidden;
+    display: inline-block;
+    float: right;
+}
+
+.admin-table tbody tr:hover {
+
+    background-color: #f2f2f2 !important;
+} 
+
+
+
+.admin-table tr:hover .link a {
+
+    visibility: visible;
+}
+
+
+
+@media (min-width: 768px) {
+
+    [role="main"] {
+ 
+        padding-top: 65px;
+    
+    }
+    
+    .sidebar {
+    
+        padding-top: 55px;
+    }
+
+
+}
