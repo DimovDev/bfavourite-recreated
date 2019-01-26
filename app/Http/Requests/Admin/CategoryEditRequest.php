@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,8 +23,12 @@ class CategoryEditRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            //
+            'name'=>'required|max:50|min:2|regex:/[a-z0-9 _-]+/iu',
+            'slug' => 'nullable|max:100|min:2|regex:/[a-z0-9 _-]+/iu',
+            'taxonomy_status' => 'required|regex:/[a-z0-9 _-]+/iu|max:50',
         ];
+
     }
 }

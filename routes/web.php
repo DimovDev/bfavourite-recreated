@@ -38,5 +38,12 @@ Route::group(['as' => 'admin.'],function() {
     Route::put('admin/categories/{category}', 'Admin\CategoriesController@update')->name('categories.update');
     Route::delete('admin/categories/destroy', 'Admin\CategoriesController@destroy')->name('categories.destroy'); 
 
+    Route::get('admin/posts', 'Admin\PostsController@index')->name('posts.index');
+    Route::get('admin/posts/{post}/edit', 'Admin\PostsController@edit')->name('posts.edit');
+    Route::get('admin/posts/create', 'Admin\PostsController@create')->name('posts.create');
+    Route::post('admin/posts', 'Admin\PostsController@store')->name('posts.store');
+    Route::put('admin/posts/{post}', 'Admin\PostsController@update')->name('posts.update');
+    Route::delete('admin/posts/destroy', 'Admin\PostsController@destroy')->name('posts.destroy'); 
+
 });
 

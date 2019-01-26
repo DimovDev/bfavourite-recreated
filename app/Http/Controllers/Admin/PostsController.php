@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CategoryEditRequest;
 use Illuminate\Support\MessageBag;
-use App\Category;
 
+use App\Http\Requests\Admin\PostEditRequest;
+use App\Http\Controllers\Controller;
+use App\Post;
 
-class CategoriesController extends Controller
+class PostsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,11 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $users = Category::orderBy('created_at', 'DESC')->paginate(25);
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(25);
 
 
-        return view('admin/taxonomies/categories/index')->with(['categories' => $users,
-                                                                 'message' => session('message')]);
+        return view('admin/assets/posts/index')->with(['posts' => $posts,
+                                                       'message' => session('message')]);
     }
 
     /**
@@ -32,7 +32,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('admin/taxonomies/categories/edit');
+        return view('admin/assets/posts/edit');
     }
 
     /**
@@ -41,19 +41,20 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryEditRequest $request)
+    public function store(PostEditRequest $request)
     {
         $data = $request->validated();
+        $data = $request->all();
 
-        Category::create($data);
+   
+        Post::create($data);
   
         
         session()->flash('message', new MessageBag(['status' => 'success',
-                                                    'message' => 'Good job! The category was created.']));
+                                                    'message' => 'Good job! The post was created.']));
   
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.posts.index');
     }
-
 
 
     /**
@@ -64,9 +65,9 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
+        $post = Post::findOrFail($id);
 
-        return view('admin/taxonomies/categories/edit', ['category' => $category]);
+        return view('admin/assets/posts/edit', ['post' => $post]);
     }
 
     /**
@@ -76,46 +77,46 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryEditRequest $request, $id)
+    public function update(PostEditRequest $request, $id)
     {
-         
         $data = $request->validated();
+        $data = $request->all();
         
-        Category::findOrFail($id)->update($data);
+        Post::findOrFail($id)->update($data);
  
         session()->flash('message', new MessageBag(['status' => 'success',
-                                                    'message' => 'Excellent! The category was edited.']));
+                                                    'message' => 'Excellent! The post was edited.']));
         
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.posts.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     *
+     * @param  Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        $cateogries = $request->only('destroy');
+        $posts = $request->only('destroy');
        
 
-        if(empty($cateogries)) {
+        if(empty($posts)) {
         
          session()->flash('message', new MessageBag(['status' => 'warning',
                                                      'message' => 'Oops! Nothing was deleted.']));
          return redirect()->back();
         }
  
-        foreach($cateogries AS $cateogry_id) {
+        foreach($posts AS $post_id) {
          
-          Category::destroy($cateogry_id);
+          Post::destroy($post_id);
  
         }
  
          session()->flash('message', new MessageBag(['status' => 'success',
-                                                     'message' => 'Yeah! All selected categories were deleted.']));
+                                                     'message' => 'Yeah! All selected posts were deleted.']));
          
-         return redirect()->route('admin.categories.index');
+         return redirect()->route('admin.posts.index');
     }
 }
