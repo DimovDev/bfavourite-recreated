@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     $('.sidebar .collapse-item').each(function() {
       
-       if(this.href == window.location.href) $(this).closest('.collapse').prev().trigger('click');
+       if(window.location.href.indexOf(this.href) > -1) $(this).closest('.collapse').prev().trigger('click');
 
     });
 

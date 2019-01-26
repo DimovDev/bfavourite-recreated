@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h1 class="h2">{{__('Create User')}}</h1>
+<h1 class="h2">{{__(isset($user) ? 'Edit User' : 'Create User')}}</h1>
 
 @if($errors->any())
  <div class="alert alert-danger">

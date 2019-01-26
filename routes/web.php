@@ -31,7 +31,12 @@ Route::group(['as' => 'admin.'],function() {
     Route::put('admin/users/{user}', 'Admin\UsersController@update')->name('users.update');
     Route::delete('admin/users/destroy', 'Admin\UsersController@destroy')->name('users.destroy'); 
     
-    //Route::resource('admin/users', 'Admin\UsersController');
+    Route::get('admin/categories', 'Admin\CategoriesController@index')->name('categories.index');
+    Route::get('admin/categories/{category}/edit', 'Admin\CategoriesController@edit')->name('categories.edit');
+    Route::get('admin/categories/create', 'Admin\CategoriesController@create')->name('categories.create');
+    Route::post('admin/categories', 'Admin\CategoriesController@store')->name('categories.store');
+    Route::put('admin/categories/{category}', 'Admin\CategoriesController@update')->name('categories.update');
+    Route::delete('admin/categories/destroy', 'Admin\CategoriesController@destroy')->name('categories.destroy'); 
 
 });
 

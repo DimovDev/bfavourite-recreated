@@ -4,8 +4,7 @@ namespace App;
 
 use App\Status;
 
-class UserStatus extends Status
+class TaxonomyStatus extends Status
 {
-
-
+    //
 }
