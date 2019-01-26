@@ -119,18 +119,16 @@ class UsersController extends Controller
        $users = $request->only('destroy');
        
 
-       if(empty($users)) {
+       if(empty($users['destroy'])) {
        
         session()->flash('message', new MessageBag(['status' => 'warning',
                                                     'message' => 'Oops! Nothing was deleted.']));
         return redirect()->back();
        }
 
-       foreach($users AS $user_id) {
-        
-         User::destroy($user_id);
 
-       }
+        User::destroy($users['destroy']);
+
 
         session()->flash('message', new MessageBag(['status' => 'success',
                                                    'message' => 'Yeah! All selected users were deleted.']));

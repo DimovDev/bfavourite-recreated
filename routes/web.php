@@ -45,5 +45,12 @@ Route::group(['as' => 'admin.'],function() {
     Route::put('admin/posts/{post}', 'Admin\PostsController@update')->name('posts.update');
     Route::delete('admin/posts/destroy', 'Admin\PostsController@destroy')->name('posts.destroy'); 
 
+    Route::get('admin/projects', 'Admin\ProjectsController@index')->name('projects.index');
+    Route::get('admin/projects/{project}/edit', 'Admin\ProjectsController@edit')->name('projects.edit');
+    Route::get('admin/projects/create', 'Admin\ProjectsController@create')->name('projects.create');
+    Route::post('admin/projects', 'Admin\ProjectsController@store')->name('projects.store');
+    Route::put('admin/projects/{project}', 'Admin\ProjectsController@update')->name('projects.update');
+    Route::delete('admin/projects/destroy', 'Admin\ProjectsController@destroy')->name('projects.destroy'); 
+
 });
 

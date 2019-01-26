@@ -24,8 +24,8 @@ class PostEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required|max:50|min:2',
-            'slug' => 'nullable|max:100|min:2|regex:/[a-z0-9 _-]+/iu',
+            'title'=>'required|max:255|min:2',
+            'slug' => 'nullable|max:500|min:2|regex:/[a-z0-9 _-]+/iu',
             'asset_status' => 'required|regex:/[a-z0-9 _-]+/iu|max:50',
             'content' => 'required',
             'summary' => 'nullable|max:500',

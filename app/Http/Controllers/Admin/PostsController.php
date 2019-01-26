@@ -44,7 +44,6 @@ class PostsController extends Controller
     public function store(PostEditRequest $request)
     {
         $data = $request->validated();
-        $data = $request->all();
 
    
         Post::create($data);
@@ -80,7 +79,6 @@ class PostsController extends Controller
     public function update(PostEditRequest $request, $id)
     {
         $data = $request->validated();
-        $data = $request->all();
         
         Post::findOrFail($id)->update($data);
  
@@ -101,18 +99,18 @@ class PostsController extends Controller
         $posts = $request->only('destroy');
        
 
-        if(empty($posts)) {
+        if(empty($posts['destroy'])) {
         
          session()->flash('message', new MessageBag(['status' => 'warning',
                                                      'message' => 'Oops! Nothing was deleted.']));
          return redirect()->back();
         }
  
-        foreach($posts AS $post_id) {
+       
          
-          Post::destroy($post_id);
+        Post::destroy($posts['destroy']);
  
-        }
+      
  
          session()->flash('message', new MessageBag(['status' => 'success',
                                                      'message' => 'Yeah! All selected posts were deleted.']));

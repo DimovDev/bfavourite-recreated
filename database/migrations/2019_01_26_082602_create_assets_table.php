@@ -17,7 +17,7 @@ class CreateAssetsTable extends Migration
 
             $table->increments('id');
             $table->string('title', 255);
-            $table->text('content');
+            $table->text('content')->nullable(true);
             $table->string('asset_type', 50);
             $table->string('asset_status', 50);
             $table->string('slug', 500);

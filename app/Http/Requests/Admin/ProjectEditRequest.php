@@ -13,7 +13,7 @@ class ProjectEditRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,16 @@ class ProjectEditRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
+       return [ 
+        'title'=>'required|max:50|min:2',
+        'slug' => 'nullable|max:100|min:2|regex:/[a-z0-9 _-]+/iu',
+        'asset_status' => 'required|regex:/[a-z0-9 _-]+/iu|max:50',
+        'content' => 'required',
+        'summary' => 'nullable|max:500',
+        'published_at' => 'date',
+        'meta.github_url' =>'bail|nullable|active_url',
+        'meta.live_url' => 'bail|nullable|active_url'
         ];
+
     }
 }

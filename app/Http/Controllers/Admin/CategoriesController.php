@@ -18,10 +18,10 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $users = Category::orderBy('created_at', 'DESC')->paginate(25);
+        $cateogries = Category::orderBy('created_at', 'DESC')->paginate(25);
 
 
-        return view('admin/taxonomies/categories/index')->with(['categories' => $users,
+        return view('admin/taxonomies/categories/index')->with(['categories' => $cateogries,
                                                                  'message' => session('message')]);
     }
 
@@ -97,21 +97,20 @@ class CategoriesController extends Controller
      */
     public function destroy(Request $request)
     {
-        $cateogries = $request->only('destroy');
+        $categories = $request->only('destroy');
        
 
-        if(empty($cateogries)) {
+        if(empty($categories['destroy'])) {
         
          session()->flash('message', new MessageBag(['status' => 'warning',
                                                      'message' => 'Oops! Nothing was deleted.']));
          return redirect()->back();
         }
  
-        foreach($cateogries AS $cateogry_id) {
-         
-          Category::destroy($cateogry_id);
+    
+        Category::destroy($categories['destroy']);
  
-        }
+    
  
          session()->flash('message', new MessageBag(['status' => 'success',
                                                      'message' => 'Yeah! All selected categories were deleted.']));

@@ -2,7 +2,7 @@
 
 @section('content')
 
-      <h1 class="h2">{{__('All Categories')}}</h1>
+      <h1 class="h2">{{__('All Projects')}}</h1>
 
       @if(!empty($message))
        <div class="alert alert-{{$message->first('status')}}">
@@ -12,8 +12,8 @@
 
       <div class="table-responsive">
 
-      @if($categories->count() > 0)
-        <form method="post" action="{{route('admin.categories.destroy')}}">
+      @if($projects->count() > 0)
+        <form method="post" action="{{route('admin.projects.destroy')}}">
         <input type="hidden" name="_method" value="delete" />
         @csrf
       
@@ -22,8 +22,10 @@
           <thead>
            <tr>
             <th><input type="checkbox" id="select-all" /> </th>
-            <th>{{__("Name")}} </th>
+            <th>{{__("Title")}} </th>
             <th>{{__('Slug')}} </th>
+            <th>{{__('Github')}} </th>
+            <th>{{__('Live')}} </th>
             <th>{{__("Status")}} </th>
             <th>{{__('Created at')}} </th>
             <th>{{__("Updated at")}} </th>
@@ -31,15 +33,20 @@
           </thead>
           <tbody>
            
-         @foreach($categories AS $category)
+         @foreach($projects AS $project)
 
            <tr>
-              <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$category->id}}" /></td>
-              <td class="link">{{$category->name}} <a href="{{route('admin.categories.edit', [$category->id])}}">{{__('edit')}}</a></td>
-              <td>{{$category->slug}}</td>
-              <td>{{$category->status}}</td>
-              <td>{{$category->created_at->format('d M Y')}}</td>
-              <td>{{$category->updated_at->format('d M Y')}}</td>
+              <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$project->id}}" /></td>
+              <td class="link">{{$project->title}} <a href="{{route('admin.projects.edit', [$project->id])}}">{{__('edit')}}</a></td>
+              <td>{{$project->slug}}</td>
+              
+              <td>{{$project->assetsMeta()->where('meta_key', 'github_url')->count() ? __('Yes') : __('No')}}</td>
+              <td>{{$project->assetsMeta()->where('meta_key', 'live_url')->count() ? __('Yes') : __('No')}}</td>
+              
+              <td>{{$project->status}}</td>
+              
+              <td>{{$project->created_at->format('d M Y')}}</td>
+              <td>{{$project->updated_at->format('d M Y')}}</td>
            </tr>
           @endforeach
             
@@ -50,7 +57,7 @@
         </form>
        @else 
          
-         <p>{{__('There are no categories')}}</p>
+         <p>{{__('There are no projects')}}</p>
 
        @endif
 
@@ -60,9 +67,9 @@
 
        <button id="destroy-btn" type="submit" class="btn btn-danger mr-5">{{__('Delete')}}</button>
      
-        @if($categories->count() < $categories->total())
+        @if($projects->count() < $projects->total())
 
-            {{$categories->links()}}
+            {{$projects->links()}}
 
         @endif
       </div>   

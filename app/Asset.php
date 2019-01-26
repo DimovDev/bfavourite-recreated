@@ -10,6 +10,8 @@ class Asset extends Model
     protected $fillable = ['title', 'slug', 'asset_status', 'summary', 'content', 'published_at'];
 
     protected $dates = ['published_at'];
+    protected static $asset_type = "asset";
+
 
     public function setSlugAttribute($value) {
 
