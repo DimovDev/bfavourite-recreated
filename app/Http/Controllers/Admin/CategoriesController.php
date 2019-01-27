@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryEditRequest;
-use Illuminate\Support\MessageBag;
+
 use App\Category;
 
 
@@ -45,8 +48,8 @@ class CategoriesController extends Controller
     {
         $data = $request->validated();
 
-        Category::create($data);
-  
+        $cat = Category::create($data);
+        $cat->user()->save(Auth::user());
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The category was created.']));
@@ -107,8 +110,23 @@ class CategoriesController extends Controller
          return redirect()->back();
         }
  
-    
-        Category::destroy($categories['destroy']);
+        
+        foreach($categories['destroy'] AS $cat_id) {
+
+   
+            $categories = Category::find($cat_id);
+  
+  
+            if($categories) {
+              $categories->user()->detach();
+              $categories->posts()->detach();
+              $categories->projects()->detach();
+              $categories->delete();
+            }
+
+          }
+          
+     
  
     
  

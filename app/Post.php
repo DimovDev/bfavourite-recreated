@@ -23,6 +23,27 @@ class Post extends Asset
         });
 
     }
+    
+    
+    /* 
+    * Get the owner of the project 
+    */
+
+    public function user() {
+
+      return $this->morphToMany('App\User', 'obj', 'user_object');
+
+    }
+
+   /* 
+    * Get the category of the project 
+    */
+
+    public function category() {
+
+        return $this->morphToMany('App\Category', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
+  
+      }
 
 
 }

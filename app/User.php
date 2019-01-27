@@ -33,4 +33,31 @@ class User extends Authenticatable
 
         return $this->user_status;
     }
+
+    /*
+     * Get all posts of the user
+     */
+     
+     public function posts() {
+
+        return $this->morphedByMany('App\Post', 'obj', 'user_object');
+     }  
+
+         /*
+     * Get all projects of the user
+     */
+     
+    public function projects() {
+
+        return $this->morphedByMany('App\Project', 'obj', 'user_object');
+     }  
+
+         /*
+     * Get all categories of the user
+     */
+     
+    public function categories() {
+
+        return $this->morphedByMany('App\Category', 'obj', 'user_object');
+     }  
 }

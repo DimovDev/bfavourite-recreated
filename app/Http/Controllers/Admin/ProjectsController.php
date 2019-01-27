@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 
@@ -49,8 +50,9 @@ class ProjectsController extends Controller
         $data = $request->all();
 
    
-        Project::create($data);
-  
+        $project = Project::create($data);
+        $project->user()->save(Auth::user());
+        $project->category()->attach($data['category']);
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The project was created.']));
@@ -84,7 +86,9 @@ class ProjectsController extends Controller
         $data = $request->validated();
         $data = $request->all();
         
-        Project::findOrFail($id)->update($data);
+        $project = Project::findOrFail($id);
+        $project->update($data);
+        $project->category()->sync($data['category']);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The project was edited.']));
@@ -116,6 +120,9 @@ class ProjectsController extends Controller
 
 
           if($project) {
+            $project->user()->detach();
+            $project->category()->detach();
+
             $project->assetsMeta()->delete();
             $project->delete();
           }

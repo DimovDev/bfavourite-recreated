@@ -127,7 +127,19 @@ class UsersController extends Controller
        }
 
 
-        User::destroy($users['destroy']);
+        foreach ($users['destroy'] as $user_id) {
+          
+           $user = User::find($user_id);
+           
+           if($user) {
+            
+             $user->posts()->detach();
+             $user->categories()->detach();
+             $user->projects()->detach();
+             $user->delete();
+           }
+
+        }
 
 
         session()->flash('message', new MessageBag(['status' => 'success',

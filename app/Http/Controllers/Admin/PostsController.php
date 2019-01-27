@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Auth;
+
 
 use App\Http\Requests\Admin\PostEditRequest;
 use App\Http\Controllers\Controller;
@@ -31,7 +33,8 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+
         return view('admin/assets/posts/edit');
     }
 
@@ -45,9 +48,10 @@ class PostsController extends Controller
     {
         $data = $request->validated();
 
-   
-        Post::create($data);
-  
+        $post = Post::create($data);
+        
+        $post->user()->attach(Auth::id());
+        $post->category()->attach($data['category']);
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The post was created.']));
@@ -80,7 +84,9 @@ class PostsController extends Controller
     {
         $data = $request->validated();
         
-        Post::findOrFail($id)->update($data);
+        $post = Post::findOrFail($id);
+        $post->update($data);
+        $post->category()->sync([$data['category']]);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The post was edited.']));
@@ -106,9 +112,20 @@ class PostsController extends Controller
          return redirect()->back();
         }
  
-       
+        
+        foreach($posts['destroy'] as $id) {
+           
+          $post = Post::find($id);
+          
+          if($post) { 
+            $post->user()->detach();
+            $post->category()->detach();
+            $post->delete();
+          }
+
+        }
          
-        Post::destroy($posts['destroy']);
+        
  
       
  

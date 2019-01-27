@@ -25,4 +25,14 @@ class Taxonomy extends Model
         return $this->taxonomy_status;
     }
 
+   /* 
+    * Get the owner of the taxonomy 
+    */
+
+    public function user() {
+
+        return $this->morphToMany('App\User', 'obj', 'user_object');
+  
+      }
+
 }

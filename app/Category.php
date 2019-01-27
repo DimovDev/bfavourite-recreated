@@ -28,6 +28,24 @@ class Category extends Taxonomy
 
     }
 
+        /*
+     * Get all posts of the category
+     */
+     
+    public function posts() {
+
+        return $this->morphedByMany('App\Post', 'obj', 'taxonomy_object', 'taxonomy_id');
+     }  
+
+         /*
+     * Get all projects of the category
+     */
+     
+    public function projects() {
+
+        return $this->morphedByMany('App\Project', 'obj', 'taxonomy_object', 'taxonomy_id');
+     }  
+
 
     
 

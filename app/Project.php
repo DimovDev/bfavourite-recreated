@@ -39,7 +39,7 @@ class Project extends Asset
            }
         }
     
-     return $project->id;
+     return $project;
    }
 
    public function update(array $data = [], array $options = []) {
@@ -96,6 +96,27 @@ class Project extends Asset
        if($result->count()) return $result->first()->meta_value;
 
    }
+
+       /* 
+        * Get the owner of the project 
+        */
+
+       public function user() {
+
+         return $this->morphToMany('App\User', 'obj', 'user_object');
+   
+       }
+
+       
+   /* 
+    * Get the category of the post 
+    */
+
+    public function category() {
+
+      return $this->morphToMany('App\Category', 'obj', 'taxonomy_object', null, 'taxonomy_id');
+
+    }
 
 
 }

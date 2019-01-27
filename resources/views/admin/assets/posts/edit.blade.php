@@ -1,5 +1,6 @@
 @extends('admin/layouts/main')
 @inject('postStatus', 'App\PostStatus')
+@inject('categories', 'App\Category')
 
 @section('content')
 
@@ -48,10 +49,23 @@
 </div>
 
 <div class="form-group">
+  <label for="category">{{__('Category')}}</label>
+  <select id="category" name="category" class="form-control">
+    @foreach($categories::all() as $cat)
+      
+      <option {{old('category') || 
+              (isset($post) && $post->category->first()->id == $cat->id) ? 'selected' : null}}
+              value="{{$cat->id}}">{{$cat->name}}</option>
+    @endforeach
+  </select>
+</div>
+
+<div class="form-group">
   <label for="asset_status">{{__('Status')}}</label>
   <select id="asset_status" name="asset_status" class="form-control">
     @foreach($postStatus->all() as $status)
-      <option {{$status == old('asset_status') ? 'selected' : null}}>{{$status}}</option>
+      <option {{old('asset_status') || 
+              (isset($post) && $post->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
     @endforeach
   </select>
 </div>

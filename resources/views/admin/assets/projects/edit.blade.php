@@ -1,5 +1,6 @@
 @extends('admin/layouts/main')
 @inject('projectStatus', 'App\PostStatus')
+@inject('categories', 'App\Category')
 
 @section('content')
 
@@ -48,8 +49,20 @@
 </div>
 
 <div class="form-group">
-  <label for="published_at">{{__('Live Url')}}</label>
+  <label for="live">{{__('Live Url')}}</label>
   <input type="text" class="form-control" id="live" name="meta[live_url]" value="{{old('meta.live_url') ?? isset($project) ? $project->getMeta('live_url'): null}}" />
+</div>
+
+<div class="form-group">
+  <label for="category">{{__('Category')}}</label>
+  <select id="category" name="category" class="form-control">
+    @foreach($categories::all() as $cat)
+      
+      <option {{old('category') || 
+              (isset($project) && $project->category->first()->id == $cat->id) ? 'selected' : null}}
+              value="{{$cat->id}}">{{$cat->name}}</option>
+    @endforeach
+  </select>
 </div>
 
 <div class="form-group">
@@ -61,7 +74,8 @@
   <label for="asset_status">{{__('Status')}}</label>
   <select id="asset_status" name="asset_status" class="form-control">
     @foreach($projectStatus->all() as $status)
-      <option {{$status == old('asset_status') ? 'selected' : null}}>{{$status}}</option>
+      <option {{old('asset_status') || 
+              (isset($project) && $project->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
     @endforeach
   </select>
 </div>

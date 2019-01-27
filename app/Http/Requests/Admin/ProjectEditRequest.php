@@ -31,7 +31,9 @@ class ProjectEditRequest extends FormRequest
         'summary' => 'nullable|max:500',
         'published_at' => 'date',
         'meta.github_url' =>'bail|nullable|active_url',
-        'meta.live_url' => 'bail|nullable|active_url'
+        'meta.live_url' => 'bail|nullable|active_url',
+        'category' => 'required'
+
         ];
 
     }

@@ -29,7 +29,8 @@ class PostEditRequest extends FormRequest
             'asset_status' => 'required|regex:/[a-z0-9 _-]+/iu|max:50',
             'content' => 'required',
             'summary' => 'nullable|max:500',
-            'published_at' => 'date'
+            'published_at' => 'date',
+            'category' => 'required'
 
 
         ];
