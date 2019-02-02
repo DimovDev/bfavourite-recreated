@@ -64,6 +64,7 @@
     <script src="{{ asset('js/jquery.js') }}" ></script>
     <script src="{{ asset('js/popper.js') }}" ></script>
     <script src="{{ asset('js/feather.js') }}" ></script>
+     <script src="{{ asset('js/dropzone.js') }}" ></script>
     <script src="{{ asset('js/site.js') }}" ></script>
     <script src="{{ asset('js/custom.js') }}" ></script>
    

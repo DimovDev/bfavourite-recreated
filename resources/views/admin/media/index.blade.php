@@ -2,7 +2,7 @@
 
 @section('content')
 
-      <h1 class="h2">{{__('All Posts')}}</h1>
+      <h1 class="h2">{{__('All Media Files')}}</h1>
 
       @if(!empty($message))
        <div class="alert alert-{{$message->first('status')}}">
@@ -12,34 +12,32 @@
 
       <div class="table-responsive">
 
-      @if($posts->count() > 0)
-        <form method="post" action="{{route('admin.posts.destroy')}}">
+      @if($media->count() > 0)
+        <form method="post" action="{{route('admin.media.destroy')}}">
         <input type="hidden" name="_method" value="delete" />
         @csrf
       
 
-        <table class="table table-striped table-sm admin-table mt-3">
+        <table class="table table-striped table-sm admin-table media-table mt-3">
           <thead>
            <tr>
             <th><input type="checkbox" id="select-all" /> </th>
+            <th></th>
             <th>{{__("Name")}} </th>
-            <th>{{__('Slug')}} </th>
-            <th>{{__("Status")}} </th>
             <th>{{__('Created at')}} </th>
             <th>{{__("Updated at")}} </th>
            </tr>
           </thead>
           <tbody>
            
-         @foreach($posts AS $post)
+         @foreach($media AS $m)
 
            <tr>
-              <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$post->id}}" /></td>
-              <td class="link">{{$post->title}} <a href="{{route('admin.posts.edit', [$post->id])}}">{{__('edit')}}</a></td>
-              <td>{{$post->slug}}</td>
-              <td>{{$post->status}}</td>
-              <td>{{$post->created_at->format('d M Y')}}</td>
-              <td>{{$post->updated_at->format('d M Y')}}</td>
+              <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$m->id}}" /></td>
+              <td class="thumb"><img src="@thumbnail($m->url)" alt="{{$m->title}}" /></td>
+              <td class="title">{{$m->title}}</td>
+              <td>{{$m->created_at->format('d M Y')}}</td>
+              <td>{{$m->updated_at->format('d M Y')}}</td>
            </tr>
           @endforeach
             
@@ -50,7 +48,7 @@
         </form>
        @else 
          
-         <p>{{__('There are no posts')}}</p>
+         <p>{{__('There are no media files')}}</p>
 
        @endif
 
@@ -60,9 +58,9 @@
 
        <button id="destroy-btn" type="submit" class="btn btn-danger mr-5">{{__('Delete')}}</button>
      
-        @if($posts->count() < $posts->total())
+        @if($media->count() < $media->total())
 
-            {{$posts->links()}}
+            {{$media->links()}}
 
         @endif
       </div>   

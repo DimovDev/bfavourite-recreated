@@ -50,7 +50,14 @@ Route::group(['as' => 'admin.'],function() {
     Route::get('admin/projects/create', 'Admin\ProjectsController@create')->name('projects.create');
     Route::post('admin/projects', 'Admin\ProjectsController@store')->name('projects.store');
     Route::put('admin/projects/{project}', 'Admin\ProjectsController@update')->name('projects.update');
-    Route::delete('admin/projects/destroy', 'Admin\ProjectsController@destroy')->name('projects.destroy'); 
+    Route::delete('admin/projects/destroy', 'Admin\ProjectsController@destroy')->name('projects.destroy');
+    
+    Route::get('admin/media', 'Admin\MediaController@index')->name('media.index');
+    Route::get('admin/media/{file}/edit', 'Admin\MediaController@edit')->name('media.edit');
+    Route::get('admin/media/create', 'Admin\MediaController@create')->name('media.create');
+    Route::post('admin/media', 'Admin\MediaController@store')->name('media.store');
+    Route::put('admin/media/{file}', 'Admin\MediaController@update')->name('media.update');
+    Route::delete('admin/media/destroy', 'Admin\MediaController@destroy')->name('media.destroy'); 
 
 });
 
