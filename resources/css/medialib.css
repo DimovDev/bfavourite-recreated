@@ -1,0 +1,173 @@
+
+.media-lib-overlay {
+     
+     position: fixed;
+     top: 0;
+     left: 0;
+     z-index: 10000;
+
+     overflow: auto;
+
+
+     width: 100vw;
+     height: 100vh;
+
+     padding: 2%;
+
+     background-color: rgba(0,0,0, 0.7);
+}
+
+.media-lib {
+      
+   position:relative;
+
+   width: 100%;
+
+   background-color: #fff;
+   box-shadow: 4px 4px 8px #000;
+
+}
+
+.media-lib-header {
+
+     display: flex;
+     justify-content: space-between;
+
+     padding: 15px;
+
+     background-color: #f9f9f9;
+
+     border-bottom: 1px solid #dddddd;
+}
+
+
+.media-lib-header h1 {
+
+    font-size: 20px;
+    margin: 0;
+}
+
+.media-lib-body {
+
+  display: flex;
+  align-items: stretch;
+  
+
+}
+
+.media-lib-content {
+     
+    width: 70%; 
+    min-height: 395px;
+
+    background-color: #fff;
+}
+
+.media-lib-content ul {
+
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.media-lib-content ul li {
+    
+   width: 20%; 
+   height: 130px;
+
+   padding: 5px;
+
+   border: 2px solid transparent;
+
+}
+
+.media-lib-content ul li:hover,
+.media-lib-content .active {
+
+   border: 2px solid blue;
+   cursor: pointer;
+
+}
+
+.media-lib-icon {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+.media-lib-panel {
+
+    width: 30%;
+
+    padding: 1%;
+    padding-bottom: 3%;
+
+    background-color: #f3f3f3;
+
+    border-left: 1px solid #dddddd;
+
+}
+
+.media-lib-panel img {
+
+    height: 90%;
+    max-height: 280px;
+
+}
+
+ .media-lib-panel select {
+
+     width: 100%;
+ }
+
+ .media-lib-panel p {
+
+     width: 100%;
+     background-color: #fff;
+  
+     padding: 4px;
+     margin: 5px 0;
+ }
+
+ .media-lib-footer {
+
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 1%;
+
+            
+     background-color: #f9f9f9;
+     border-top: 1px solid #dddddd;
+
+ }
+
+ .media-lib-loading {
+
+    display: block;
+    margin-right: auto;
+    margin-left: auto; 
+      
+        
+ }
+
+ .media-lib-message {
+
+     display: none;
+ }
+
+ @media(max-width: 768px) {
+  
+    .media-lib-content {
+        width: 100%;
+    }
+
+ .media-lib-content ul li {
+    
+   width: 33%; 
+
+  }
+
+ }

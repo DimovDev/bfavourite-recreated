@@ -36381,15 +36381,27 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: MediaLib, MediaLibField, MediaLibPagination */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MediaLib", function() { return MediaLib; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MediaLibField", function() { return MediaLibField; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MediaLibPagination", function() { return MediaLibPagination; });
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+var _require = __webpack_require__(/*! ./medialib.classes */ "./resources/js/medialib.classes.js"),
+    MediaLib = _require.MediaLib,
+    MediaLibField = _require.MediaLibField,
+    MediaLibPagination = _require.MediaLibPagination;
+
+
 /* window.Vue = require('vue');
  */
 
@@ -36474,6 +36486,393 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/medialib.classes.js":
+/*!******************************************!*\
+  !*** ./resources/js/medialib.classes.js ***!
+  \******************************************/
+/*! exports provided: MediaLib, MediaLibField, MediaLibPagination */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MediaLib", function() { return MediaLib; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MediaLibField", function() { return MediaLibField; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MediaLibPagination", function() { return MediaLibPagination; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var MediaLib =
+/*#__PURE__*/
+function () {
+  function MediaLib(jQuery) {
+    var _this = this;
+
+    _classCallCheck(this, MediaLib);
+
+    this.$ = jQuery;
+    this.routes = {
+      index: '/admin/media',
+      store: '/admin/media',
+      destroy: '/admin/media/destroy'
+    };
+    this.popup = this.$(this.template);
+    this.uploadForm = this.popup.find('form');
+    this.content = this.popup.find('.media-lib-content');
+    this.loader = this.popup.find('.media-lib-loading');
+    this.messageBag = this.popup.find('.media-lib-message');
+
+    this.messageBag.clear = function () {
+      return _this.messageBag.hide().removeClass('alert-danger alert-warning alert-success');
+    };
+
+    this.pagination = new MediaLibPagination(jQuery);
+    this.init();
+  }
+
+  _createClass(MediaLib, [{
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+
+      this.load(this.routes.index);
+      this.popup.find('.media-lib-close').on('click', function (ev) {
+        ev.preventDefault();
+
+        _this2.close();
+      });
+      this.popup.find('#pick').on('click', function (ev) {
+        if (_this2.onFinish && _this2.picked) _this2.onFinish(_this2.picked);
+
+        _this2.close();
+      });
+      this.popup.find('.media-lib-delete').on('click', function (ev) {
+        ev.preventDefault();
+
+        _this2.destroy();
+      });
+      this.popup.find('.btn-success').on('click', function (ev) {
+        _this2.popup.find('[name="file"]').trigger('click');
+      });
+      this.popup.find('[type="file"]').on('change', function (ev) {
+        return _this2.upload();
+      });
+      this.popup.hide();
+      this.$('body').prepend(this.popup);
+      this.$('.media-lib-overlay').on('click', function (ev) {
+        if ($(ev.target).attr('class') == 'media-lib-overlay') {
+          _this2.close();
+        }
+      });
+    }
+  }, {
+    key: "upload",
+    value: function upload() {
+      var _this3 = this;
+
+      this.loading();
+      var fd = new FormData(this.uploadForm[0]);
+      fd.set('_method', 'POST');
+      this.uploadForm[0].reset();
+      this.$.ajax({
+        url: this.routes.store,
+        type: 'POST',
+        data: fd,
+        contentType: false,
+        cache: false,
+        processData: false,
+        headers: {
+          'X-CSRF-TOKEN': this.$('meta[name="csrf-token"]').attr('content')
+        }
+      }).done(function (response) {
+        _this3.prepareDom(response);
+      }).fail(function (response) {
+        _this3.prepareDom(response);
+      });
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      var _this4 = this;
+
+      if (this.picked) {
+        var result = confirm("Наистина ли искате да изтриете тази снимка?");
+
+        if (result) {
+          this.loading();
+          var fd = new FormData();
+          fd.set('destroy[]', [this.picked.id]);
+          fd.set('_method', 'DELETE');
+          this.$.ajax({
+            url: this.routes.destroy,
+            type: 'POST',
+            data: fd,
+            contentType: false,
+            cache: false,
+            processData: false,
+            headers: {
+              'X-CSRF-TOKEN': this.$('meta[name="csrf-token"]').attr('content')
+            }
+          }).done(function (response) {
+            _this4.prepareDom(response);
+          });
+        }
+      }
+    }
+  }, {
+    key: "loading",
+    value: function loading() {
+      this.content.find('ul').remove();
+      this.content.append(this.loader);
+    }
+  }, {
+    key: "prepareDom",
+    value: function prepareDom(response) {
+      var _this5 = this;
+
+      this.messageBag.clear();
+
+      if (response.message) {
+        var _response$message = response.message,
+            status = _response$message.status,
+            message = _response$message.message;
+        status = status == 'error' ? 'danger' : status;
+        this.messageBag.addClass('alert-' + status).html(message).fadeIn();
+      }
+
+      if (response.status == 422 && response.responseJSON) {
+        var error = response.responseJSON.errors ? response.responseJSON.errors.file[0] : 'Something wrong happened!';
+        this.messageBag.addClass('alert-danger').html(error).fadeIn();
+        response = this.backup;
+      }
+
+      if (response.message && !response.paginator.data.length) {
+        this.messageBag.addClass('alert-warning').html("There are no media files...").fadeIn();
+        this.popup.find('.media-lib-content .media-lib-loading').replaceWith("<ul></ul>");
+        this.popup.find('.media-lib-panel').hide();
+      }
+
+      if (response.paginator && response.paginator.data.length > 0) {
+        this.items = response.paginator.data;
+        var mediaLibContent = "<ul>";
+
+        for (var i = 0; i < this.items.length; i++) {
+          mediaLibContent += "<li><img class=\"media-lib-icon\" data-id=\"".concat(i, "\" src=\"/storage/").concat(this.items[i].icon, "\" alt=\"\" /></li>");
+        }
+
+        mediaLibContent += "</ul>";
+        this.backup = response;
+        this.pagination.load(response.paginator, function (url) {
+          return _this5.load(url);
+        });
+        this.loader.remove();
+        this.content.append(mediaLibContent);
+        this.pick(0);
+        this.popup.find('.media-lib-footer .pagination').replaceWith(this.pagination.render());
+        this.popup.find('.media-lib-content ul li img').on('click', function (ev) {
+          _this5.pick(ev.target.getAttribute('data-id'));
+        });
+      }
+    }
+  }, {
+    key: "load",
+    value: function load(url) {
+      var _this6 = this;
+
+      this.loading();
+      this.$.ajax(url).done(function (response) {
+        _this6.prepareDom(response);
+      });
+    }
+  }, {
+    key: "pick",
+    value: function pick(index) {
+      this.picked = this.items[index];
+      var src = '/storage/' + this.items[index].icon;
+      this.popup.find('.media-lib-panel .media-lib-icon').attr({
+        'src': src
+      });
+      this.popup.find('.media-name').html(this.items[index].title);
+      this.popup.find('.active').removeClass('active');
+      this.popup.find("[data-id=\"".concat(index, "\"]")).addClass('active');
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      this.$('body').css('overflow', 'hidden');
+      this.popup.show();
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.$('body').css('overflow', 'auto');
+      this.popup.hide();
+      this.messageBag.clear();
+    }
+  }, {
+    key: "onFinish",
+    value: function onFinish(callback) {
+      this.onFinish = callback;
+      return this;
+    }
+  }, {
+    key: "template",
+    get: function get() {
+      return "<div class=\"media-lib-overlay\">\n  <div class=\"media-lib\">\n  \n    <div class=\"media-lib-header\">\n      <h1>\u0418\u0437\u0431\u0435\u0440\u0438 \u043C\u0435\u0434\u0438\u044F \u0444\u0430\u0439\u043B</h1>\n      <a class=\"media-lib-close\" href=\"#\"><span data-feather=\"x\"></span></a>\n    </div>\n  \n    <div class=\"media-lib-body\">\n       \n       <div class=\"media-lib-content\">\n           <div class=\"media-lib-message alert\"></div>\n           <img class=\"media-lib-loading\" src=\"/storage/loading.gif\" alt=\"loading...\" />\n  \n       </div>\n  \n       <div class=\"media-lib-panel d-none d-md-block\">\n  \n             <img src=\"\" class=\"media-lib-icon\" />\n  \n             <select>\n               <option>\u041C\u0430\u043B\u044A\u043A \u0440\u0430\u0437\u043C\u0435\u0440</option>\n               <option>\u0421\u0440\u0435\u0434\u0435\u043D \u0440\u0430\u0437\u043C\u0435\u0440</option>\n               <option>\u0413\u043E\u043B\u044F\u043C \u0440\u0430\u0437\u043C\u0435\u0440</option>\n               <option>\u041E\u0433\u0440\u043E\u043C\u0435\u043D \u0440\u0430\u0437\u043C\u0435\u0440</option>\n               <option>\u0426\u044F\u043B \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             </select>\n  \n             <p>File: <span class=\"media-name\"></span> (<a href=\"#\" class=\"media-lib-delete\">\u0438\u0437\u0442\u0440\u0438\u0439</a>)</p>\n  \n       </div> \n    \n    </div>\n    <div class=\"media-lib-footer\">\n      <ul class=\"pagination\"></ul>\n      <div class=\"d-flex\">\n      <form method=\"POST\">\n        <button type=\"button\" class=\"btn btn-success\">Choose File</button>\n        <input type=\"file\" class=\"d-none\" name=\"file\" />\n      </form>\n      <button type=\"button\" name=\"pick\" id=\"pick\" class=\"ml-2 btn btn-primary\">\u0417\u0430\u0440\u0435\u0434\u0438</button>\n      </div>\n    </div>\n  \n  </div>\n  </div>";
+    }
+  }]);
+
+  return MediaLib;
+}();
+
+var MediaLibPagination =
+/*#__PURE__*/
+function () {
+  function MediaLibPagination(jQuery) {
+    _classCallCheck(this, MediaLibPagination);
+
+    this.$ = jQuery;
+    this.totalPages = 1;
+    this.currentPage = 1;
+    this.lastPageUrl = null;
+    this.firstPageUrl = null;
+    this.nextPageUrl = null;
+    this.prevPageUrl = null;
+  }
+
+  _createClass(MediaLibPagination, [{
+    key: "load",
+    value: function load(laravelPagination, callback) {
+      this.currentPage = laravelPagination.current_page;
+      this.totalPages = laravelPagination.last_page;
+      this.lastPageUrl = laravelPagination.last_page_url;
+      this.firstPageUrl = laravelPagination.path;
+      this.nextPageUrl = laravelPagination.next_page_url;
+      this.prevPageUrl = laravelPagination.prev_page_url;
+      this.onLinkClick(callback);
+      return this;
+    }
+  }, {
+    key: "onLinkClick",
+    value: function onLinkClick(callback) {
+      this.linkClick = callback;
+      return this;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this7 = this;
+
+      this.pagination = this.$("<ul class=\"pagination\">\n                \n                                  <li class=\"page-item ".concat(this.currentPage == 1 ? 'disabled' : null, "\">\n                                      <a class=\"page-link\" href=\"").concat(this.firstPageUrl, "\"><<</a>\n                                  </li>\n                                  \n                                  <li class=\"page-item ").concat(this.currentPage == 1 ? 'disabled' : null, "\"\">\n                                      <a class=\"page-link\" href=\"").concat(this.prevPageUrl, "\"><</a>\n                                  </li>\n  \n                                  <li class=\"page-item disabled\">\n                                      <a class=\"page-link\" href=\"#\">").concat(this.currentPage, " / ").concat(this.totalPages, "</a>\n                                  </li>\n  \n                                  <li class=\"page-item ").concat(this.currentPage == this.totalPages ? 'disabled' : null, "\">\n                                      <a class=\"page-link\" href=\"").concat(this.nextPageUrl, "\">></a>\n                                  </li>\n  \n                                  <li class=\"page-item ").concat(this.currentPage == this.totalPages ? 'disabled' : null, "\">\n                                      <a class=\"page-link\" href=\"").concat(this.lastPageUrl, "\">>></a>\n                                  </li>\n  \n                                  </ul>"));
+      this.pagination.find('.page-link').on('click', function (ev) {
+        ev.preventDefault();
+
+        _this7.linkClick(ev.target.href);
+      });
+      return this.pagination;
+    }
+  }]);
+
+  return MediaLibPagination;
+}();
+
+var MediaLibField =
+/*#__PURE__*/
+function () {
+  function MediaLibField(jQuery, fieldName) {
+    var _this8 = this;
+
+    _classCallCheck(this, MediaLibField);
+
+    this.$ = jQuery;
+    this.items = [];
+    this.domElements = [];
+    this.fieldName = fieldName;
+    this.multiple = false;
+    this.mediaLib = new MediaLib($);
+    this.mediaLib.onFinish(function (item) {
+      return _this8.push(item);
+    });
+    this.$('[data-media-field="' + fieldName + '"]').on('click', function (ev) {
+      _this8.opener = _this8.$(ev.target);
+
+      var inputName = _this8.opener.attr('data-media-field');
+
+      if (!_this8.field) {
+        _this8.field = _this8.$("<div class=\"media-lib-field\"><input type=\"hidden\" value=\"\" name=\"".concat(inputName ? inputName : 'media_field', "\" /></div>"));
+
+        _this8.opener.after(_this8.field);
+      }
+
+      _this8.multiple = parseInt(_this8.opener.attr('data-media-multiple')) || _this8.opener[0].hasAttribute('data-media-multiple');
+
+      _this8.mediaLib.open();
+    });
+  }
+
+  _createClass(MediaLibField, [{
+    key: "push",
+    value: function push(item) {
+      this.items.push(item);
+      this.prepareDom(item);
+      return this;
+    }
+  }, {
+    key: "remove",
+    value: function remove(index) {
+      delete this.items[index];
+      return this;
+    }
+  }, {
+    key: "setValue",
+    value: function setValue() {
+      var val = this.items.filter(function (item) {
+        return item;
+      }).map(function (item) {
+        return item.id;
+      });
+      this.field.find('input').val(JSON.stringify(val));
+      return this;
+    }
+  }, {
+    key: "prepareDom",
+    value: function prepareDom(item) {
+      var _this9 = this;
+
+      var itemDom = this.$("<div class=\"media-lib-field-item\">\n                              <img src=\"/storage/".concat(item.icon, "\" alt=\"").concat(item.title, "\" />\n                              <button type=\"button\" class=\"btn-danger\">\u0418\u0437\u0442\u0440\u0438\u0439</button>\n                            </div>"));
+      var index = this.domElements.push(itemDom) - 1;
+      this.setValue();
+      itemDom.find('button').on('click', function (ev) {
+        $(ev.target).closest('.media-lib-field-item').remove();
+
+        _this9.remove(index);
+
+        delete _this9.domElements[index];
+
+        _this9.setValue();
+
+        if (!_this9.multiple && _this9.domElements.filter(function (el) {
+          return el;
+        }).length < 1 || _this9.multiple > _this9.items.filter(function (el) {
+          return el;
+        }).length) _this9.opener.show();
+      });
+      this.field.append(itemDom);
+      if (!this.multiple || this.multiple === this.items.filter(function (el) {
+        return el;
+      }).length) this.opener.hide();
+    }
+  }]);
+
+  return MediaLibField;
+}();
+
+
 
 /***/ }),
 

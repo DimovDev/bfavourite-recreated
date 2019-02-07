@@ -18,13 +18,26 @@ class MediaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $media = Media::orderBy('created_at', 'DESC')->paginate(25);
+    
+      $media = Media::orderBy('created_at', 'DESC')->paginate(15);
+        
+      foreach($media AS $m) {
+        
+        if(strpos($m->media_type, 'image') !== false) {
+           
+            $m->icon = ImageFile::imgExists($m->url, storage_path(config('media.images.upload_path')), 'small');
+        }
 
-
-        return view('admin/media/index')->with(['media' => $media,
-                                                       'message' => session('message')]);
+      }  
+       
+   
+       return response()->json(['message' => session('message'), 'paginator' => $media]);
+   
+  
+       return view('admin/media/index')->with(['media' => $media,
+                                               'message' => session('message')]);
     }
 
     /**

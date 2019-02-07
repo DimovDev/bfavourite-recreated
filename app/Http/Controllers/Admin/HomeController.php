@@ -17,7 +17,12 @@ class HomeController extends Controller
     public function __construct()
     {
     }
+   
+   public function test() {
 
+      return view('admin/home/test');
+
+   }
    
    public function index() {
        

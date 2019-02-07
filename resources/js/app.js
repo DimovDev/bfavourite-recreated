@@ -7,6 +7,9 @@
 
 require('./bootstrap');
 
+require('./medialib.classes');
+
+
 
 
 /* window.Vue = require('vue');

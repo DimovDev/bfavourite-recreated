@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['as' => 'admin.'],function() {
   
     Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
+    Route::get('admin/test', 'Admin\HomeController@test')->name('test');
 
     Route::get('admin/users', 'Admin\UsersController@index')->name('users.index');
     Route::get('admin/users/{user}/edit', 'Admin\UsersController@edit')->name('users.edit');
@@ -58,6 +59,8 @@ Route::group(['as' => 'admin.'],function() {
     Route::post('admin/media', 'Admin\MediaController@store')->name('media.store');
     Route::put('admin/media/{file}', 'Admin\MediaController@update')->name('media.update');
     Route::delete('admin/media/destroy', 'Admin\MediaController@destroy')->name('media.destroy'); 
+
+    
 
 });
 
