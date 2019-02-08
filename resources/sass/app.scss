@@ -9,5 +9,13 @@
 @import '~bootstrap/scss/bootstrap';
 
 
+/* @import '../../node_modules/jquery-ui/themes/base/core.css';
+@import '../../node_modules/jquery-ui/themes/base/base.css';
+@import '../../node_modules/jquery-ui/themes/base/menu.css';
+@import '../../node_modules/jquery-ui/themes/base/autocomplete.css';
+*/
+
+@import '../../node_modules/jquery-ui/themes/base/all.css';
+
 @import '../css/dashboard.css';
 @import '../css/medialib.css';

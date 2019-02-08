@@ -5,12 +5,28 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-
-require('./medialib.classes');
 
 
+import $ from 'jquery';
+window.$ = window.jQuery = $; 
 
+import 'jquery-ui/ui/widgets/autocomplete.js';
+
+
+import {MediaLib, MediaLibPagination, MediaLibField}  from './medialib.classes.js';
+
+window.MediaLibField = MediaLibField;
+
+import 'popper.js';
+import feather from 'feather-icons';
+
+window.feather = feather; 
+
+/* Bootstrap 4.0 */
+import 'bootstrap';
+
+/* Laravel Bootstrap JS */
+import './bootstrap';
 
 /* window.Vue = require('vue');
  */
