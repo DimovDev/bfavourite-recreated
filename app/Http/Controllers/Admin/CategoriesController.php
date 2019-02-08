@@ -159,4 +159,23 @@ class CategoriesController extends Controller
          
          return redirect()->route('admin.categories.index');
     }
+
+    public function autocomplete(Request $request) {
+
+         $term = $request->only('term');
+         $term = $term['term'] ?? null;
+         $results = [];
+         
+       if ($term) {
+         $categories = Category::where('name', 'LIKE', '%'.$term.'%')->take(5)->get();
+          
+         foreach($categories as $cat) {
+
+            $results[] = ['id' => $cat->id,
+                          'value'=> $cat->name];
+         }
+        } 
+         return response()->json($results);
+
+    }
 }

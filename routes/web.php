@@ -33,6 +33,7 @@ Route::group(['as' => 'admin.'],function() {
     Route::delete('admin/users/destroy', 'Admin\UsersController@destroy')->name('users.destroy'); 
     
     Route::get('admin/categories', 'Admin\CategoriesController@index')->name('categories.index');
+    Route::get('admin/categories/auto', 'Admin\CategoriesController@autocomplete')->name('categories.auto');
     Route::get('admin/categories/{category}/edit', 'Admin\CategoriesController@edit')->name('categories.edit');
     Route::get('admin/categories/create', 'Admin\CategoriesController@create')->name('categories.create');
     Route::post('admin/categories', 'Admin\CategoriesController@store')->name('categories.store');

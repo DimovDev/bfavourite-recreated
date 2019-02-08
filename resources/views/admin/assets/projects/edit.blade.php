@@ -74,17 +74,14 @@
 
 <div class="col-7">
 
-    <div class="form-group">
+  <div class="row">
+    <div class="form-group col-4">
       <label for="category">{{__('Category')}}</label>
-      <select id="category" name="category" class="form-control">
-        @foreach($categories::all() as $cat)
-          
-          <option {{old('category') || 
-                  (isset($project) && $project->category->first()->id == $cat->id) ? 'selected' : null}}
-                  value="{{$cat->id}}">{{$cat->name}}</option>
-        @endforeach
-      </select>
+      <input type="text" id="category" class="form-control" name="category" value="" />
     </div>
+    <div class="col-8 values">
+    </div>
+   </div>
 
     <div class="form-group">
       <label for="published_at">{{__('Published at')}}</label>
