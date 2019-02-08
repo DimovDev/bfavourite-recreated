@@ -48,8 +48,17 @@ class CategoriesController extends Controller
     {
         $data = $request->validated();
 
+        $icon = $request->only('icon');
+        $data['icon'] = null;
+
+        if(isset($icon['icon'])) {
+
+            $icon = json_decode($icon['icon']);
+            if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
+        }
+
         $cat = Category::create($data);
-        $cat->user()->save(Auth::user());
+        $cat->user()->attach(Auth::id());
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The category was created.']));
@@ -69,6 +78,10 @@ class CategoriesController extends Controller
     {
         $category = Category::findOrFail($id);
 
+        $icon = $category->icon()->first();
+        
+        if($icon) $category->icon = json_encode([$icon->toArray()]);
+
         return view('admin/taxonomies/categories/edit', ['category' => $category]);
     }
 
@@ -84,7 +97,18 @@ class CategoriesController extends Controller
          
         $data = $request->validated();
         
-        Category::findOrFail($id)->update($data);
+        $category = Category::findOrFail($id);
+
+        $icon = $request->only('icon');
+        $data['icon'] = null;
+
+        if(isset($icon['icon'])) {
+
+            $icon = json_decode($icon['icon']);
+            if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
+         }
+
+        $category->update($data);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The category was edited.']));

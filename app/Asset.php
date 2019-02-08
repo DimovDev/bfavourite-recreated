@@ -7,7 +7,7 @@ use App\Helpers\SlugHelper;
 
 class Asset extends Model
 {
-    protected $fillable = ['title', 'slug', 'asset_status', 'summary', 'content', 'published_at'];
+    protected $fillable = ['title', 'slug', 'asset_status', 'summary', 'content', 'published_at', 'photo'];
 
     protected $dates = ['published_at'];
     protected static $asset_type = "asset";
@@ -36,6 +36,12 @@ class Asset extends Model
       public function getStatusAttribute($value) {
   
           return $this->asset_status;
+      }
+
+      public function photo() {
+
+         return $this->belongsTo('App\Media', 'photo');
+         
       }
 
 }

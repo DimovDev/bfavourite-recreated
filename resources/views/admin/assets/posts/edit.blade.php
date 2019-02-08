@@ -2,6 +2,8 @@
 @inject('postStatus', 'App\PostStatus')
 @inject('categories', 'App\Category')
 
+@section('main-classes', 'edit posts-edit')
+
 @section('content')
 
 <h1 class="h2">{{__(isset($post) ? 'Edit Post' : 'Create Post')}}</h1>
@@ -39,38 +41,50 @@
 
 <div class="form-group">
   <label for="summary">{{__('Summary')}} <small>({{__('Can be generated automatically.')}})</small></label>
-  <textarea class="form-control mce" name="summary" id="summary">{{old('summary') ?? $post->summary ?? null}}</textarea>
+  <textarea class="form-control" name="summary" id="summary">{{old('summary') ?? $post->summary ?? null}}</textarea>
 
 </div>
 
-<div class="form-group">
-  <label for="published_at">{{__('Published at')}}</label>
-  <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $post->published_at ?? date('Y-m-d h:m:s')}}" />
+<div class="row">
+
+<div class="col-5">
+  <div class="photo">
+    <button type="button" class="btn btn-secondary" data-media-field="photo" data-media-value="{{old('photo') ?? $post->photo ?? null}}">{{__('Add a photo')}}</button>
+  </div>
 </div>
 
-<div class="form-group">
-  <label for="category">{{__('Category')}}</label>
-  <select id="category" name="category" class="form-control">
-    @foreach($categories::all() as $cat)
-      
-      <option {{old('category') || 
-              (isset($post) && $post->category->first()->id == $cat->id) ? 'selected' : null}}
-              value="{{$cat->id}}">{{$cat->name}}</option>
-    @endforeach
-  </select>
-</div>
+<div class="col-7">
 
-<div class="form-group">
-  <label for="asset_status">{{__('Status')}}</label>
-  <select id="asset_status" name="asset_status" class="form-control">
-    @foreach($postStatus->all() as $status)
-      <option {{old('asset_status') || 
-              (isset($post) && $post->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
-    @endforeach
-  </select>
-</div>
+      <div class="form-group">
+        <label for="published_at">{{__('Published at')}}</label>
+        <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $post->published_at ?? date('Y-m-d h:m:s')}}" />
+      </div>
 
-<button type="submit" class="btn btn-primary">{{__('Save')}}</button>
+      <div class="form-group">
+        <label for="category">{{__('Category')}}</label>
+        <select id="category" name="category" class="form-control">
+          @foreach($categories::all() as $cat)
+            
+            <option {{old('category') || 
+                    (isset($post) && $post->category->first()->id == $cat->id) ? 'selected' : null}}
+                    value="{{$cat->id}}">{{$cat->name}}</option>
+          @endforeach
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="asset_status">{{__('Status')}}</label>
+        <select id="asset_status" name="asset_status" class="form-control">
+          @foreach($postStatus->all() as $status)
+            <option {{old('asset_status') || 
+                    (isset($post) && $post->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
+          @endforeach
+        </select>
+      </div>
+ </div><!-- .col -->
+</div><!-- .row -->
+
+<button type="submit" class="btn btn-primary float-right">{{__('Save')}}</button>
 
 @csrf
 

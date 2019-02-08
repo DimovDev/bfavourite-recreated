@@ -2,6 +2,8 @@
 @inject('projectStatus', 'App\PostStatus')
 @inject('categories', 'App\Category')
 
+@section('main-classes', 'edit projects-edit')
+
 @section('content')
 
 <h1 class="h2">{{__(isset($project) ? 'Edit Project' : 'Create Project')}}</h1>
@@ -39,48 +41,69 @@
 
 <div class="form-group">
   <label for="summary">{{__('Summary')}} <small>({{__('Can be generated automatically.')}})</small></label>
-  <textarea class="form-control mce" name="summary" id="summary">{{old('summary') ?? $project->summary ?? null}}</textarea>
+  <textarea class="form-control" name="summary" id="summary">{{old('summary') ?? $project->summary ?? null}}</textarea>
 
 </div>
 
-<div class="form-group">
-  <label for="github">{{__('Github Url')}}</label>
-  <input type="text" class="form-control" id="github" name="meta[github_url]" value="{{old('meta.github_url') ?? isset($project) ? $project->getMeta('github_url'): null}}" />
+<div class="row">
+
+ <div class="col-5">
+
+    <div class="form-group">
+      <label for="github">{{__('Github Url')}}</label>
+      <input type="text" class="form-control" id="github" name="meta[github_url]" value="{{old('meta.github_url') ?? isset($project) ? $project->getMeta('github_url'): null}}" />
+    </div>
+
+  </div><!-- .col -->
+  <div class="col-7">
+    <div class="form-group">
+      <label for="live">{{__('Live Url')}}</label>
+      <input type="text" class="form-control" id="live" name="meta[live_url]" value="{{old('meta.live_url') ?? isset($project) ? $project->getMeta('live_url'): null}}" />
+    </div>
+
+  </div><!-- .col -->
+</div><!-- .row -->
+
+<div class="row">
+
+<div class="col-5">
+  <div class="photo">
+    <button type="button" class="btn btn-secondary" data-media-field="photo" data-media-value="{{old('photo') ?? $project->photo ?? null}}">{{__('Add a photo')}}</button>
+  </div>
 </div>
 
-<div class="form-group">
-  <label for="live">{{__('Live Url')}}</label>
-  <input type="text" class="form-control" id="live" name="meta[live_url]" value="{{old('meta.live_url') ?? isset($project) ? $project->getMeta('live_url'): null}}" />
-</div>
+<div class="col-7">
 
-<div class="form-group">
-  <label for="category">{{__('Category')}}</label>
-  <select id="category" name="category" class="form-control">
-    @foreach($categories::all() as $cat)
-      
-      <option {{old('category') || 
-              (isset($project) && $project->category->first()->id == $cat->id) ? 'selected' : null}}
-              value="{{$cat->id}}">{{$cat->name}}</option>
-    @endforeach
-  </select>
-</div>
+    <div class="form-group">
+      <label for="category">{{__('Category')}}</label>
+      <select id="category" name="category" class="form-control">
+        @foreach($categories::all() as $cat)
+          
+          <option {{old('category') || 
+                  (isset($project) && $project->category->first()->id == $cat->id) ? 'selected' : null}}
+                  value="{{$cat->id}}">{{$cat->name}}</option>
+        @endforeach
+      </select>
+    </div>
 
-<div class="form-group">
-  <label for="published_at">{{__('Published at')}}</label>
-  <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $project->published_at ?? date('Y-m-d h:m:s')}}" />
-</div>
+    <div class="form-group">
+      <label for="published_at">{{__('Published at')}}</label>
+      <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $project->published_at ?? date('Y-m-d h:m:s')}}" />
+    </div>
 
-<div class="form-group">
-  <label for="asset_status">{{__('Status')}}</label>
-  <select id="asset_status" name="asset_status" class="form-control">
-    @foreach($projectStatus->all() as $status)
-      <option {{old('asset_status') || 
-              (isset($project) && $project->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
-    @endforeach
-  </select>
-</div>
+    <div class="form-group">
+      <label for="asset_status">{{__('Status')}}</label>
+      <select id="asset_status" name="asset_status" class="form-control">
+        @foreach($projectStatus->all() as $status)
+          <option {{old('asset_status') || 
+                  (isset($project) && $project->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
+        @endforeach
+      </select>
+    </div>
 
-<button type="submit" class="btn btn-primary">{{__('Save')}}</button>
+  </div><!-- .col -->
+</div><!-- .row -->
+<button type="submit" class="btn btn-primary float-right">{{__('Save')}}</button>
 
 @csrf
 

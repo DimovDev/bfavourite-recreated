@@ -51,6 +51,16 @@ class UsersController extends Controller
 
       $data['password'] = Hash::make($data['password']);
 
+      $photo = $request->only('photo');
+      $data['photo'] = null;
+
+      if(isset($photo['photo'])) {
+
+          $photo = json_decode($photo['photo']);
+          if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+       }
+
+
       User::create($data);
 
 
@@ -72,6 +82,10 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
+        $photo = $user->photo()->first();
+        
+        if($photo) $user->photo = json_encode([$photo->toArray()]);
 
         return view('admin/users/edit', ['user' => $user]);
     }
@@ -97,6 +111,16 @@ class UsersController extends Controller
         $data['password'] = Hash::make($data['password']);
 
        }
+
+       $photo = $request->only('photo');
+       $data['photo'] = null;
+
+       if(isset($photo['photo'])) {
+
+           $photo = json_decode($photo['photo']);
+           if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+        }
+
 
        User::findOrFail($id)->update($data);
 

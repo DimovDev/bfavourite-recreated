@@ -48,10 +48,22 @@ class PostsController extends Controller
     {
         $data = $request->validated();
 
+        $photo = $request->only('photo');
+
+        if(isset($photo['photo'])) {
+
+            $photo = json_decode($photo['photo']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+          }
+
         $post = Post::create($data);
         
         $post->user()->attach(Auth::id());
         $post->category()->attach($data['category']);
+
+
+
+     
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The post was created.']));
@@ -69,6 +81,10 @@ class PostsController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+        $photo = $post->photo()->first();
+        
+        if($photo) $post->photo = json_encode([$photo->toArray()]);
+    
 
         return view('admin/assets/posts/edit', ['post' => $post]);
     }
@@ -85,6 +101,17 @@ class PostsController extends Controller
         $data = $request->validated();
         
         $post = Post::findOrFail($id);
+
+        $photo = $request->only('photo');
+        $data['photo'] = null;
+
+        if(isset($photo['photo'])) {
+
+            $photo = json_decode($photo['photo']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+         }
+
+
         $post->update($data);
         $post->category()->sync([$data['category']]);
  

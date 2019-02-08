@@ -47,11 +47,19 @@ class ProjectsController extends Controller
     public function store(ProjectEditRequest $request)
     {
         $data = $request->validated();
-        $data = $request->all();
+        
+        $photo = $request->only('photo');
+
+        if(isset($photo['photo'])) {
+
+            $photo = json_decode($photo['photo']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+         }
+
 
    
         $project = Project::create($data);
-        $project->user()->save(Auth::user());
+        $project->user()->attach(Auth::id());
         $project->category()->attach($data['category']);
         
         session()->flash('message', new MessageBag(['status' => 'success',
@@ -70,6 +78,8 @@ class ProjectsController extends Controller
     {
         $project = Project::findOrFail($id);
         
+        $photo = $project->photo()->first();
+        if($photo) $project->photo = json_encode([$photo->toArray()]);
 
         return view('admin/assets/projects/edit', ['project' => $project]);
     }
@@ -84,9 +94,19 @@ class ProjectsController extends Controller
     public function update(ProjectEditRequest $request, $id)
     {
         $data = $request->validated();
-        $data = $request->all();
         
         $project = Project::findOrFail($id);
+
+        $photo = $request->only('photo');
+        $data['photo'] = null;
+
+        if(isset($photo['photo'])) {
+
+            $photo = json_decode($photo['photo']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+         }
+
+
         $project->update($data);
         $project->category()->sync($data['category']);
  

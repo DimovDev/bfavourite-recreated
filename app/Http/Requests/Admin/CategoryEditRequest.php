@@ -28,6 +28,7 @@ class CategoryEditRequest extends FormRequest
             'name'=>'required|max:50|min:2|regex:/[a-z0-9 _-]+/iu',
             'slug' => 'nullable|max:100|min:2|regex:/[a-z0-9 _-]+/iu',
             'taxonomy_status' => 'required|regex:/[a-z0-9 _-]+/iu|max:50',
+            'summary' => 'nullable|max:500',
         ];
 
     }

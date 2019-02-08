@@ -51,6 +51,56 @@ ul li {
 }
 
 
+.edit div.photo {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    min-height: 235px;
+
+    background: transparent url('/storage/placeholder_small.png') repeat-x center center;
+}
+
+.edit div.photo button,
+.edit div.photo .media-lib-field  {
+
+    width: 100%;
+}
+
+.edit div.photo button {
+  
+    justify-self: flex-end;
+
+}
+
+
+.edit div.photo img {
+
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.users-edit div.photo {
+
+    width: 200px;
+}
+
+.categories-edit div.photo {
+
+    width: 150px;
+    min-height: 155px;
+}
+
+.categories-edit div.photo img {
+
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
 
 @media (min-width: 768px) {
 

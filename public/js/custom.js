@@ -18,7 +18,7 @@ $(document).ready(function() {
     });
 
      new MediaLibField($, 'photo');
-     new MediaLibField($, 'screenshots');
+     new MediaLibField($, 'icon');
 
 });
 
@@ -431,34 +431,61 @@ class MediaLib {
       this.$ = jQuery;
       this.items = [];
       this.domElements = [];
+
+      this.opener = this.$('[data-media-field="'+fieldName+'"]');
+      
+      /*Abort if there is no opener/button */
+      if(!this.opener.length) return;
   
       this.fieldName = fieldName;
   
       this.multiple = false; 
       this.mediaLib = new MediaLib($);
       this.mediaLib.onFinish(item => this.push(item));
+
+      
+
+      
+      this.field = this.$(`<div class="media-lib-field"><input type="hidden" value="" name="${fieldName}" /></div>`);
+      this.opener.after(this.field);
+
+
+
+      this.multiple = parseInt(this.opener.attr('data-media-multiple')) || this.opener[0].hasAttribute('data-media-multiple');
   
-      this.$('[data-media-field="'+fieldName+'"]').on('click', ev => {
   
-          this.opener = this.$(ev.target);
-  
-          let inputName = this.opener.attr('data-media-field'); 
-  
-          if(!this.field) {
-  
-              this.field = this.$(`<div class="media-lib-field"><input type="hidden" value="" name="${inputName ? inputName : 'media_field'}" /></div>`);
-              this.opener.after(this.field);
-          }
-  
-          this.multiple = parseInt(this.opener.attr('data-media-multiple')) || this.opener[0].hasAttribute('data-media-multiple');
+      this.opener.on('click', ev =>  this.mediaLib.open());
+
+      this.openerValue = this.opener.attr('data-media-value');
+       
+      if(this.openerValue) {
         
-          this.mediaLib.open();
-  
-      });
+         try {
+           
+           let values = JSON.parse(this.openerValue);
+           
+           if(typeof values == 'object' && values.length > 0) {
+
+              this.load(values);
+
+           }
+
+         } catch(error) {
+
+
+         }
+
+      }
   
     }
   
-    
+    load(items) {
+      
+      items.map(item => this.push(item));
+
+      return this;
+
+    }
   
     push(item) {
   
@@ -479,7 +506,7 @@ class MediaLib {
   
     setValue() {
        
-       let val = this.items.filter(item => { return item}).map(item => item.id);
+       let val = this.items.filter(item => { return item});
        this.field.find('input').val(JSON.stringify(val))
        return this;
   
@@ -489,8 +516,8 @@ class MediaLib {
     prepareDom(item) {
   
       let itemDom = this.$(`<div class="media-lib-field-item">
-                              <img src="/storage/${item.icon}" alt="${item.title}" />
-                              <button type="button" class="btn-danger">Изтрий</button>
+                              <img src="/storage/${item.icon || item.url}" alt="${item.title}" />
+                              <button type="button" class="btn btn-danger">Изтрий</button>
                             </div>`);
        
        let index = this.domElements.push(itemDom)-1;   

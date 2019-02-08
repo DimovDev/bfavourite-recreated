@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'user_status',
+        'name', 'email', 'password', 'role', 'user_status', 'photo'
     ];
 
     /**
@@ -33,6 +33,16 @@ class User extends Authenticatable
 
         return $this->user_status;
     }
+
+    /*
+     * Get the user's photo
+     */
+
+    public function photo() {
+
+        return $this->belongsTo('App\Media', 'photo');
+        
+     }
 
     /*
      * Get all posts of the user
