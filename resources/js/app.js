@@ -9,8 +9,10 @@
 
 import $ from 'jquery';
 window.$ = window.jQuery = $; 
+var jQuery = $;
 
 import 'jquery-ui/ui/widgets/autocomplete.js';
+import 'jquery-ui/ui/widgets/datepicker.js';
 
 
 import {MediaLib, MediaLibPagination, MediaLibField}  from './medialib.classes.js';

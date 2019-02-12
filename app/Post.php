@@ -39,7 +39,7 @@ class Post extends Asset
     * Get the category of the project 
     */
 
-    public function category() {
+    public function categories() {
 
         return $this->morphToMany('App\Category', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
   

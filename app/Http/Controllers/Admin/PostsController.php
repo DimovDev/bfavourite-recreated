@@ -11,6 +11,8 @@ use App\Http\Requests\Admin\PostEditRequest;
 use App\Http\Controllers\Controller;
 use App\Post;
 
+use App\Helpers\PillFieldHelper;
+
 class PostsController extends Controller
 {
     /**
@@ -20,9 +22,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'DESC')->paginate(25);
+        $posts = Post::with('categories')->orderBy('created_at', 'DESC')->paginate(25);
 
-
+      
         return view('admin/assets/posts/index')->with(['posts' => $posts,
                                                        'message' => session('message')]);
     }
@@ -56,10 +58,13 @@ class PostsController extends Controller
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
           }
 
+        if(!empty($data['categories'])) $data['categories'] = PillFieldHelper::toArray($data['categories']);
+
+
         $post = Post::create($data);
         
         $post->user()->attach(Auth::id());
-        $post->category()->attach($data['category']);
+        $post->categories()->attach($data['categories']);
 
 
 
@@ -84,6 +89,9 @@ class PostsController extends Controller
         $photo = $post->photo()->first();
         
         if($photo) $post->photo = json_encode([$photo->toArray()]);
+
+        $categories = $post->categories()->get();
+        $post->categories = PillFieldHelper::dbRowsToJson($categories->toArray(), 'id', 'name');
     
 
         return view('admin/assets/posts/edit', ['post' => $post]);
@@ -110,10 +118,12 @@ class PostsController extends Controller
             $photo = json_decode($photo['photo']);
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
          }
+       
+        if(!empty($data['categories'])) $data['categories'] = PillFieldHelper::toArray($data['categories']);
 
 
         $post->update($data);
-        $post->category()->sync([$data['category']]);
+        $post->categories()->sync($data['categories']);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The post was edited.']));
@@ -146,7 +156,7 @@ class PostsController extends Controller
           
           if($post) { 
             $post->user()->detach();
-            $post->category()->detach();
+            $post->categories()->detach();
             $post->delete();
           }
 

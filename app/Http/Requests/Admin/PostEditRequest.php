@@ -30,7 +30,7 @@ class PostEditRequest extends FormRequest
             'content' => 'required',
             'summary' => 'nullable|max:500',
             'published_at' => 'date',
-            'category' => 'required'
+            'categories' => 'required'
 
 
         ];

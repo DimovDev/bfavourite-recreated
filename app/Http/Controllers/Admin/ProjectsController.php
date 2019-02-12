@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 use App\Project;
-Use App\Http\Requests\Admin\ProjectEditRequest;
+use App\Http\Requests\Admin\ProjectEditRequest;
+
+use App\Helpers\PillFieldHelper;
 
 
 class ProjectsController extends Controller
@@ -21,7 +23,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::orderBy('created_at', 'DESC')->paginate(25);
+        $projects = Project::with('categories')->orderBy('created_at', 'DESC')->paginate(25);
 
 
         return view('admin/assets/projects/index')->with(['projects' => $projects,
@@ -56,11 +58,11 @@ class ProjectsController extends Controller
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
          }
 
-
+        if(!empty($data['categories'])) $data['categories'] = PillFieldHelper::toArray($data['categories']);
    
         $project = Project::create($data);
         $project->user()->attach(Auth::id());
-        $project->category()->attach($data['category']);
+        $project->categories()->attach($data['categories']);
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The project was created.']));
@@ -79,7 +81,11 @@ class ProjectsController extends Controller
         $project = Project::findOrFail($id);
         
         $photo = $project->photo()->first();
+        $categories = $project->categories()->get();
+
         if($photo) $project->photo = json_encode([$photo->toArray()]);
+        $project->categories = PillFieldHelper::dbRowsToJson($categories->toArray(), 'id', 'name');
+    
 
         return view('admin/assets/projects/edit', ['project' => $project]);
     }
@@ -106,9 +112,12 @@ class ProjectsController extends Controller
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
          }
 
+         if(!empty($data['categories'])) $data['categories'] = PillFieldHelper::toArray($data['categories']);
+
+
 
         $project->update($data);
-        $project->category()->sync($data['category']);
+        $project->categories()->sync($data['categories']);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The project was edited.']));
@@ -141,7 +150,7 @@ class ProjectsController extends Controller
 
           if($project) {
             $project->user()->detach();
-            $project->category()->detach();
+            $project->categories()->detach();
 
             $project->assetsMeta()->delete();
             $project->delete();

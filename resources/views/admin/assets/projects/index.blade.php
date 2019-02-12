@@ -22,13 +22,14 @@
           <thead>
            <tr>
             <th><input type="checkbox" id="select-all" /> </th>
-            <th>{{__("Title")}} </th>
+            <th>{{__('Title')}} </th>
+            <th>{{__('Categories')}} </th>
             <th>{{__('Slug')}} </th>
             <th>{{__('Github')}} </th>
             <th>{{__('Live')}} </th>
-            <th>{{__("Status")}} </th>
+            <th>{{__('Status')}} </th>
             <th>{{__('Created at')}} </th>
-            <th>{{__("Updated at")}} </th>
+            <th>{{__('Updated at')}} </th>
            </tr>
           </thead>
           <tbody>
@@ -38,6 +39,12 @@
            <tr>
               <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$project->id}}" /></td>
               <td class="link">{{$project->title}} <a href="{{route('admin.projects.edit', [$project->id])}}">{{__('edit')}}</a></td>
+              
+              <td>{{$project->categories->reduce(function($carry, $item) {
+                      return $carry.(!$carry ? null : ', ').$item->name;
+                  })}}
+              </td>
+             
               <td>{{$project->slug}}</td>
               
               <td>{{$project->assetsMeta()->where('meta_key', 'github_url')->count() ? __('Yes') : __('No')}}</td>

@@ -43,8 +43,10 @@
   <div class="row">
 
     @section('sidebar')
-
-      @include('admin/partials/sidebar')
+      
+      @if(Auth::check())
+       @include('admin/partials/sidebar')
+      @endif
 
     @show
    

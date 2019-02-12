@@ -22,11 +22,12 @@
           <thead>
            <tr>
             <th><input type="checkbox" id="select-all" /> </th>
-            <th>{{__("Name")}} </th>
+            <th>{{__('Name')}} </th>
+            <th>{{__('Categories')}} </th>
             <th>{{__('Slug')}} </th>
-            <th>{{__("Status")}} </th>
+            <th>{{__('Status')}} </th>
             <th>{{__('Created at')}} </th>
-            <th>{{__("Updated at")}} </th>
+            <th>{{__('Updated at')}} </th>
            </tr>
           </thead>
           <tbody>
@@ -36,6 +37,9 @@
            <tr>
               <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$post->id}}" /></td>
               <td class="link">{{$post->title}} <a href="{{route('admin.posts.edit', [$post->id])}}">{{__('edit')}}</a></td>
+              <td>{{$post->categories->reduce(function($carry, $item) {
+                return $carry.(!$carry ? null : ', ').$item->name;
+              })}}</td>
               <td>{{$post->slug}}</td>
               <td>{{$post->status}}</td>
               <td>{{$post->created_at->format('d M Y')}}</td>

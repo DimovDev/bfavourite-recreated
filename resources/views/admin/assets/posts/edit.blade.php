@@ -35,7 +35,7 @@
 
 <div class="form-group">
   <label for="content">{{__('Content')}}</label>
-  <textarea class="form-control mce" name="content" id="content">{{old('content') ?? $post->content ?? null}}</textarea>
+  <textarea class="form-control tinymce" name="content" id="content">{{old('content') ?? $post->content ?? null}}</textarea>
 
 </div>
 
@@ -60,17 +60,10 @@
         <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $post->published_at ?? date('Y-m-d h:m:s')}}" />
       </div>
 
-      <div class="form-group">
-        <label for="category">{{__('Category')}}</label>
-        <select id="category" name="category" class="form-control">
-          @foreach($categories::all() as $cat)
-            
-            <option {{old('category') || 
-                    (isset($post) && $post->category->first()->id == $cat->id) ? 'selected' : null}}
-                    value="{{$cat->id}}">{{$cat->name}}</option>
-          @endforeach
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="categories">{{__('Category')}}</label>
+      <input type="text" id="categories" class="form-control" name="categories" data-pillfield="{{old('categories') ?? $post->categories ?? null}}" value="" />
+    </div>
 
       <div class="form-group">
         <label for="asset_status">{{__('Status')}}</label>
@@ -90,5 +83,13 @@
 
 </form>
 
+
+@endsection
+
+@section('scripts')
+ 
+ @parent;
+  
+ <script src="{{asset('/js/tinymce/tinymce.js')}}"></script>
 
 @endsection

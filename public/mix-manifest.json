@@ -1,4 +1,6 @@
 {
     "/js/site.js": "/js/site.js",
-    "/css/site.css": "/css/site.css"
+    "/css/site.css": "/css/site.css",
+    "/js/tinymce/tinymce.js": "/js/tinymce/tinymce.js",
+    "/js/tinymce/emojis.js": "/js/tinymce/emojis.js"
 }

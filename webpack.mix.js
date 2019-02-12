@@ -32,10 +32,15 @@ const mix = require('laravel-mix');
    
    });  */
 
-mix.js('resources/js/app.js', 'public/js/site.js')
+/* mix.js('resources/js/app.js', 'public/js/site.js')
 .sass('resources/sass/app.scss', 'public/css/site.css')
 .options({
     
    processCssUrls: false
 
-}); 
+});  */
+
+
+mix.js('resources/js/tinymce.js', 'public/js/tinymce/tinymce.js')
+   .copyDirectory('node_modules/tinymce/skins', 'public/js/tinymce/skins')
+   .scripts('node_modules/tinymce/plugins/emoticons/js/emojis.js', 'public/js/tinymce/emojis.js');

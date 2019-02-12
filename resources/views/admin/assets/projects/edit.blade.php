@@ -35,7 +35,7 @@
 
 <div class="form-group">
   <label for="content">{{__('Content')}}</label>
-  <textarea class="form-control mce" name="content" id="content">{{old('content') ?? $project->content ?? null}}</textarea>
+  <textarea class="form-control tinymce" name="content" id="content">{{old('content') ?? $project->content ?? null}}</textarea>
 
 </div>
 
@@ -74,14 +74,11 @@
 
 <div class="col-7">
 
-  <div class="row">
-    <div class="form-group col-4">
-      <label for="category">{{__('Category')}}</label>
-      <input type="text" id="category" class="form-control" name="category" value="" />
+
+    <div class="form-group">
+      <label for="categories">{{__('Category')}}</label>
+      <input type="text" id="categories" class="form-control" name="categories" data-pillfield="{{old('categories') ?? $project->categories ?? null}}" value="" />
     </div>
-    <div class="col-8 values">
-    </div>
-   </div>
 
     <div class="form-group">
       <label for="published_at">{{__('Published at')}}</label>
@@ -106,5 +103,13 @@
 
 </form>
 
+
+@endsection
+
+@section('scripts')
+ 
+ @parent;
+  
+ <script src="{{asset('/js/tinymce/tinymce.js')}}"></script>
 
 @endsection
