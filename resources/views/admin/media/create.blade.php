@@ -2,7 +2,7 @@
 @inject('postStatus', 'App\PostStatus')
 @inject('categories', 'App\Category')
 
-@section('content')
+@section('main')
 
 <h1 class="h2">{{__(' Upload Media')}}</h1>
 

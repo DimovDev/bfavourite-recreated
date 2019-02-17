@@ -35,6 +35,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
+      
+
+        Blade::component('frontend/components/link', 'link');
+        Blade::component('frontend/components/photo', 'photo');
+        Blade::component('frontend/components/note', 'note');
+
+
     }
 
     /**

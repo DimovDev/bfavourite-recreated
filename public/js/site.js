@@ -43111,6 +43111,7 @@ var jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.MediaLibField = _medialib_classes_js__WEBPACK_IMPORTED_MODULE_3__["MediaLibField"];
 
 
+window.popper = popper_js__WEBPACK_IMPORTED_MODULE_4__["default"];
 window.feather = feather_icons__WEBPACK_IMPORTED_MODULE_5___default.a;
 /* Bootstrap 4.0 */
 
@@ -43608,6 +43609,17 @@ function () {
 
 /***/ }),
 
+/***/ "./resources/sass/admin.scss":
+/*!***********************************!*\
+  !*** ./resources/sass/admin.scss ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -43620,14 +43632,15 @@ function () {
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!*****************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/admin.scss ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! C:\projects\bfavourite\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\projects\bfavourite\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\projects\bfavourite\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! C:\projects\bfavourite\resources\sass\admin.scss */"./resources/sass/admin.scss");
 
 
 /***/ })

@@ -1,6 +1,7 @@
 @extends('admin/layouts/main')
 
-@section('content')
+
+@section('main')
 
       <h1 class="h2">{{__('All Posts')}}</h1>
 

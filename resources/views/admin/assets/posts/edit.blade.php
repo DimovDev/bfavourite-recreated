@@ -2,9 +2,10 @@
 @inject('postStatus', 'App\PostStatus')
 @inject('categories', 'App\Category')
 
+
 @section('main-classes', 'edit posts-edit')
 
-@section('content')
+@section('main')
 
 <h1 class="h2">{{__(isset($post) ? 'Edit Post' : 'Create Post')}}</h1>
 

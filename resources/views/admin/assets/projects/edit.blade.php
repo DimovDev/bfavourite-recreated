@@ -4,7 +4,7 @@
 
 @section('main-classes', 'edit projects-edit')
 
-@section('content')
+@section('main')
 
 <h1 class="h2">{{__(isset($project) ? 'Edit Project' : 'Create Project')}}</h1>
 

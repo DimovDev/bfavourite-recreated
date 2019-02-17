@@ -4,7 +4,7 @@
 
 @section('main-classes', 'edit users-edit')
 
-@section('content')
+@section('main')
 
 <h1 class="h2">{{__(isset($user) ? 'Edit User' : 'Create User')}}</h1>
 
@@ -23,13 +23,13 @@
 
 <div class="row">
 
-  <div class="col-3">
+  <div class="col-3 mr-3">
     <div class="photo">
       <button type="button" class="btn btn-secondary" data-media-field="photo" data-media-value="{{old('photo') ?? $user->photo ?? null}}">{{__('Add a photo')}}</button>
     </div>
   </div>
 
-  <div class="col-9">
+  <div class="col-8">
 
       <div class="form-group">
         <label for="name">{{__('Name')}}</label>

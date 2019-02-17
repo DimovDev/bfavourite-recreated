@@ -19,9 +19,10 @@ import {MediaLib, MediaLibPagination, MediaLibField}  from './medialib.classes.j
 
 window.MediaLibField = MediaLibField;
 
-import 'popper.js';
+import popper from 'popper.js';
 import feather from 'feather-icons';
 
+window.popper = popper;
 window.feather = feather; 
 
 /* Bootstrap 4.0 */

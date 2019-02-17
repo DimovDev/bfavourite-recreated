@@ -13,14 +13,19 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('siteNavigation');
 
-Auth::routes();
+Route::group(['middleware' =>['adminMenu','siteNavigation']], function() {
+
+              Auth::routes();
+
+              });
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['as' => 'admin.'],function() {
+Route::group(['as' => 'admin.',
+              'middleware' =>['adminMenu', 'siteNavigation']], function() {
   
     Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
     Route::get('admin/test', 'Admin\HomeController@test')->name('test');

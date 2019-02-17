@@ -4,7 +4,7 @@
 
 @section('main-classes', 'edit categories-edit')
 
-@section('content')
+@section('main')
 
 <h1 class="h2">{{__(isset($category) ? 'Edit Category' : 'Create Category')}}</h1>
 
