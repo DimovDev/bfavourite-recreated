@@ -12,5 +12,9 @@ interface Link {
     
     public function getActive() : bool; 
     public function setActive(bool $active) : Link;
+     
+    public function getId() : string;
+    public function setId(string $id) : Link;
+    
 
 }

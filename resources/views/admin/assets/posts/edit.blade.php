@@ -1,6 +1,6 @@
 @extends('admin/layouts/main')
 @inject('postStatus', 'App\PostStatus')
-@inject('categories', 'App\Category')
+@inject('tag', 'App\Tag')
 
 
 @section('main-classes', 'edit posts-edit')
@@ -62,15 +62,15 @@
       </div>
 
     <div class="form-group">
-      <label for="categories">{{__('Category')}}</label>
-      <input type="text" id="categories" class="form-control" name="categories" data-pillfield="{{old('categories') ?? $post->categories ?? null}}" value="" />
+      <label for="tags">{{__('Tags')}}</label>
+      <input type="text" id="tags" class="form-control" name="tags" data-pillfield="{{old('tags') ?? $post->tags ?? null}}" value="" />
     </div>
 
       <div class="form-group">
         <label for="asset_status">{{__('Status')}}</label>
         <select id="asset_status" name="asset_status" class="form-control">
           @foreach($postStatus->all() as $status)
-            <option {{old('asset_status') || 
+            <option {{old('asset_status') == $status || 
                     (isset($post) && $post->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
           @endforeach
         </select>

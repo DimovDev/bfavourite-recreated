@@ -47,6 +47,23 @@ body > .container {
 
 }
 
+.edit, 
+.admin-index {
+
+    padding: 10px 20px;
+}
+
+#destroy-btn {
+
+    display: none;
+
+}
+
+.tinymce {
+
+    min-height: 200px;
+}
+
 .admin-table .link {
 
   cursor: pointer;

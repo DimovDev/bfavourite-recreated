@@ -13,6 +13,7 @@ abstract class MenuLinkComponent implements MenuLink, LinkGroup, LinkGroupItem, 
    protected $url;
    protected $link_text;
    protected $active;
+   protected $id;
 
    protected $icon;
 
@@ -23,6 +24,21 @@ abstract class MenuLinkComponent implements MenuLink, LinkGroup, LinkGroupItem, 
      if(isset($data['url'])) $this->setUrl($data['url']);
      if(isset($data['text'])) $this->setText($data['text']);
 
+
+    }
+
+    public function setId(string $id) : Link {
+
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId() : string {
+          
+        if(!$this->id) $this->setId(str_replace('.', '-', uniqid('menulink', true)));
+
+        return $this->id;
 
     }
    

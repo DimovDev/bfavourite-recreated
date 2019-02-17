@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'post' => 'App\Post',
             'project' => 'App\Project',
-            'category' => 'App\Category'
+            'tag' => 'App\Tag'
         ]);
         
 

@@ -25,7 +25,7 @@
 @foreach($menu->findByText('menu') AS $links)
 
     <div class="card card-content">
-        <div class="card-header" data-toggle="collapse" href="#{{str_slug($links->getText())}}" role="button">
+        <div class="card-header" data-toggle="collapse" href="#{{$links->getId()}}" role="button">
                 <i class="fa fa-{{$links->getIcon()}}"></i>
             <div>
                 <h3 class="card-subtitle">{{__($links->getText())}}</h3>
@@ -33,15 +33,15 @@
             </div>
         </div>
         
-        <ul class="list-group list-group-flush collapse {{$links->getActive() ? 'show' : null}}" id="{{str_slug($links->getText())}}">
+        <ul class="list-group list-group-flush collapse {{$links->getActive() ? 'show' : null}}" id="{{$links->getId()}}">
 
          @foreach($links AS $link)
 
             <li class="list-group-item ">
-            <a {!! $link->hasItems() ? 'data-toggle="collapse"' : null !!} href="{{$link->hasItems() ? '#'.str_slug($link->getText()) : $link->getUrl()}}" role="button" >
+            <a {!! $link->hasItems() ? 'data-toggle="collapse"' : null !!} href="{{$link->hasItems() ? '#'.$link->getId() : $link->getUrl()}}" role="button" >
                 <i class="fa fa-angle-double-right"></i> {{ __($link->getText()) }}
             </a>
-                <ul class="collapse submenu {{$link->getActive() ? 'show' : null}}" id="{{str_slug($link->getText())}}">
+                <ul class="collapse submenu {{$link->getActive() ? 'show' : null}}" id="{{$link->getId()}}">
                   
                @foreach($link as $child)
 

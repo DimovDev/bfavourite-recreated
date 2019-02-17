@@ -1,8 +1,8 @@
 @extends('admin/layouts/main')
-
+@section('main-classes', 'admin-index tags-index')
 @section('main')
 
-      <h1 class="h2">{{__('All Categories')}}</h1>
+      <h1 class="h2">{{__('All Tags')}}</h1>
 
       @if(!empty($message))
        <div class="alert alert-{{$message->first('status')}}">
@@ -12,8 +12,8 @@
 
       <div class="table-responsive">
 
-      @if($categories->count() > 0)
-        <form method="post" action="{{route('admin.categories.destroy')}}">
+      @if($tags->count() > 0)
+        <form method="post" action="{{route('admin.tags.destroy')}}">
         <input type="hidden" name="_method" value="delete" />
         @csrf
       
@@ -31,15 +31,15 @@
           </thead>
           <tbody>
            
-         @foreach($categories AS $category)
+         @foreach($tags AS $tag)
 
            <tr>
-              <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$category->id}}" /></td>
-              <td class="link">{{$category->name}} <a href="{{route('admin.categories.edit', [$category->id])}}">{{__('edit')}}</a></td>
-              <td>{{$category->slug}}</td>
-              <td>{{$category->status}}</td>
-              <td>{{$category->created_at->format('d M Y')}}</td>
-              <td>{{$category->updated_at->format('d M Y')}}</td>
+              <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$tag->id}}" /></td>
+              <td class="link">{{$tag->name}} <a href="{{route('admin.tags.edit', [$tag->id])}}">{{__('edit')}}</a></td>
+              <td>{{$tag->slug}}</td>
+              <td>{{$tag->status}}</td>
+              <td>{{$tag->created_at->format('d M Y')}}</td>
+              <td>{{$tag->updated_at->format('d M Y')}}</td>
            </tr>
           @endforeach
             
@@ -60,9 +60,9 @@
 
        <button id="destroy-btn" type="submit" class="btn btn-danger mr-5">{{__('Delete')}}</button>
      
-        @if($categories->count() < $categories->total())
+        @if($tags->count() < $tags->total())
 
-            {{$categories->links()}}
+            {{$tags->links()}}
 
         @endif
       </div>   

@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\MessageBag;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CategoryEditRequest;
+use App\Http\Requests\Admin\TagEditRequest;
 
-use App\Category;
+use App\Tag;
 
 
-class CategoriesController extends Controller
+class TagsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +21,11 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $cateogries = Category::orderBy('created_at', 'DESC')->paginate(25);
+        $tags = Tag::orderBy('created_at', 'DESC')->paginate(25);
 
 
-        return view('admin/taxonomies/categories/index')->with(['categories' => $cateogries,
-                                                                 'message' => session('message')]);
+        return view('admin/taxonomies/tags/index')->with(['tags' => $tags,
+                                                          'message' => session('message')]);
     }
 
     /**
@@ -35,7 +35,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('admin/taxonomies/categories/edit');
+        return view('admin/taxonomies/tags/edit');
     }
 
     /**
@@ -44,7 +44,7 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryEditRequest $request)
+    public function store(TagEditRequest $request)
     {
         $data = $request->validated();
 
@@ -57,13 +57,13 @@ class CategoriesController extends Controller
             if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
         }
 
-        $cat = Category::create($data);
-        $cat->user()->attach(Auth::id());
+        $tag = Tag::create($data);
+        $tag->user()->attach(Auth::id());
         
         session()->flash('message', new MessageBag(['status' => 'success',
-                                                    'message' => 'Good job! The category was created.']));
+                                                    'message' => 'Good job! The tag was created.']));
   
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.tags.index');
     }
 
 
@@ -76,13 +76,13 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
+        $tag = Tag::findOrFail($id);
 
-        $icon = $category->icon()->first();
+        $icon = $tag->icon()->first();
         
-        if($icon) $category->icon = json_encode([$icon->toArray()]);
+        if($icon) $tag->icon = json_encode([$icon->toArray()]);
 
-        return view('admin/taxonomies/categories/edit', ['category' => $category]);
+        return view('admin/taxonomies/tags/edit', ['tag' => $tag]);
     }
 
     /**
@@ -92,12 +92,12 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryEditRequest $request, $id)
+    public function update(TagEditRequest $request, $id)
     {
          
         $data = $request->validated();
         
-        $category = Category::findOrFail($id);
+        $tag = Tag::findOrFail($id);
 
         $icon = $request->only('icon');
         $data['icon'] = null;
@@ -108,12 +108,12 @@ class CategoriesController extends Controller
             if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
          }
 
-        $category->update($data);
+        $tag->update($data);
  
         session()->flash('message', new MessageBag(['status' => 'success',
-                                                    'message' => 'Excellent! The category was edited.']));
+                                                    'message' => 'Excellent! The tag was edited.']));
         
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.tags.index');
     }
 
     /**
@@ -124,10 +124,10 @@ class CategoriesController extends Controller
      */
     public function destroy(Request $request)
     {
-        $categories = $request->only('destroy');
+        $input = $request->only('destroy');
        
 
-        if(empty($categories['destroy'])) {
+        if(empty($input['destroy'])) {
         
          session()->flash('message', new MessageBag(['status' => 'warning',
                                                      'message' => 'Oops! Nothing was deleted.']));
@@ -135,17 +135,17 @@ class CategoriesController extends Controller
         }
  
         
-        foreach($categories['destroy'] AS $cat_id) {
+        foreach($input['destroy'] AS $tag_id) {
 
    
-            $categories = Category::find($cat_id);
+            $tag = Tag::find($tag_id);
   
   
-            if($categories) {
-              $categories->user()->detach();
-              $categories->posts()->detach();
-              $categories->projects()->detach();
-              $categories->delete();
+            if($tag) {
+              $tag->user()->detach();
+              $tag->posts()->detach();
+              $tag->projects()->detach();
+              $tag->delete();
             }
 
           }
@@ -155,9 +155,9 @@ class CategoriesController extends Controller
     
  
          session()->flash('message', new MessageBag(['status' => 'success',
-                                                     'message' => 'Yeah! All selected categories were deleted.']));
+                                                     'message' => 'Yeah! All selected tags were deleted.']));
          
-         return redirect()->route('admin.categories.index');
+         return redirect()->route('admin.tags.index');
     }
 
     public function autocomplete(Request $request) {
@@ -167,12 +167,12 @@ class CategoriesController extends Controller
          $results = [];
          
        if ($term) {
-         $categories = Category::where('name', 'LIKE', '%'.$term.'%')->take(5)->get();
+         $tags = Tag::where('name', 'LIKE', '%'.$term.'%')->take(5)->get();
           
-         foreach($categories as $cat) {
+         foreach($tags as $tag) {
 
-            $results[] = ['id' => $cat->id,
-                          'value'=> $cat->name];
+            $results[] = ['id' => $tag->id,
+                          'value'=> $tag->name];
          }
         } 
          return response()->json($results);

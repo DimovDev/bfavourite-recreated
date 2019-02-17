@@ -22,7 +22,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('categories')->orderBy('created_at', 'DESC')->paginate(25);
+        $posts = Post::with('tags')->orderBy('created_at', 'DESC')->paginate(25);
 
       
         return view('admin/assets/posts/index')->with(['posts' => $posts,
@@ -58,13 +58,13 @@ class PostsController extends Controller
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
           }
 
-        if(!empty($data['categories'])) $data['categories'] = PillFieldHelper::toArray($data['categories']);
+        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
 
 
         $post = Post::create($data);
         
         $post->user()->attach(Auth::id());
-        $post->categories()->attach($data['categories']);
+        $post->tags()->attach($data['tags']);
 
 
 
@@ -90,8 +90,8 @@ class PostsController extends Controller
         
         if($photo) $post->photo = json_encode([$photo->toArray()]);
 
-        $categories = $post->categories()->get();
-        $post->categories = PillFieldHelper::dbRowsToJson($categories->toArray(), 'id', 'name');
+        $tags = $post->tags()->get();
+        $post->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
     
 
         return view('admin/assets/posts/edit', ['post' => $post]);
@@ -119,11 +119,11 @@ class PostsController extends Controller
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
          }
        
-        if(!empty($data['categories'])) $data['categories'] = PillFieldHelper::toArray($data['categories']);
+        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
 
 
         $post->update($data);
-        $post->categories()->sync($data['categories']);
+        $post->tags()->sync($data['tags']);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The post was edited.']));
@@ -156,7 +156,7 @@ class PostsController extends Controller
           
           if($post) { 
             $post->user()->detach();
-            $post->categories()->detach();
+            $post->tags()->detach();
             $post->delete();
           }
 

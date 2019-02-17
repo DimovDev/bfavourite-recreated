@@ -17,17 +17,40 @@ $(document).ready(function() {
 
     });
 
+    $('.admin-table [type="checkbox"]').on('click', ev => {
+        let btn = $('#destroy-btn');
+        btn.hide();
+       
+        if(ev.target.checked) {
+        
+          btn.show();
+
+        }else {
+          
+          $('.admin-table [type="checkbox"]').each((index, item) => {
+            
+             if(item.checked) btn.show();
+             return;
+          });
+
+        }  
+
+      
+
+    });
+
      new MediaLibField($, 'photo');
      new MediaLibField($, 'icon');
      
-     new PillField($, {field: 'categories',
-                       source: '/admin/categories/auto'});
+     new PillField($, {field: 'tags',
+                       source: '/admin/tags/auto'});
   
     $('textarea.tinymce').tinymce({theme: 'silver',
                                    plugins: 'code hr link image imagetools media spellchecker table template wordcount pagebreak anchor advlist lists spellchecker emoticons',
                                    toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link image emoticons | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
                                    emoticons_database_url: '/js/tinymce/emojis.js',
                                    image_advtab: true,
+                                   height: 480,
                                    file_picker_types: 'image',
                                    file_picker_callback: function(callback, value, meta) {
                 
@@ -46,10 +69,11 @@ class PillField {
       this.$ = jQuery;
       this.field = options.field;
       this.source = options.source;
+     
 
       this.hiddenField = this.$(`<input type="hidden" name="${this.field}" value="" />`);
-      this.fieldDom = this.$('#'+this.field);
-
+      this.fieldDom = this.$('form #'+this.field);
+       
       this.fieldDom.after(this.hiddenField);
 
       this.load();

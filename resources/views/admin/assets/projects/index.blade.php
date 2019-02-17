@@ -1,5 +1,8 @@
 @extends('admin/layouts/main')
 
+
+@section('main-classes', 'admin-index projects-index')
+
 @section('main')
 
       <h1 class="h2">{{__('All Projects')}}</h1>
@@ -23,7 +26,7 @@
            <tr>
             <th><input type="checkbox" id="select-all" /> </th>
             <th>{{__('Title')}} </th>
-            <th>{{__('Categories')}} </th>
+            <th>{{__('Tags')}} </th>
             <th>{{__('Slug')}} </th>
             <th>{{__('Github')}} </th>
             <th>{{__('Live')}} </th>
@@ -40,7 +43,7 @@
               <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$project->id}}" /></td>
               <td class="link">{{$project->title}} <a href="{{route('admin.projects.edit', [$project->id])}}">{{__('edit')}}</a></td>
               
-              <td>{{$project->categories->reduce(function($carry, $item) {
+              <td>{{$project->tags->reduce(function($carry, $item) {
                       return $carry.(!$carry ? null : ', ').$item->name;
                   })}}
               </td>

@@ -48,7 +48,7 @@ class AdminMenuMiddleware
                    ->add('All Notes', '#')
                    ->add('Create', '#')
                    ->find('Create')
-                   ->add('Text Note', route('admin.categories.index'))
+                   ->add('Text Note','#')
                    ->add('Link Note', '#')
                    ->add('Photo Note', '#');
                    
@@ -66,8 +66,8 @@ class AdminMenuMiddleware
                    ->add('Create User', route('admin.users.create'))
                    ->find('Tags')
                    ->setIcon('tags')
-                   ->add('All Tags', route('admin.categories.index'))
-                   ->add('Create Tags', route('admin.categories.create'));           
+                   ->add('All Tags', route('admin.tags.index'))
+                   ->add('Create Tags', route('admin.tags.create'));           
         
         $this->menuBuilder->execute();
 

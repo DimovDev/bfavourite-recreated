@@ -1,5 +1,5 @@
 @extends('admin/layouts/main')
-
+@section('main-classes', 'admin-index users-index')
 @section('main')
 
       <h1 class="h2">{{__('All Users')}}</h1>

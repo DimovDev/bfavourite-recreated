@@ -36,12 +36,12 @@ class Post extends Asset
     }
 
    /* 
-    * Get the category of the project 
+    * Get the tags of the project 
     */
 
-    public function categories() {
+    public function tags() {
 
-        return $this->morphToMany('App\Category', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
+        return $this->morphToMany('App\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
   
       }
 

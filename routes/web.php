@@ -37,13 +37,13 @@ Route::group(['as' => 'admin.',
     Route::put('admin/users/{user}', 'Admin\UsersController@update')->name('users.update');
     Route::delete('admin/users/destroy', 'Admin\UsersController@destroy')->name('users.destroy'); 
     
-    Route::get('admin/categories', 'Admin\CategoriesController@index')->name('categories.index');
-    Route::get('admin/categories/auto', 'Admin\CategoriesController@autocomplete')->name('categories.auto');
-    Route::get('admin/categories/{category}/edit', 'Admin\CategoriesController@edit')->name('categories.edit');
-    Route::get('admin/categories/create', 'Admin\CategoriesController@create')->name('categories.create');
-    Route::post('admin/categories', 'Admin\CategoriesController@store')->name('categories.store');
-    Route::put('admin/categories/{category}', 'Admin\CategoriesController@update')->name('categories.update');
-    Route::delete('admin/categories/destroy', 'Admin\CategoriesController@destroy')->name('categories.destroy'); 
+    Route::get('admin/tags', 'Admin\TagsController@index')->name('tags.index');
+    Route::get('admin/tags/auto', 'Admin\TagsController@autocomplete')->name('tags.auto');
+    Route::get('admin/tags/{category}/edit', 'Admin\TagsController@edit')->name('tags.edit');
+    Route::get('admin/tags/create', 'Admin\TagsController@create')->name('tags.create');
+    Route::post('admin/tags', 'Admin\TagsController@store')->name('tags.store');
+    Route::put('admin/tags/{category}', 'Admin\TagsController@update')->name('tags.update');
+    Route::delete('admin/tags/destroy', 'Admin\TagsController@destroy')->name('tags.destroy'); 
 
     Route::get('admin/posts', 'Admin\PostsController@index')->name('posts.index');
     Route::get('admin/posts/{post}/edit', 'Admin\PostsController@edit')->name('posts.edit');

@@ -1,5 +1,6 @@
 @extends('admin/layouts/main')
 
+@section('main-classes', 'admin-index posts-index')
 
 @section('main')
 
@@ -24,7 +25,7 @@
            <tr>
             <th><input type="checkbox" id="select-all" /> </th>
             <th>{{__('Name')}} </th>
-            <th>{{__('Categories')}} </th>
+            <th>{{__('Tags')}} </th>
             <th>{{__('Slug')}} </th>
             <th>{{__('Status')}} </th>
             <th>{{__('Created at')}} </th>
@@ -38,7 +39,7 @@
            <tr>
               <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$post->id}}" /></td>
               <td class="link">{{$post->title}} <a href="{{route('admin.posts.edit', [$post->id])}}">{{__('edit')}}</a></td>
-              <td>{{$post->categories->reduce(function($carry, $item) {
+              <td>{{$post->tags->reduce(function($carry, $item) {
                 return $carry.(!$carry ? null : ', ').$item->name;
               })}}</td>
               <td>{{$post->slug}}</td>

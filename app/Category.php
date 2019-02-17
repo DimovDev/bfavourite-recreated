@@ -5,14 +5,14 @@ namespace App;
 use App\Taxonomy;
 use Illuminate\Database\Eloquent\Builder;
 
-class Category extends Taxonomy
+class Tag extends Taxonomy
 {
     
     protected $table = 'taxonomies';
 
     protected $attributes = [
         
-        'taxonomy_type' => 'category'
+        'taxonomy_type' => 'tag'
 
     ];
 
@@ -22,14 +22,14 @@ class Category extends Taxonomy
 
         static::addGlobalScope('taxonomy_type', function(Builder $builder) {
 
-           $builder->where('taxonomy_type', 'category');
+           $builder->where('taxonomy_type', 'tag');
 
         });
 
     }
 
         /*
-     * Get all posts of the category
+     * Get all posts of the tag
      */
      
     public function posts() {
@@ -38,7 +38,7 @@ class Category extends Taxonomy
      }  
 
          /*
-     * Get all projects of the category
+     * Get all projects of the tag
      */
      
     public function projects() {
