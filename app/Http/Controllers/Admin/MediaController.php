@@ -33,7 +33,7 @@ class MediaController extends Controller
       }  
        
    
-       return response()->json(['message' => session('message'), 'paginator' => $media]);
+       if($request->ajax()) return response()->json(['message' => session('message'), 'paginator' => $media]);
    
   
        return view('admin/media/index')->with(['media' => $media,
@@ -61,13 +61,15 @@ class MediaController extends Controller
     {
       // var_dump($request->file('file'));
       $image = new ImageFile($request->file('file'), config('media.images'));
-     
+
+      $image->upload();
+
+      $sizes = $image->getAvailableSizes();
 
       Media::create(['media_type' => $image->getClientMediaType(),
-                     'title' => $image->getClientFilename(),
-                     'url' => $image->getUri()]);
-      
-      $image->upload();
+      'title' => $image->getClientFilename(),
+      'url' => $image->getUri(),
+      'sizes' => $sizes ? json_encode($sizes) : null]);
 
       session()->flash('message', new MessageBag(['status' => 'success',
                                                   'message' => 'Nice! The file was uploaded.']));

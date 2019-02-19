@@ -41,6 +41,7 @@ class AdminMenuMiddleware
                    ->add('Posts')
                    ->add('Projects')
                    ->add('Tags')
+                   ->add('Media')
                    ->add('Users');
                    
         $this->menuBuilder->find('Newsfeed')
@@ -67,7 +68,11 @@ class AdminMenuMiddleware
                    ->find('Tags')
                    ->setIcon('tags')
                    ->add('All Tags', route('admin.tags.index'))
-                   ->add('Create Tags', route('admin.tags.create'));           
+                   ->add('Create Tags', route('admin.tags.create'))
+                   ->find('Media')
+                   ->setIcon('images')
+                   ->add('All Media', route('admin.media.index'))
+                   ->add('Upload Media', route('admin.media.create'));           
         
         $this->menuBuilder->execute();
 

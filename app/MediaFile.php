@@ -14,10 +14,14 @@ abstract class MediaFile {
   protected $hashName = null;
 
 
-  protected $settings; // ['upload_path', 'small_sizes', 'medium_sizes', 'full_sizes'];
-  protected $extension;
+  protected $settings; // ['upload_path', 'small', 'medium', 'large', 'extra];
+  
 
   protected $upload_path;
+
+  protected $media_type;
+  protected $file_name; 
+  protected $extension;
 
   public function __construct(UploadedFile $file, array $settings) {
 
@@ -25,6 +29,10 @@ abstract class MediaFile {
     $this->settings = $settings;
 
     $this->setUploadPath();
+
+    $this->media_type = $this->file->getClientMimeType();
+    $this->extension =  $this->file->guessExtension();
+    $this->file_name = $this->file->getClientOriginalName();
 
   }
 
@@ -35,13 +43,13 @@ abstract class MediaFile {
 
   public function getClientFilename() {
 
-    return $this->file->getClientOriginalName();
+    return $this->file_name;
 
   }
 
   public function getClientMediaType() {
 
-    return $this->file->getClientMimeType();
+    return $this->media_type;
 
   }
 
@@ -111,7 +119,7 @@ abstract class MediaFile {
 
     public function guessExtension() {
 
-      return $this->file->guessExtension();
+      return $this->extension;
 
     }
 

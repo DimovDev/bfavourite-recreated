@@ -98,8 +98,8 @@ body > .container {
 
 .media-table .thumb img {
 
-   width: 100px;
-   height: 100px;
+   width: 60px;
+   height: 45px;
    object-fit: cover;
 }
 

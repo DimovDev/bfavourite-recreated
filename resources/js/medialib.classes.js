@@ -8,6 +8,9 @@ class MediaLib {
 
     this.$ = jQuery; 
 
+    this.public_dir = '/storage';
+    this.sizeOptions = false;
+
     this.routes = {index: '/admin/media',
                    store: '/admin/media',
                    destroy: '/admin/media/destroy'};
@@ -18,6 +21,9 @@ class MediaLib {
     this.content = this.popup.find('.media-lib-content');
     this.loader = this.popup.find('.media-lib-loading');
 
+    this.sizesSelect = this.popup.find('.media-lib-sizes');
+    this.sizesSelect.hide();
+
     this.messageBag = this.popup.find('.media-lib-message');
     this.messageBag.clear = () => this.messageBag.hide().removeClass('alert-danger alert-warning alert-success');
 
@@ -25,6 +31,43 @@ class MediaLib {
 
     this.init();   
 
+  }
+
+  set publicDir(dir) {
+
+    this.public_dir = dir;
+
+  }
+
+  get publicDir() {
+
+    return this.public_dir;
+
+  }
+
+    
+  showSizes() {
+    
+     this.sizeOptions = true; 
+     this.sizesSelect.show();
+
+     this.sizesSelect.on('change', ev => {
+       
+      this.picked.url = this.picked.url.replace(/(_[a-z]+)?\./, '_'+ev.target.value+'.').replace(/_full/, '');
+
+     });
+
+     return this;
+
+  }
+
+  loadItemSizes(item) {
+
+     let sizes = JSON.parse(item.sizes) || [];
+     sizes.unshift('full');
+     this.sizesSelect.html(sizes.map(size => `<option value="${size}">${size}</option>`).join(''));
+     
+     return this;
   }
 
   init() {
@@ -192,7 +235,10 @@ class MediaLib {
 
         for(var i = 0; i < this.items.length; i++) {
 
-        mediaLibContent += `<li><img class="media-lib-icon" data-id="${i}" src="/storage/${this.items[i].icon}" alt="" /></li>`;
+         this.items[i].icon = this.public_dir+this.items[i].icon;
+         this.items[i].url = this.public_dir+this.items[i].url;
+
+         mediaLibContent += `<li><img class="media-lib-icon" data-id="${i}" src="${this.items[i].icon}" alt="" /></li>`;
         }
     
         mediaLibContent += "</ul>";
@@ -239,8 +285,9 @@ class MediaLib {
 
     this.picked = this.items[index];
     
+    this.loadItemSizes(this.picked);
 
-    let src = '/storage/'+this.items[index].icon;
+    let src = this.items[index].icon;
     this.popup.find('.media-lib-panel .media-lib-icon').attr({'src': src});
     this.popup.find('.media-name').html(this.items[index].title);
     
@@ -282,7 +329,7 @@ class MediaLib {
 
   <div class="media-lib-header">
     <h1>Избери медия файл</h1>
-    <a class="media-lib-close" href="#"><span data-feather="x"></span></a>
+    <a class="media-lib-close" href="#"><span class="fa fa-times"></span></a>
   </div>
 
   <div class="media-lib-body">
@@ -297,7 +344,7 @@ class MediaLib {
 
            <img src="" class="media-lib-icon" />
 
-           <select>
+           <select class="media-lib-sizes">
              <option>Малък размер</option>
              <option>Среден размер</option>
              <option>Голям размер</option>
@@ -401,6 +448,8 @@ class MediaLibPagination {
 
 }
 
+
+
 class MediaLibField {
   
   constructor(jQuery, fieldName) {
@@ -420,7 +469,8 @@ class MediaLibField {
     this.mediaLib = new MediaLib($);
     this.mediaLib.onFinish(item => this.push(item));
 
-    
+    this.public_dir = '/storage';
+    this.mediaLib.publicDir = this.public_dir;
 
     
     this.field = this.$(`<div class="media-lib-field"><input type="hidden" value="" name="${fieldName}" /></div>`);
@@ -456,15 +506,35 @@ class MediaLibField {
 
   }
 
+  set publicDir(dir) {
+
+    this.public_dir = dir;
+
+  }
+
+  get publicDir() {
+
+    return this.public_dir;
+
+  }
+
   load(items) {
     
-    items.map(item => this.push(item));
+    items.map(item => {
+     
+       if(item.url) item.url = this.public_dir+item.url;
+       if(item.icon) item.icon = this.public_dir+item.icon;
+
+       this.push(item)
+
+      });
 
     return this;
 
   }
 
   push(item) {
+    
 
     this.items.push(item);
     this.prepareDom(item);
@@ -493,7 +563,7 @@ class MediaLibField {
   prepareDom(item) {
 
     let itemDom = this.$(`<div class="media-lib-field-item">
-                            <img src="/storage/${item.icon || item.url}" alt="${item.title}" />
+                            <img src="${item.icon || item.url}" alt="${item.title}" />
                             <button type="button" class="btn btn-danger">Изтрий</button>
                           </div>`);
      

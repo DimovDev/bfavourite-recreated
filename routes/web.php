@@ -36,6 +36,8 @@ Route::group(['as' => 'admin.',
     Route::post('admin/users', 'Admin\UsersController@store')->name('users.store');
     Route::put('admin/users/{user}', 'Admin\UsersController@update')->name('users.update');
     Route::delete('admin/users/destroy', 'Admin\UsersController@destroy')->name('users.destroy'); 
+
+    Route::get('admin/assets/auto', 'Admin\AssetsController@autocomplete')->name('assets.auto');
     
     Route::get('admin/tags', 'Admin\TagsController@index')->name('tags.index');
     Route::get('admin/tags/auto', 'Admin\TagsController@autocomplete')->name('tags.auto');

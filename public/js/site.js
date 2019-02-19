@@ -43109,6 +43109,7 @@ var jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 window.MediaLibField = _medialib_classes_js__WEBPACK_IMPORTED_MODULE_3__["MediaLibField"];
+window.MediaLib = _medialib_classes_js__WEBPACK_IMPORTED_MODULE_3__["MediaLib"];
 
 
 window.popper = popper_js__WEBPACK_IMPORTED_MODULE_4__["default"];
@@ -43235,6 +43236,8 @@ function () {
     _classCallCheck(this, MediaLib);
 
     this.$ = jQuery;
+    this.public_dir = '/storage';
+    this.sizeOptions = false;
     this.routes = {
       index: '/admin/media',
       store: '/admin/media',
@@ -43244,6 +43247,8 @@ function () {
     this.uploadForm = this.popup.find('form');
     this.content = this.popup.find('.media-lib-content');
     this.loader = this.popup.find('.media-lib-loading');
+    this.sizesSelect = this.popup.find('.media-lib-sizes');
+    this.sizesSelect.hide();
     this.messageBag = this.popup.find('.media-lib-message');
 
     this.messageBag.clear = function () {
@@ -43255,44 +43260,66 @@ function () {
   }
 
   _createClass(MediaLib, [{
+    key: "showSizes",
+    value: function showSizes() {
+      var _this2 = this;
+
+      this.sizeOptions = true;
+      this.sizesSelect.show();
+      this.sizesSelect.on('change', function (ev) {
+        _this2.picked.url = _this2.picked.url.replace(/(_[a-z]+)?\./, '_' + ev.target.value + '.').replace(/_full/, '');
+      });
+      return this;
+    }
+  }, {
+    key: "loadItemSizes",
+    value: function loadItemSizes(item) {
+      var sizes = JSON.parse(item.sizes) || [];
+      sizes.unshift('full');
+      this.sizesSelect.html(sizes.map(function (size) {
+        return "<option value=\"".concat(size, "\">").concat(size, "</option>");
+      }).join(''));
+      return this;
+    }
+  }, {
     key: "init",
     value: function init() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.load(this.routes.index);
       this.popup.find('.media-lib-close').on('click', function (ev) {
         ev.preventDefault();
 
-        _this2.close();
+        _this3.close();
       });
       this.popup.find('#pick').on('click', function (ev) {
-        if (_this2.onFinish && _this2.picked) _this2.onFinish(_this2.picked);
+        if (_this3.onFinish && _this3.picked) _this3.onFinish(_this3.picked);
 
-        _this2.close();
+        _this3.close();
       });
       this.popup.find('.media-lib-delete').on('click', function (ev) {
         ev.preventDefault();
 
-        _this2.destroy();
+        _this3.destroy();
       });
       this.popup.find('.btn-success').on('click', function (ev) {
-        _this2.popup.find('[name="file"]').trigger('click');
+        _this3.popup.find('[name="file"]').trigger('click');
       });
       this.popup.find('[type="file"]').on('change', function (ev) {
-        return _this2.upload();
+        return _this3.upload();
       });
       this.popup.hide();
       this.$('body').prepend(this.popup);
       this.$('.media-lib-overlay').on('click', function (ev) {
         if ($(ev.target).attr('class') == 'media-lib-overlay') {
-          _this2.close();
+          _this3.close();
         }
       });
     }
   }, {
     key: "upload",
     value: function upload() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.loading();
       var fd = new FormData(this.uploadForm[0]);
@@ -43309,15 +43336,15 @@ function () {
           'X-CSRF-TOKEN': this.$('meta[name="csrf-token"]').attr('content')
         }
       }).done(function (response) {
-        _this3.prepareDom(response);
+        _this4.prepareDom(response);
       }).fail(function (response) {
-        _this3.prepareDom(response);
+        _this4.prepareDom(response);
       });
     }
   }, {
     key: "destroy",
     value: function destroy() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.picked) {
         var result = confirm("Наистина ли искате да изтриете тази снимка?");
@@ -43338,7 +43365,7 @@ function () {
               'X-CSRF-TOKEN': this.$('meta[name="csrf-token"]').attr('content')
             }
           }).done(function (response) {
-            _this4.prepareDom(response);
+            _this5.prepareDom(response);
           });
         }
       }
@@ -43352,7 +43379,7 @@ function () {
   }, {
     key: "prepareDom",
     value: function prepareDom(response) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.messageBag.clear();
 
@@ -43381,38 +43408,41 @@ function () {
         var mediaLibContent = "<ul>";
 
         for (var i = 0; i < this.items.length; i++) {
-          mediaLibContent += "<li><img class=\"media-lib-icon\" data-id=\"".concat(i, "\" src=\"/storage/").concat(this.items[i].icon, "\" alt=\"\" /></li>");
+          this.items[i].icon = this.public_dir + this.items[i].icon;
+          this.items[i].url = this.public_dir + this.items[i].url;
+          mediaLibContent += "<li><img class=\"media-lib-icon\" data-id=\"".concat(i, "\" src=\"").concat(this.items[i].icon, "\" alt=\"\" /></li>");
         }
 
         mediaLibContent += "</ul>";
         this.backup = response;
         this.pagination.load(response.paginator, function (url) {
-          return _this5.load(url);
+          return _this6.load(url);
         });
         this.loader.remove();
         this.content.append(mediaLibContent);
         this.pick(0);
         this.popup.find('.media-lib-footer .pagination').replaceWith(this.pagination.render());
         this.popup.find('.media-lib-content ul li img').on('click', function (ev) {
-          _this5.pick(ev.target.getAttribute('data-id'));
+          _this6.pick(ev.target.getAttribute('data-id'));
         });
       }
     }
   }, {
     key: "load",
     value: function load(url) {
-      var _this6 = this;
+      var _this7 = this;
 
       this.loading();
       this.$.ajax(url).done(function (response) {
-        _this6.prepareDom(response);
+        _this7.prepareDom(response);
       });
     }
   }, {
     key: "pick",
     value: function pick(index) {
       this.picked = this.items[index];
-      var src = '/storage/' + this.items[index].icon;
+      this.loadItemSizes(this.picked);
+      var src = this.items[index].icon;
       this.popup.find('.media-lib-panel .media-lib-icon').attr({
         'src': src
       });
@@ -43440,9 +43470,17 @@ function () {
       return this;
     }
   }, {
+    key: "publicDir",
+    set: function set(dir) {
+      this.public_dir = dir;
+    },
+    get: function get() {
+      return this.public_dir;
+    }
+  }, {
     key: "template",
     get: function get() {
-      return "<div class=\"media-lib-overlay\">\n<div class=\"media-lib\">\n\n  <div class=\"media-lib-header\">\n    <h1>\u0418\u0437\u0431\u0435\u0440\u0438 \u043C\u0435\u0434\u0438\u044F \u0444\u0430\u0439\u043B</h1>\n    <a class=\"media-lib-close\" href=\"#\"><span data-feather=\"x\"></span></a>\n  </div>\n\n  <div class=\"media-lib-body\">\n     \n     <div class=\"media-lib-content\">\n         <div class=\"media-lib-message alert\"></div>\n         <img class=\"media-lib-loading\" src=\"/storage/loading.gif\" alt=\"loading...\" />\n\n     </div>\n\n     <div class=\"media-lib-panel d-none d-md-block\">\n\n           <img src=\"\" class=\"media-lib-icon\" />\n\n           <select>\n             <option>\u041C\u0430\u043B\u044A\u043A \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u0421\u0440\u0435\u0434\u0435\u043D \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u0413\u043E\u043B\u044F\u043C \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u041E\u0433\u0440\u043E\u043C\u0435\u043D \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u0426\u044F\u043B \u0440\u0430\u0437\u043C\u0435\u0440</option>\n           </select>\n\n           <p>File: <span class=\"media-name\"></span> (<a href=\"#\" class=\"media-lib-delete\">\u0438\u0437\u0442\u0440\u0438\u0439</a>)</p>\n\n     </div> \n  \n  </div>\n  <div class=\"media-lib-footer\">\n    <ul class=\"pagination\"></ul>\n    <div class=\"d-flex\">\n    <form method=\"POST\">\n      <button type=\"button\" class=\"btn btn-success\">Choose File</button>\n      <input type=\"file\" class=\"d-none\" name=\"file\" />\n    </form>\n    <button type=\"button\" name=\"pick\" id=\"pick\" class=\"ml-2 btn btn-primary\">\u0417\u0430\u0440\u0435\u0434\u0438</button>\n    </div>\n  </div>\n\n</div>\n</div>";
+      return "<div class=\"media-lib-overlay\">\n<div class=\"media-lib\">\n\n  <div class=\"media-lib-header\">\n    <h1>\u0418\u0437\u0431\u0435\u0440\u0438 \u043C\u0435\u0434\u0438\u044F \u0444\u0430\u0439\u043B</h1>\n    <a class=\"media-lib-close\" href=\"#\"><span class=\"fa fa-times\"></span></a>\n  </div>\n\n  <div class=\"media-lib-body\">\n     \n     <div class=\"media-lib-content\">\n         <div class=\"media-lib-message alert\"></div>\n         <img class=\"media-lib-loading\" src=\"/storage/loading.gif\" alt=\"loading...\" />\n\n     </div>\n\n     <div class=\"media-lib-panel d-none d-md-block\">\n\n           <img src=\"\" class=\"media-lib-icon\" />\n\n           <select class=\"media-lib-sizes\">\n             <option>\u041C\u0430\u043B\u044A\u043A \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u0421\u0440\u0435\u0434\u0435\u043D \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u0413\u043E\u043B\u044F\u043C \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u041E\u0433\u0440\u043E\u043C\u0435\u043D \u0440\u0430\u0437\u043C\u0435\u0440</option>\n             <option>\u0426\u044F\u043B \u0440\u0430\u0437\u043C\u0435\u0440</option>\n           </select>\n\n           <p>File: <span class=\"media-name\"></span> (<a href=\"#\" class=\"media-lib-delete\">\u0438\u0437\u0442\u0440\u0438\u0439</a>)</p>\n\n     </div> \n  \n  </div>\n  <div class=\"media-lib-footer\">\n    <ul class=\"pagination\"></ul>\n    <div class=\"d-flex\">\n    <form method=\"POST\">\n      <button type=\"button\" class=\"btn btn-success\">Choose File</button>\n      <input type=\"file\" class=\"d-none\" name=\"file\" />\n    </form>\n    <button type=\"button\" name=\"pick\" id=\"pick\" class=\"ml-2 btn btn-primary\">\u0417\u0430\u0440\u0435\u0434\u0438</button>\n    </div>\n  </div>\n\n</div>\n</div>";
     }
   }]);
 
@@ -43485,13 +43523,13 @@ function () {
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.pagination = this.$("<ul class=\"pagination\">\n              \n                                <li class=\"page-item ".concat(this.currentPage == 1 ? 'disabled' : null, "\">\n                                    <a class=\"page-link\" href=\"").concat(this.firstPageUrl, "\"><<</a>\n                                </li>\n                                \n                                <li class=\"page-item ").concat(this.currentPage == 1 ? 'disabled' : null, "\"\">\n                                    <a class=\"page-link\" href=\"").concat(this.prevPageUrl, "\"><</a>\n                                </li>\n\n                                <li class=\"page-item disabled\">\n                                    <a class=\"page-link\" href=\"#\">").concat(this.currentPage, " / ").concat(this.totalPages, "</a>\n                                </li>\n\n                                <li class=\"page-item ").concat(this.currentPage == this.totalPages ? 'disabled' : null, "\">\n                                    <a class=\"page-link\" href=\"").concat(this.nextPageUrl, "\">></a>\n                                </li>\n\n                                <li class=\"page-item ").concat(this.currentPage == this.totalPages ? 'disabled' : null, "\">\n                                    <a class=\"page-link\" href=\"").concat(this.lastPageUrl, "\">>></a>\n                                </li>\n\n                                </ul>"));
       this.pagination.find('.page-link').on('click', function (ev) {
         ev.preventDefault();
 
-        _this7.linkClick(ev.target.href);
+        _this8.linkClick(ev.target.href);
       });
       return this.pagination;
     }
@@ -43504,7 +43542,7 @@ var MediaLibField =
 /*#__PURE__*/
 function () {
   function MediaLibField(jQuery, fieldName) {
-    var _this8 = this;
+    var _this9 = this;
 
     _classCallCheck(this, MediaLibField);
 
@@ -43519,13 +43557,15 @@ function () {
     this.multiple = false;
     this.mediaLib = new MediaLib($);
     this.mediaLib.onFinish(function (item) {
-      return _this8.push(item);
+      return _this9.push(item);
     });
+    this.public_dir = '/storage';
+    this.mediaLib.publicDir = this.public_dir;
     this.field = this.$("<div class=\"media-lib-field\"><input type=\"hidden\" value=\"\" name=\"".concat(fieldName, "\" /></div>"));
     this.opener.after(this.field);
     this.multiple = parseInt(this.opener.attr('data-media-multiple')) || this.opener[0].hasAttribute('data-media-multiple');
     this.opener.on('click', function (ev) {
-      return _this8.mediaLib.open();
+      return _this9.mediaLib.open();
     });
     this.openerValue = this.opener.attr('data-media-value');
 
@@ -43543,10 +43583,13 @@ function () {
   _createClass(MediaLibField, [{
     key: "load",
     value: function load(items) {
-      var _this9 = this;
+      var _this10 = this;
 
       items.map(function (item) {
-        return _this9.push(item);
+        if (item.url) item.url = _this10.public_dir + item.url;
+        if (item.icon) item.icon = _this10.public_dir + item.icon;
+
+        _this10.push(item);
       });
       return this;
     }
@@ -43575,30 +43618,38 @@ function () {
   }, {
     key: "prepareDom",
     value: function prepareDom(item) {
-      var _this10 = this;
+      var _this11 = this;
 
-      var itemDom = this.$("<div class=\"media-lib-field-item\">\n                            <img src=\"/storage/".concat(item.icon || item.url, "\" alt=\"").concat(item.title, "\" />\n                            <button type=\"button\" class=\"btn btn-danger\">\u0418\u0437\u0442\u0440\u0438\u0439</button>\n                          </div>"));
+      var itemDom = this.$("<div class=\"media-lib-field-item\">\n                            <img src=\"".concat(item.icon || item.url, "\" alt=\"").concat(item.title, "\" />\n                            <button type=\"button\" class=\"btn btn-danger\">\u0418\u0437\u0442\u0440\u0438\u0439</button>\n                          </div>"));
       var index = this.domElements.push(itemDom) - 1;
       this.setValue();
       itemDom.find('button').on('click', function (ev) {
         $(ev.target).closest('.media-lib-field-item').remove();
 
-        _this10.remove(index);
+        _this11.remove(index);
 
-        delete _this10.domElements[index];
+        delete _this11.domElements[index];
 
-        _this10.setValue();
+        _this11.setValue();
 
-        if (!_this10.multiple && _this10.domElements.filter(function (el) {
+        if (!_this11.multiple && _this11.domElements.filter(function (el) {
           return el;
-        }).length < 1 || _this10.multiple > _this10.items.filter(function (el) {
+        }).length < 1 || _this11.multiple > _this11.items.filter(function (el) {
           return el;
-        }).length) _this10.opener.show();
+        }).length) _this11.opener.show();
       });
       this.field.append(itemDom);
       if (!this.multiple || this.multiple === this.items.filter(function (el) {
         return el;
       }).length) this.opener.hide();
+    }
+  }, {
+    key: "publicDir",
+    set: function set(dir) {
+      this.public_dir = dir;
+    },
+    get: function get() {
+      return this.public_dir;
     }
   }]);
 

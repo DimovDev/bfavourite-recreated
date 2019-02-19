@@ -5,6 +5,7 @@ namespace App\Helpers\Menu;
 use Illuminate\View\Factory as LaravelView;
 
 use App\Helpers\Menu\{MenulinkSingle, MenuLinkGroup, LaravelMenuView};
+use App\Helpers\Menu\Builder\BuilderCache;
 
 class SimpleMenuBuilder {
 
@@ -13,6 +14,8 @@ class SimpleMenuBuilder {
 
     protected $chain = [];
 
+    protected $cache;
+
     protected $current; 
 
     public function __construct(LaravelView $view) {
@@ -20,8 +23,12 @@ class SimpleMenuBuilder {
       $this->view = new LaravelMenuView($view);
       $this->menu_collection = new MenuLinkGroup();
       $this->current = $this->menu_collection;
+
+      $this->cache = new BuilderCache();
     
     }
+
+
 
     public function make($data) : SimpleMenuBuilder {
 
@@ -39,7 +46,11 @@ class SimpleMenuBuilder {
       if($url) $data['url'] = $url;
 
       $this->chain[] = function() use ($data) {
-                             $this->current->add(new MenuLinkGroup($data));
+
+                             $link = new MenuLinkGroup($data);
+                             $this->cache->add($data['text'], $link);
+                             $this->current->add($link);
+
                           };
 
       return $this;
@@ -66,7 +77,16 @@ class SimpleMenuBuilder {
 
       $this->chain[] = function() use ($text) {
 
-        $this->current = $this->menu_collection->findByText($text, true);
+        if($cached = $this->cache->find($text)) {
+           
+           $this->current = $cached;
+
+        } else {
+
+          $this->current = $this->menu_collection->findByText($text, true);
+          if($this->current) $this->cache->add($text, $this->current);
+
+        } 
 
       };
        
@@ -77,8 +97,17 @@ class SimpleMenuBuilder {
     public function findByUrl(string $url) {
 
       $this->chain[] = function() use ($url) {
+        
+        if($cached = $this->cache->find($url)) {
+          
+           $this->current = $cached;
 
-        $this->current = $this->menu_collection->findByUrl($url, true);
+        } else {
+
+         $this->current = $this->menu_collection->findByUrl($url, true);
+         if($this->current) $this->cache->add($url, $this->current);
+
+        }
 
       };   
 
@@ -115,11 +144,15 @@ class SimpleMenuBuilder {
 
     public function remove() {
 
+
       $this->chain[] = function() {
 
-        if($this->current != $this->menu) {
+        if($this->current != $this->menu_collection) {
         
           $item = $this->current;
+          $this->cache->removeByLink($this->current);
+
+
           $this->current = $this->menu_collection;
   
           $item->getParent()->remove($item);

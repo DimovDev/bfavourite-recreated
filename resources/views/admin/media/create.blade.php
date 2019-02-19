@@ -1,10 +1,10 @@
 @extends('admin/layouts/main')
 @inject('postStatus', 'App\PostStatus')
-@inject('categories', 'App\Category')
 
 @section('main')
 
 <h1 class="h2">{{__(' Upload Media')}}</h1>
+<hr />
 
 @if($errors->any())
  <div class="alert alert-danger">

@@ -7,6 +7,7 @@
 @section('main')
 
 <h1 class="h2">{{__(isset($project) ? 'Edit Project' : 'Create Project')}}</h1>
+<hr />
 
 @if($errors->any())
  <div class="alert alert-danger">
@@ -82,7 +83,7 @@
 
     <div class="form-group">
       <label for="published_at">{{__('Published at')}}</label>
-      <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $project->published_at ?? date('Y-m-d h:m:s')}}" />
+      <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $project->published_at ?? date('Y-m-d')}}" />
     </div>
 
     <div class="form-group">

@@ -10,11 +10,15 @@ class Tag extends Taxonomy
     
     protected $table = 'taxonomies';
 
+    protected $fillable = ['name', 'slug', 'taxonomy_status', 'taxonomy_type', 'icon', 'summary', 'asset_id'];
+
     protected $attributes = [
         
         'taxonomy_type' => 'tag'
 
     ];
+  
+
 
     public static function boot() {
 
@@ -47,6 +51,25 @@ class Tag extends Taxonomy
      }  
 
 
+   /* 
+    * Get the tags of the tags 
+    */
+
+    public function tags() {
+
+        return $this->morphToMany('App\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
+  
+      }
+
+     
+    /*
+     * Get the assigned content piece 
+     */
+
+    public function asset() {
+
+        return $this->belongsTo('App\Asset');
+    }
     
 
 }

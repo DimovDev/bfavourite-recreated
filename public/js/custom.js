@@ -38,12 +38,23 @@ $(document).ready(function() {
       
 
     });
+      
+
 
      new MediaLibField($, 'photo');
      new MediaLibField($, 'icon');
      
      new PillField($, {field: 'tags',
                        source: '/admin/tags/auto'});
+
+     new PillField($, {field: 'asset_id',
+                       source: '/admin/assets/auto'}).makeSingle();                  
+
+    $( "#published_at" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'yy-mm-dd'
+     });                   
   
     $('textarea.tinymce').tinymce({theme: 'silver',
                                    plugins: 'code hr link image imagetools media spellchecker table template wordcount pagebreak anchor advlist lists spellchecker emoticons',
@@ -51,10 +62,16 @@ $(document).ready(function() {
                                    emoticons_database_url: '/js/tinymce/emojis.js',
                                    image_advtab: true,
                                    height: 480,
+                                   convert_urls: false,
                                    file_picker_types: 'image',
                                    file_picker_callback: function(callback, value, meta) {
                 
-
+                                        let mediaLib = new MediaLib($);
+                                        mediaLib.showSizes();
+                                        mediaLib.open();
+                                        mediaLib.onFinish(item => { callback(item.url);
+                                                                    mediaLib.close();
+                                                                    });
                                    },
 
                                   });
@@ -69,12 +86,15 @@ class PillField {
       this.$ = jQuery;
       this.field = options.field;
       this.source = options.source;
+
+      this.multiple = true;
      
 
       this.hiddenField = this.$(`<input type="hidden" name="${this.field}" value="" />`);
       this.fieldDom = this.$('form #'+this.field);
        
       this.fieldDom.after(this.hiddenField);
+      
 
       this.load();
 
@@ -91,6 +111,7 @@ class PillField {
           if(pill) {  
            this.hiddenField.val(JSON.stringify(this.items));
            this.fieldDom.after(pill);
+           if(!this.multiple) this.fieldDom.prop('disabled', true);
      
           }
 
@@ -102,22 +123,33 @@ class PillField {
 
     }
 
+    makeSingle() {
+
+      this.multiple = false;
+      if(this.items.length > 0) this.fieldDom.prop('disabled', true);
+      
+      return this;
+
+    }
+
     load() {
        
       let items = this.fieldDom.attr('data-pillfield');
       
       try {
-        
+        console.log(items);
         items = JSON.parse(items);
-        
+       
         if(items && items.length > 0) {
           
             items.map(item => {
               
              let pill = this.push(item)
 
+
              this.hiddenField.val(JSON.stringify(this.items));
              this.fieldDom.after(pill);
+             if(!this.multiple) this.fieldDom.prop('disabled', true);
               
             });
 
@@ -159,6 +191,7 @@ class PillField {
            pill.remove();
            this.items = this.items.filter(archived => archived.id != item.id);
            this.hiddenField.val(JSON.stringify(this.items));
+           if(!this.multiple) this.fieldDom.prop('disabled', false);
 
        });       
        

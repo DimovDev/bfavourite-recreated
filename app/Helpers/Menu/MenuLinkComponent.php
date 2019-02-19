@@ -184,10 +184,13 @@ abstract class MenuLinkComponent implements MenuLink, LinkGroup, LinkGroupItem, 
     public function remove(Link $removedItem) : LinkGroup {
         
         $items = array_filter($this->items, function($item) use ($removedItem) {
-            return $item != $removedItem;                       
-         });
+                                                        return $item != $removedItem;                       
+                                                    });
 
         if($this->items == $items) throw new ItemNotFoundException('The item cannot be removed.');
+        
+        $this->items = array_values($items);
+        $this->rewind();
 
         return $this;
     }

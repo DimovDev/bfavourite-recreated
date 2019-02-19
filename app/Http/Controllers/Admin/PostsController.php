@@ -118,7 +118,8 @@ class PostsController extends Controller
             $photo = json_decode($photo['photo']);
             if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
          }
-       
+        
+    
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
 
 

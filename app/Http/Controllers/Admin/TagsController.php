@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TagEditRequest;
 
 use App\Tag;
+use App\Helpers\PillFieldHelper;
 
 
 class TagsController extends Controller
@@ -56,9 +57,16 @@ class TagsController extends Controller
             $icon = json_decode($icon['icon']);
             if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
         }
+        
+        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
+        if(!empty($data['asset_id'])) $data['asset_id'] = PillFieldHelper::toArray($data['asset_id'])[0];
+
+
+        
 
         $tag = Tag::create($data);
         $tag->user()->attach(Auth::id());
+        if($data['tags']) $tag->tags()->attach($data['tags']);
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The tag was created.']));
@@ -79,8 +87,17 @@ class TagsController extends Controller
         $tag = Tag::findOrFail($id);
 
         $icon = $tag->icon()->first();
-        
+        $tags = $tag->tags()->get();
+
+
         if($icon) $tag->icon = json_encode([$icon->toArray()]);
+    
+        $tag->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
+
+        $asset = $tag->asset()->first();
+       
+        if($tag->asset_id) $tag->asset_id = json_encode([['id'=>$asset->id, 'value'=>$asset->title.' #'.$asset->asset_type]]);
+        
 
         return view('admin/taxonomies/tags/edit', ['tag' => $tag]);
     }
@@ -108,7 +125,14 @@ class TagsController extends Controller
             if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
          }
 
+         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
+         if(!empty($data['asset_id'])) $data['asset_id'] = PillFieldHelper::toArray($data['asset_id']);
+         
+         $data['asset_id'] = isset($data['asset_id'][0]) ? $data['asset_id'][0] : null;
+
+
         $tag->update($data);
+        $tag->tags()->sync($data['tags']);
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The tag was edited.']));
@@ -145,6 +169,7 @@ class TagsController extends Controller
               $tag->user()->detach();
               $tag->posts()->detach();
               $tag->projects()->detach();
+              $tag->tags()->detach();
               $tag->delete();
             }
 

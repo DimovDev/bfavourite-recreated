@@ -18,6 +18,7 @@ import 'jquery-ui/ui/widgets/datepicker.js';
 import {MediaLib, MediaLibPagination, MediaLibField}  from './medialib.classes.js';
 
 window.MediaLibField = MediaLibField;
+window.MediaLib = MediaLib;
 
 import popper from 'popper.js';
 import feather from 'feather-icons';

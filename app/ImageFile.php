@@ -8,6 +8,7 @@ use App\MediaFile;
 class ImageFile extends MediaFile {
 
   protected static $file_sizes = ['small', 'medium', 'large', 'extra', 'thumbnail'];
+  protected $available_sizes = [];
 
   public static function imgExists($img, $upload_dir = null, $size = null) {
     
@@ -36,6 +37,12 @@ class ImageFile extends MediaFile {
 
   }
 
+  public function getAvailableSizes() {
+      
+     return $this->available_sizes;
+
+  } 
+
 
   public function upload() {
 
@@ -51,9 +58,9 @@ class ImageFile extends MediaFile {
       $height =   $this->settings[$size]['height'];
 
 
-
       $thumb = storage_path($this->settings['upload_path']).$this->getUploadPath().'/'.str_replace('.', '_'.$size.'.', $this->hashName());
-      $this->createThumbnail($this->file->getPathName(), $thumb, $width, $height);
+      $result = $this->createThumbnail($this->file->getPathName(), $thumb, $width, $height);
+      if($result) $this->available_sizes[] = $size;
 
     }
 
