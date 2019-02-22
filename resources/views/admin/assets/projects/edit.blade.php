@@ -1,6 +1,8 @@
 @extends('admin/layouts/main')
-@inject('projectStatus', 'App\PostStatus')
-@inject('tag', 'App\Tag')
+@inject('projectStatus', 'App\Models\Asset\PostStatus')
+@inject('tag', 'App\Models\Taxonomy\Tag')
+
+
 
 @section('main-classes', 'edit projects-edit')
 

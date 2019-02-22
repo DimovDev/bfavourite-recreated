@@ -43586,8 +43586,8 @@ function () {
       var _this10 = this;
 
       items.map(function (item) {
-        if (item.url) item.url = _this10.public_dir + item.url;
-        if (item.icon) item.icon = _this10.public_dir + item.icon;
+        if (item.url && item.url.search(_this10.public_dir) == -1) item.url = _this10.public_dir + item.url;
+        if (item.icon && item.icon.search(_this10.public_dir) == -1) item.icon = _this10.public_dir + item.icon;
 
         _this10.push(item);
       });
@@ -43616,6 +43616,11 @@ function () {
       return this;
     }
   }, {
+    key: "destroy",
+    value: function destroy() {
+      this.$('.media-lib-field-item button').trigger('click');
+    }
+  }, {
     key: "prepareDom",
     value: function prepareDom(item) {
       var _this11 = this;
@@ -43624,7 +43629,7 @@ function () {
       var index = this.domElements.push(itemDom) - 1;
       this.setValue();
       itemDom.find('button').on('click', function (ev) {
-        $(ev.target).closest('.media-lib-field-item').remove();
+        _this11.$(ev.target).closest('.media-lib-field-item').remove();
 
         _this11.remove(index);
 

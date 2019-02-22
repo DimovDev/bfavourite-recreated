@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models\Media;
 
-use App\MediaFile;
+use App\Models\Media\MediaFile;
+use Illuminate\Validation\Rules\ImageRule;
 
-
-class ImageFile extends MediaFile {
+abstract class ImageFile extends MediaFile {
 
   protected static $file_sizes = ['small', 'medium', 'large', 'extra', 'thumbnail'];
   protected $available_sizes = [];
@@ -59,12 +59,13 @@ class ImageFile extends MediaFile {
 
 
       $thumb = storage_path($this->settings['upload_path']).$this->getUploadPath().'/'.str_replace('.', '_'.$size.'.', $this->hashName());
-      $result = $this->createThumbnail($this->file->getPathName(), $thumb, $width, $height);
+      $result = $this->createThumbnail($this->getPathName(), $thumb, $width, $height);
       if($result) $this->available_sizes[] = $size;
 
     }
 
-    $this->file->move(storage_path($this->settings['upload_path']).$this->getUploadPath(), $this->hashName());
+
+    $this->move(storage_path($this->settings['upload_path']).$this->getUploadPath(), $this->hashName());
 
     return $this;
 
@@ -86,6 +87,8 @@ class ImageFile extends MediaFile {
       }
 
    }
+
+
 
  protected function createThumbnail($filepath, $thumbpath, $thumbnail_width, $thumbnail_height, $background="transparent") {
 

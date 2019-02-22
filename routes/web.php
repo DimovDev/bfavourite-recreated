@@ -54,6 +54,27 @@ Route::group(['as' => 'admin.',
     Route::put('admin/posts/{post}', 'Admin\PostsController@update')->name('posts.update');
     Route::delete('admin/posts/destroy', 'Admin\PostsController@destroy')->name('posts.destroy'); 
 
+    Route::get('admin/assets', 'Admin\AssetsController@index')->name('assets.index');
+    Route::delete('admin/assets/destroy', 'Admin\AssetsController@destroy')->name('assets.destroy'); 
+
+    Route::get('admin/photos/{photo}/edit', 'Admin\PhotosController@edit')->name('photos.edit');
+    Route::get('admin/photos/create', 'Admin\PhotosController@create')->name('photos.create');
+    Route::post('admin/photos', 'Admin\PhotosController@store')->name('photos.store');
+    Route::put('admin/photos/{photo}', 'Admin\PhotosController@update')->name('photos.update');
+
+    Route::get('admin/links/{link}/edit', 'Admin\LinksController@edit')->name('links.edit');
+    Route::get('admin/links/create', 'Admin\LinksController@create')->name('links.create');
+    Route::post('admin/links', 'Admin\LinksController@store')->name('links.store');
+    Route::put('admin/links/{photo}', 'Admin\LinksController@update')->name('links.update');
+    Route::post('admin/links/opengraph', 'Admin\LinksController@opengraph')->name('links.opengraph');
+
+    Route::get('admin/notes/{note}/edit', 'Admin\NotesController@edit')->name('notes.edit');
+    Route::get('admin/notes/create', 'Admin\NotesController@create')->name('notes.create');
+    Route::post('admin/notes', 'Admin\NotesController@store')->name('notes.store');
+    Route::put('admin/notes/{note}', 'Admin\NotesController@update')->name('notes.update');
+
+
+  
     Route::get('admin/projects', 'Admin\ProjectsController@index')->name('projects.index');
     Route::get('admin/projects/{project}/edit', 'Admin\ProjectsController@edit')->name('projects.edit');
     Route::get('admin/projects/create', 'Admin\ProjectsController@create')->name('projects.create');

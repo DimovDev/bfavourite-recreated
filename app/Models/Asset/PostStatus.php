@@ -1,9 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Asset;
 
-use App\Status;
-
+use App\Models\Status;
 
 class PostStatus extends Status
 {

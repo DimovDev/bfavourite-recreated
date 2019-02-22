@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Asset;
 
-use App\Asset;
+use App\Models\Asset\Asset;
 use Illuminate\Database\Eloquent\Builder;
 
 class Project extends Asset
@@ -78,45 +78,5 @@ class Project extends Asset
      return $result;
 
    }
-
-   /**
-     * Get the meta fields for the project asset.
-    */
-
-   public function assetsMeta() {
-
-      return $this->hasMany('App\AssetMeta', 'asset_id');
-
-   }
-
-   public function getMeta($key) {
-
-       $result = $this->assetsMeta()->where('meta_key', $key);
-
-       if($result->count()) return $result->first()->meta_value;
-
-   }
-
-       /* 
-        * Get the owner of the project 
-        */
-
-       public function user() {
-
-         return $this->morphToMany('App\User', 'obj', 'user_object');
-   
-       }
-
-       
-   /* 
-    * Get the tags of the post 
-    */
-
-    public function tags() {
-
-      return $this->morphToMany('App\Tag', 'obj', 'taxonomy_object', null, 'taxonomy_id');
-
-    }
-
 
 }

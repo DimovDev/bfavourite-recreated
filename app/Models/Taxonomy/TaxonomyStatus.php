@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Taxonomy;
 
-use App\Status;
+use App\Models\Status;
 
 class TaxonomyStatus extends Status
 {

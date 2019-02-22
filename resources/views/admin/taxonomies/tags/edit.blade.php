@@ -1,5 +1,5 @@
 @extends('admin/layouts/main')
-@inject('taxonomyStatus', 'App\TaxonomyStatus')
+@inject('taxonomyStatus', 'App\Models\Taxonomy\TaxonomyStatus')
 
 
 @section('main-classes', 'edit categories-edit')

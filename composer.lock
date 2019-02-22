@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1c328f1258f868049524059779041ef",
+    "content-hash": "366bd05c447e51e62a1537f6f5410224",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2229,6 +2229,52 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "shweshi/opengraph",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shweshi/OpenGraph.git",
+                "reference": "e08d5a943a706fb2892464569f3c96f97104a98e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shweshi/OpenGraph/zipball/e08d5a943a706fb2892464569f3c96f97104a98e",
+                "reference": "e08d5a943a706fb2892464569f3c96f97104a98e",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "shweshi\\OpenGraph\\Providers\\OpenGraphProvider"
+                    ],
+                    "aliases": {
+                        "OpenGraph": "shweshi\\OpenGraph\\Facades\\OpenGraphFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "shweshi\\OpenGraph\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shashi Prakash Gautam",
+                    "email": "contactmespg@gmail.com"
+                }
+            ],
+            "description": "A Laravel package to fetch website Open Graph metadata.",
+            "time": "2019-01-04T13:50:45+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Media;
 
-use Illuminate\Http\UploadedFile;
+use App\Models\Media\FileSource;
 use Illuminate\Support\Str;
 
 abstract class MediaFile {
@@ -22,24 +22,31 @@ abstract class MediaFile {
   protected $media_type;
   protected $file_name; 
   protected $extension;
+  protected $pathName;
 
-  public function __construct(UploadedFile $file, array $settings) {
 
-    $this->file = $file;
+  public function setSettings(array $settings)  {
+
     $this->settings = $settings;
 
-    $this->setUploadPath();
+  }
+  
+  public function getSettings() {
 
-    $this->media_type = $this->file->getClientMimeType();
-    $this->extension =  $this->file->guessExtension();
-    $this->file_name = $this->file->getClientOriginalName();
-
+    return $this->settings;
   }
 
   abstract public function upload();
+   
+  abstract public function move($path, $file_name);
 
   abstract public static function delete($file);
 
+  public function getPathName() {
+
+    return $this->pathName;
+
+  }
 
   public function getClientFilename() {
 
@@ -107,7 +114,7 @@ abstract class MediaFile {
             $path = rtrim($path, '/').'/';
         }
 
-        $hash = $this->hashName ?: $this->hashName = Str::random(40);
+        $hash = $this->hashName ?: $this->hashName = \bin2hex(\random_bytes(16));
 
         if ($extension = $this->guessExtension()) {
             $extension = '.'.$extension;
@@ -122,6 +129,9 @@ abstract class MediaFile {
       return $this->extension;
 
     }
+
+
+
 
 
 }

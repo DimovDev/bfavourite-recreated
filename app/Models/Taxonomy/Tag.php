@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Taxonomy;
 
-use App\Taxonomy;
+use App\Models\Taxonomy\Taxonomy;
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends Taxonomy

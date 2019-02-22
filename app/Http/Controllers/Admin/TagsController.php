@@ -9,7 +9,7 @@ use Illuminate\Support\MessageBag;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TagEditRequest;
 
-use App\Tag;
+use App\Models\Taxonomy\Tag;
 use App\Helpers\PillFieldHelper;
 
 

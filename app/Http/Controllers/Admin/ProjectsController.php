@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 
-use App\Project;
+use App\Models\Asset\Project;
 use App\Http\Requests\Admin\ProjectEditRequest;
 
 use App\Helpers\PillFieldHelper;

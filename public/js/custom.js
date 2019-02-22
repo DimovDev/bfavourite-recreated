@@ -41,7 +41,7 @@ $(document).ready(function() {
       
 
 
-     new MediaLibField($, 'photo');
+     var photo = new MediaLibField($, 'photo');
      new MediaLibField($, 'icon');
      
      new PillField($, {field: 'tags',
@@ -56,25 +56,94 @@ $(document).ready(function() {
       dateFormat: 'yy-mm-dd'
      });                   
   
-    $('textarea.tinymce').tinymce({theme: 'silver',
-                                   plugins: 'code hr link image imagetools media spellchecker table template wordcount pagebreak anchor advlist lists spellchecker emoticons',
-                                   toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link image emoticons | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+    $('textarea.tinymce-light').tinymce({theme: 'silver',
+                                   plugins: 'code link spellchecker table wordcount advlist lists emoticons codesample',
+                                   toolbar: 'bold italic strikethrough | link emoticons codesample blockquote | numlist bullist outdent indent  | code removeformat',
                                    emoticons_database_url: '/js/tinymce/emojis.js',
                                    image_advtab: true,
-                                   height: 480,
+                                   height: 240,
                                    convert_urls: false,
-                                   file_picker_types: 'image',
-                                   file_picker_callback: function(callback, value, meta) {
-                
-                                        let mediaLib = new MediaLib($);
-                                        mediaLib.showSizes();
-                                        mediaLib.open();
-                                        mediaLib.onFinish(item => { callback(item.url);
-                                                                    mediaLib.close();
-                                                                    });
-                                   },
+                                   menubar:false, 
 
                                   });
+
+    $('textarea.tinymce').tinymce({theme: 'silver',
+    plugins: 'code hr link image imagetools media spellchecker table template wordcount pagebreak anchor advlist lists spellchecker emoticons codesample',
+    toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link image emoticons | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+    emoticons_database_url: '/js/tinymce/emojis.js',
+    image_advtab: true,
+    height: 480,
+    convert_urls: false,
+    file_picker_types: 'image',
+    file_picker_callback: function(callback, value, meta) {
+
+          let mediaLib = new MediaLib($);
+          mediaLib.showSizes();
+          mediaLib.open();
+          mediaLib.onFinish(item => { callback(item.url);
+                                      mediaLib.close();
+                                      });
+    },
+
+    });   
+    
+    
+    let fetch = $('.link_url_fetch');
+    let link = $('[name="link_url"]')
+
+    fetch.on('click', ev => {
+
+        
+        link.removeClass(['is-valid', 'is-invalid']);
+        fetch.find('.spinner-border').css('display', 'inline-block');
+        fetch.prop('disabled', true);
+
+    
+        let fd = new FormData();
+        fd.set('link_url',link.val());
+        fd.set('_method', 'POST');
+        
+        $.ajax({url: '/admin/links/opengraph',
+                     type: 'POST',
+                     data: fd,
+                     contentType: false,
+                     cache: false,
+                     processData: false,
+                     headers: {
+                               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }}).done(response => {
+                       
+                        fetch.prop('disabled', false);
+                        fetch.find('.spinner-border').hide();
+                        link.addClass('is-valid');
+                      
+                        if(response.photo) {
+                          photo.destroy();
+                          photo.load([response.photo]);
+                        }
+                        if(response.message) link.closest('.form-group').find('.valid-feedback').html(response.message);
+                        if(response.title) $('[name="link_title"]').val(response.title);
+                        if(response.publisher) $('[name="publisher"]').val(response.publisher);
+                        if(response.link_desc) $('[name="link_desc"]').val(response.link_desc);
+      
+
+                     }).fail(response => {
+                      console.log(response.responseJSON.message);
+                      let msg = response.responseJSON.message || false;
+
+                      fetch.prop('disabled', false);
+                      fetch.find('.spinner-border').hide();
+
+                      if(msg) fetch.closest('.form-group').find('.invalid-feedback').html(msg)
+
+                      link.addClass('is-invalid');
+                      
+
+
+                     });       
+       
+
+    });
 
 });
 
@@ -137,7 +206,7 @@ class PillField {
       let items = this.fieldDom.attr('data-pillfield');
       
       try {
-        console.log(items);
+    
         items = JSON.parse(items);
        
         if(items && items.length > 0) {

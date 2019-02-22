@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests\Admin\UserEditRequest;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User\User;
 
 class UsersController extends Controller
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Asset;
 
-use App\Asset;
+use App\Models\Asset\Asset;
 use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Asset
@@ -24,26 +24,7 @@ class Post extends Asset
 
     }
     
-    
-    /* 
-    * Get the owner of the project 
-    */
-
-    public function user() {
-
-      return $this->morphToMany('App\User', 'obj', 'user_object');
-
-    }
-
-   /* 
-    * Get the tags of the project 
-    */
-
-    public function tags() {
-
-        return $this->morphToMany('App\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
-  
-      }
+ 
 
 
 }

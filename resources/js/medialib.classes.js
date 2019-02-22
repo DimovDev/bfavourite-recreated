@@ -522,8 +522,8 @@ class MediaLibField {
     
     items.map(item => {
      
-       if(item.url) item.url = this.public_dir+item.url;
-       if(item.icon) item.icon = this.public_dir+item.icon;
+       if(item.url && item.url.search(this.public_dir) == -1) item.url = this.public_dir+item.url;
+       if(item.icon && item.icon.search(this.public_dir) == -1) item.icon = this.public_dir+item.icon;
 
        this.push(item)
 
@@ -558,7 +558,12 @@ class MediaLibField {
      return this;
 
   }
+  
+  destroy() {
 
+      this.$('.media-lib-field-item button').trigger('click');
+
+  }
 
   prepareDom(item) {
 
@@ -573,7 +578,7 @@ class MediaLibField {
 
      itemDom.find('button').on('click', ev => {
 
-        $(ev.target).closest('.media-lib-field-item').remove();
+        this.$(ev.target).closest('.media-lib-field-item').remove();
         this.remove(index);
         
         delete this.domElements[index];

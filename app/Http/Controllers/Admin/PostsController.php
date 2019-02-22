@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests\Admin\PostEditRequest;
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Models\Asset\Post;
 
 use App\Helpers\PillFieldHelper;
 

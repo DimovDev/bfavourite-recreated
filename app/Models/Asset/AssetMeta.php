@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Asset;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,7 +21,7 @@ class AssetMeta extends Model
 
      public function project() {
 
-        return $this->belongsTo('App\Project', 'asset_id');
+        return $this->belongsTo('App\Models\Asset\Project', 'asset_id');
 
      }
 

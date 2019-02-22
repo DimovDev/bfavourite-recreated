@@ -17,6 +17,7 @@ import 'tinymce/plugins/anchor';
 import 'tinymce/plugins/template';
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/lists';
+import 'tinymce/plugins/codesample';
 
 import 'tinymce/plugins/pagebreak';
 

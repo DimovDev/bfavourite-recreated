@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MediaUploadRequest;
 
-use App\{Media, ImageFile};
+use App\Models\Media\{Media, UploadedImage, ImageFile};
+
 
 class MediaController extends Controller
 {
@@ -60,7 +61,9 @@ class MediaController extends Controller
     public function store(MediaUploadRequest $request)
     {
       // var_dump($request->file('file'));
-      $image = new ImageFile($request->file('file'), config('media.images'));
+
+  
+      $image = new UploadedImage($request->file('file'), config('media.images'));
 
       $image->upload();
 

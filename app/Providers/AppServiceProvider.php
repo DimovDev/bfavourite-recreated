@@ -20,9 +20,14 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         
         Relation::morphMap([
-            'post' => 'App\Post',
-            'project' => 'App\Project',
-            'tag' => 'App\Tag'
+
+            'post' => 'App\Models\Asset\Post',
+            'project' => 'App\Models\Asset\Project',
+            'photo' => 'App\Models\Asset\Photo',
+            'link' => 'App\Models\Asset\Link',
+            'note' => 'App\Models\Asset\Note',
+            'tag' => 'App\Models\Taxonomy\Tag',
+
         ]);
         
 

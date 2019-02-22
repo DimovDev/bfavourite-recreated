@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Taxonomy;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\SlugHelper;

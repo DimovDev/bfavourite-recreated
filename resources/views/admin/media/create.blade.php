@@ -1,5 +1,6 @@
 @extends('admin/layouts/main')
-@inject('postStatus', 'App\PostStatus')
+
+@inject('postStatus', 'App\Models\Asset\PostStatus')
 
 @section('main')
 
