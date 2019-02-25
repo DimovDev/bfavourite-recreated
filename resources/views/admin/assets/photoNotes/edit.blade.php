@@ -21,7 +21,7 @@
  </div>
 @endif
 
-<form method="post" action="{{isset($photo) ? route('admin.photos.update', [$photo->id]) : route('admin.photos.store')}}">
+<form method="post" action="{{isset($photo) ? route('admin.photoNotes.update', [$photo->id]) : route('admin.photoNotes.store')}}">
   <input type="hidden" name="_method" value="{{isset($photo) ? 'PUT' : 'POST'}}" />
 
 <div class="form-group">

@@ -5,9 +5,9 @@ namespace App\Models\Asset;
 use App\Models\Asset\Asset;
 use Illuminate\Database\Eloquent\Builder;
 
-class Project extends Asset
+class LinkNote extends Asset
 {
-    protected $attributes = ['asset_type' => 'project'];
+    protected $attributes = ['asset_type' => 'linkNote'];
 
 
     protected $table = "assets";
@@ -18,7 +18,7 @@ class Project extends Asset
 
       static::addGlobalScope('asset_type', function(Builder $builder) {
 
-         $builder->where('asset_type', 'project');
+         $builder->where('asset_type', 'linkNote');
 
       });
 

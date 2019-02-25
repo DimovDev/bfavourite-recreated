@@ -4,12 +4,63 @@ namespace App\Models\Asset;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\SlugHelper;
+use App\Models\Asset\AssetMeta;
 
 class Asset extends Model
 {
     protected $fillable = ['title', 'slug', 'asset_status', 'summary', 'content', 'published_at', 'photo'];
 
     protected $dates = ['published_at'];
+
+
+    public static function create(array $data = []) {
+       
+      $asset =  static::query()->create($data);
+
+      if($asset->id && !empty($data['meta'])) {
+       
+         foreach($data['meta'] as $key => $value ) {
+
+          if($value) $asset->assetsMeta()->create(['asset_id' => $asset->id,
+                                                   'meta_key' => $key,
+                                                   'meta_value' => $value]); 
+
+         }
+      }
+  
+   return $asset;
+ }
+
+ public function update(array $data = [], array $options = []) {
+
+    $result = parent::update($data, $options);
+  
+
+     if(!empty($data['meta'])) {
+          
+       foreach($data['meta'] as $key => $value ) { 
+         
+          if($value) {
+          
+              AssetMeta::updateOrcreate(['asset_id' => $this->id,
+                                              'meta_key' => $key],
+                                            ['meta_value' => $value]); 
+          } else {
+          
+              AssetMeta::where('meta_key', $key)->delete();
+          }
+
+       }
+
+     } else {
+
+       $this->detach();
+       
+     }
+  
+   return $result;
+
+ }    
 
 
     public function setSlugAttribute($value) {

@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Asset\Note;
-use App\Http\Requests\Admin\NoteEditRequest;
+use App\Models\Asset\TextNote;
+use App\Http\Requests\Admin\TextNoteEditRequest;
 use App\Helpers\PillFieldHelper;
 
-class NotesController extends Controller
+class TextNotesController extends Controller
 {
 
     /**
@@ -22,7 +22,7 @@ class NotesController extends Controller
     public function create()
     {   
 
-        return view('admin/assets/notes/edit');
+        return view('admin/assets/textNotes/edit');
     }
 
     /**
@@ -31,7 +31,7 @@ class NotesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(NoteEditRequest $request)
+    public function store(TextNoteEditRequest $request)
     {
         $data = $request->validated();
 
@@ -39,7 +39,7 @@ class NotesController extends Controller
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
 
 
-        $note = Note::create($data);
+        $note = TextNote::create($data);
         
         $note->user()->attach(Auth::id());
         if(!empty($data['tags'])) $note->tags()->attach($data['tags']);
@@ -63,14 +63,14 @@ class NotesController extends Controller
      */
     public function edit($id)
     {
-        $note = Note::findOrFail($id);
+        $note = TextNote::findOrFail($id);
     
 
         $tags = $note->tags()->get();
         $note->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
     
 
-        return view('admin/assets/notes/edit', ['note' => $note]);
+        return view('admin/assets/textNotes/edit', ['note' => $note]);
     }
 
     /**
@@ -80,11 +80,11 @@ class NotesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(NoteEditRequest $request, $id)
+    public function update(TextNoteEditRequest $request, $id)
     {
         $data = $request->validated();
         
-        $note = Note::findOrFail($id);
+        $note = TextNote::findOrFail($id);
 
         
     

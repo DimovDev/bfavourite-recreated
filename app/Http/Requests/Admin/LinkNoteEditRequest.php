@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PhotoEditRequest extends FormRequest
+class LinkNoteEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,9 +30,13 @@ class PhotoEditRequest extends FormRequest
             'content' => 'required',
             'summary' => 'nullable|max:500',
             'published_at' => 'date',
-            'tags' => 'required'
-
+            'tags' => 'required',
+            'meta.link_url' => 'required|active_url',
+            'meta.link_title' => 'required|max:255|min:2',
+            'meta.link_desc' => 'nullable|max:500',
+            'meta.publisher' => 'required|max:55|min:2'
 
         ];
+
     }
 }

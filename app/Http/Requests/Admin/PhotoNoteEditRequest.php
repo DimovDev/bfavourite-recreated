@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NoteEditRequest extends FormRequest
+class PhotoNoteEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,6 +31,7 @@ class NoteEditRequest extends FormRequest
             'summary' => 'nullable|max:500',
             'published_at' => 'date',
             'tags' => 'required'
+
 
         ];
     }

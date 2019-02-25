@@ -2,6 +2,9 @@
 @inject('linkStatus', 'App\Models\Asset\PostStatus')
 @inject('tag', 'App\Models\Taxonomy\Tag')
 
+@php
+ $link = $link ?? null;
+@endphp
 
 @section('main-classes', 'edit posts-edit')
 
@@ -21,7 +24,7 @@
  </div>
 @endif
 
-<form method="post" action="{{isset($link) ? route('admin.links.update', [$link->id]) : route('admin.links.store')}}">
+<form method="post" action="{{isset($link) ? route('admin.linkNotes.update', [$link->id]) : route('admin.linkNotes.store')}}">
   <input type="hidden" name="_method" value="{{isset($link) ? 'PUT' : 'POST'}}" />
 
 <div class="form-group">
@@ -83,7 +86,7 @@
      <div class="form-group">
       <label for="link_url">{{__('Link URL')}}</label>
       <div class="input-group"> 
-        <input type="text" class="form-control" id="link_url" name="link_url" value="{{old('link_url') ?? $link->link_url ?? null}}" />
+        <input type="text" class="form-control" id="link_url" name="meta[link_url]" value="{{old('meta.link_url') ?? (isset($link) ? $link->getMeta('link_url') : null)}}" />
         <div class="input-group-append">       
         <button class="btn btn-secondary link_url_fetch" type="button">
           <span class="spinner-border spinner-border-sm" role="status">
@@ -117,17 +120,17 @@
 
     <div class="form-group">
         <label for="title">{{__('Link Title')}}</label>
-        <input type="text" class="form-control" id="link_title" name="link_title" value="{{old('link_title') ?? $link->link_title ?? null}}" />
+        <input type="text" class="form-control" id="link_title" name="meta[link_title]" value="{{old('meta.link_title') ?? (isset($link) ? $link->getMeta('link_title') : null)}}" />
     </div>
 
     <div class="form-group">
         <label for="publiher">{{__('Publisher')}}</label>
-        <input type="text" class="form-control" id="publisher" name="publisher" value="{{old('publisher') ?? $link->link_url ?? null}}" />
+        <input type="text" class="form-control" id="publisher" name="meta[publisher]" value="{{old('meta.publisher') ?? (isset($link) ? $link->getMeta('publisher') : null)}}" />
     </div>
 
     <div class="form-group">
       <label for="tags">{{__('Link Description')}}</label>
-      <input type="text" id="link_desc" class="form-control" name="link_desc" data-pillfield="{{old('link_desc') ?? $link->link_desc ?? null}}" value="" />
+      <input type="text" id="link_desc" class="form-control" name="meta[link_desc]" value="{{old('meta.link_desc') ?? (isset($link) ? $link->getMeta('link_desc') : null)}}" />
     </div>
 
  

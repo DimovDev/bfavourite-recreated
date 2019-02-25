@@ -7,16 +7,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Asset\Link;
+use App\Models\Asset\LinkNote;
 use App\Models\Media\{ImageFile, UrlImage, Media};
-use App\Http\Requests\Admin\LinkEditRequest;
+use App\Http\Requests\Admin\LinkNoteEditRequest;
 use App\Http\Requests\Admin\OpenGraphRequest;
 use App\Helpers\PillFieldHelper;
 use App\Exceptions\UrlImageException;
 
 use shweshi\OpenGraph\Facades\OpenGraphFacade as OpenGraph;
 
-class LinksController extends Controller
+class LinkNotesController extends Controller
 {
 
     /**
@@ -27,7 +27,7 @@ class LinksController extends Controller
     public function create()
     {   
 
-        return view('admin/assets/links/edit');
+        return view('admin/assets/linkNotes/edit');
     }
 
     /**
@@ -36,15 +36,23 @@ class LinksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LinkEditRequest $request)
+    public function store(LinkNoteEditRequest $request)
     {
         $data = $request->validated();
+
+        $photo = $request->only('photo');
+
+        if(isset($photo['photo'])) {
+
+            $photo = json_decode($photo['photo']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+         }
 
 
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
 
 
-        $link = Link::create($data);
+        $link = LinkNote::create($data);
         
         $link->user()->attach(Auth::id());
         if(!empty($data['tags'])) $link->tags()->attach($data['tags']);
@@ -68,14 +76,16 @@ class LinksController extends Controller
      */
     public function edit($id)
     {
-        $link = Link::findOrFail($id);
+        $link = LinkNote::findOrFail($id);
     
 
         $tags = $link->tags()->get();
         $link->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
-    
 
-        return view('admin/assets/links/edit', ['link' => $link]);
+        $photo = $link->photo()->first();
+        if($photo) $link->photo = json_encode([$photo->toArray()]);
+
+        return view('admin/assets/linkNotes/edit', ['link' => $link]);
     }
 
     /**
@@ -85,12 +95,20 @@ class LinksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LinkEditRequest $request, $id)
+    public function update(LinkNoteEditRequest $request, $id)
     {
         $data = $request->validated();
         
-        $link = Link::findOrFail($id);
+        $link = LinkNote::findOrFail($id);
 
+        $photo = $request->only('photo');
+        $data['photo'] = null;
+
+        if(isset($photo['photo'])) {
+
+            $photo = json_decode($photo['photo']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+         }
         
     
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
@@ -112,6 +130,10 @@ class LinksController extends Controller
         $og = OpenGraph::fetch($url);
         $data = [];
 
+        $host = parse_url(route('home'), PHP_URL_HOST);
+        
+        $is_own = stripos($url, $host) === 0 ? true : false;
+
         if(!empty($og)) {
 
             if(isset($og['url'])) $data['link_url'] = $og['url'];
@@ -124,20 +146,26 @@ class LinksController extends Controller
 
            try {
           //  $data['photo'] = 'http://bfavourite.local/admin/links/create';
-      
-            $image = new UrlImage($data['photo'], config('media.images'));
-      
-            $image->upload();
-      
-            $sizes = $image->getAvailableSizes();
-      
-            Media::create(['media_type' => $image->getClientMediaType(),
-            'title' => $image->getClientFilename(),
-            'url' => $image->getUri(),
-            'sizes' => $sizes ? json_encode($sizes) : null]);
+           if(!$is_own) {
 
-            $photo = ['url' => $image->getUri(), 'name' => $image->getClientFilename()];
-            $data['photo'] = $photo;
+                $image = new UrlImage($data['photo'], config('media.images'));
+        
+                $image->upload();
+        
+                $sizes = $image->getAvailableSizes();
+        
+                $media = Media::create(['media_type' => $image->getClientMediaType(),
+                                        'title' => $image->getClientFilename(),
+                                        'url' => $image->getUri(),
+                                        'sizes' => $sizes ? json_encode($sizes) : null]);
+
+            } else {
+
+               $media = Media::where('url', $url)->get();
+
+            }
+
+            $data['photo'] = $media->toArray();
 
         } catch (UrlImageException $e) { 
 

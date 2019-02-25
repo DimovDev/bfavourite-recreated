@@ -89,17 +89,26 @@ class AssetsController extends Controller
     public function autocomplete(Request $request) {
 
         $term = $request->only('term');
+        $types = $request->only('types');
+        if($types) $types = explode(',', $types['types']);
+
         $term = $term['term'] ?? null;
         $results = [];
 
         
       if ($term) {
-        $assets = Asset::where('title', 'LIKE', '%'.$term.'%')->take(5)->get();
-         
+
+        $assets = Asset::where('title', 'LIKE', '%'.$term.'%');
+
+        if(!empty($types)) $assets->whereIn('asset_type', $types);
+        
+        $assets = $assets->take(5)->get();
+
         foreach($assets as $asset) {
 
            $results[] = ['id' => $asset->id,
-                         'value'=> $asset->title.' #'.$asset->asset_type];
+                         'value'=> $asset->title.' #'.$asset->asset_type,
+                         'url' => route('home')];
         }
 
        } 

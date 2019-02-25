@@ -23,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
 
             'post' => 'App\Models\Asset\Post',
             'project' => 'App\Models\Asset\Project',
-            'photo' => 'App\Models\Asset\Photo',
-            'link' => 'App\Models\Asset\Link',
-            'note' => 'App\Models\Asset\Note',
+            'photoNote' => 'App\Models\Asset\PhotoNote',
+            'linkNote' => 'App\Models\Asset\LinkNote',
+            'textNote' => 'App\Models\Asset\TextNote',
             'tag' => 'App\Models\Taxonomy\Tag',
 
         ]);

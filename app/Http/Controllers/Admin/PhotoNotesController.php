@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Asset\Photo;
-use App\Http\Requests\Admin\PhotoEditRequest;
+use App\Models\Asset\PhotoNote;
+use App\Http\Requests\Admin\PhotoNoteEditRequest;
 use App\Helpers\PillFieldHelper;
 
-class PhotosController extends Controller
+class PhotoNotesController extends Controller
 {
 
     /**
@@ -22,7 +22,7 @@ class PhotosController extends Controller
     public function create()
     {   
 
-        return view('admin/assets/photos/edit');
+        return view('admin/assets/photoNotes/edit');
     }
 
     /**
@@ -31,7 +31,7 @@ class PhotosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PhotoEditRequest $request)
+    public function store(PhotoNoteEditRequest $request)
     {
         $data = $request->validated();
 
@@ -46,7 +46,7 @@ class PhotosController extends Controller
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
 
 
-        $photoNote = Photo::create($data);
+        $photoNote = PhotoNote::create($data);
         
         $photoNote->user()->attach(Auth::id());
         if(!empty($data['tags'])) $photoNote->tags()->attach($data['tags']);
@@ -70,7 +70,7 @@ class PhotosController extends Controller
      */
     public function edit($id)
     {
-        $photoNote = Photo::findOrFail($id);
+        $photoNote = PhotoNote::findOrFail($id);
         $photo = $photoNote->photo()->first();
         
         if($photo) $photoNote->photo = json_encode([$photo->toArray()]);
@@ -79,7 +79,7 @@ class PhotosController extends Controller
         $photoNote->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
     
 
-        return view('admin/assets/photos/edit', ['photo' => $photoNote]);
+        return view('admin/assets/photoNotes/edit', ['photo' => $photoNote]);
     }
 
     /**
@@ -89,11 +89,11 @@ class PhotosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PhotoEditRequest $request, $id)
+    public function update(PhotoNoteEditRequest $request, $id)
     {
         $data = $request->validated();
         
-        $photoNote = Photo::findOrFail($id);
+        $photoNote = PhotoNote::findOrFail($id);
 
         $photo = $request->only('photo');
         $data['photo'] = null;

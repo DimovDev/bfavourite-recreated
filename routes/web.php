@@ -57,21 +57,21 @@ Route::group(['as' => 'admin.',
     Route::get('admin/assets', 'Admin\AssetsController@index')->name('assets.index');
     Route::delete('admin/assets/destroy', 'Admin\AssetsController@destroy')->name('assets.destroy'); 
 
-    Route::get('admin/photos/{photo}/edit', 'Admin\PhotosController@edit')->name('photos.edit');
-    Route::get('admin/photos/create', 'Admin\PhotosController@create')->name('photos.create');
-    Route::post('admin/photos', 'Admin\PhotosController@store')->name('photos.store');
-    Route::put('admin/photos/{photo}', 'Admin\PhotosController@update')->name('photos.update');
+    Route::get('admin/photos/{photo}/edit', 'Admin\PhotoNotesController@edit')->name('photoNotes.edit');
+    Route::get('admin/photos/create', 'Admin\PhotoNotesController@create')->name('photoNotes.create');
+    Route::post('admin/photos', 'Admin\PhotoNotesController@store')->name('photoNotes.store');
+    Route::put('admin/photos/{photo}', 'Admin\PhotoNotesController@update')->name('photoNotes.update');
 
-    Route::get('admin/links/{link}/edit', 'Admin\LinksController@edit')->name('links.edit');
-    Route::get('admin/links/create', 'Admin\LinksController@create')->name('links.create');
-    Route::post('admin/links', 'Admin\LinksController@store')->name('links.store');
-    Route::put('admin/links/{photo}', 'Admin\LinksController@update')->name('links.update');
-    Route::post('admin/links/opengraph', 'Admin\LinksController@opengraph')->name('links.opengraph');
+    Route::get('admin/links/{link}/edit', 'Admin\LinkNotesController@edit')->name('linkNotes.edit');
+    Route::get('admin/links/create', 'Admin\LinkNotesController@create')->name('linkNotes.create');
+    Route::post('admin/links', 'Admin\LinkNotesController@store')->name('linkNotes.store');
+    Route::put('admin/links/{photo}', 'Admin\LinkNotesController@update')->name('linkNotes.update');
+    Route::post('admin/links/opengraph', 'Admin\LinkNotesController@opengraph')->name('linkNotes.opengraph');
 
-    Route::get('admin/notes/{note}/edit', 'Admin\NotesController@edit')->name('notes.edit');
-    Route::get('admin/notes/create', 'Admin\NotesController@create')->name('notes.create');
-    Route::post('admin/notes', 'Admin\NotesController@store')->name('notes.store');
-    Route::put('admin/notes/{note}', 'Admin\NotesController@update')->name('notes.update');
+    Route::get('admin/notes/{note}/edit', 'Admin\TextNotesController@edit')->name('textNotes.edit');
+    Route::get('admin/notes/create', 'Admin\TextNotesController@create')->name('textNotes.create');
+    Route::post('admin/notes', 'Admin\TextNotesController@store')->name('textNotes.store');
+    Route::put('admin/notes/{note}', 'Admin\TextNotesController@update')->name('textNotes.update');
 
 
   

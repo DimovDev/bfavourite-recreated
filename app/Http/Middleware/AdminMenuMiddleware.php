@@ -46,12 +46,12 @@ class AdminMenuMiddleware
                    
         $this->menuBuilder->find('Newsfeed')
                    ->setIcon('plus-square')
-                   ->add('All Notes', '#')
+                   ->add('All Notes', route('admin.assets.index'))
                    ->add('Create', '#')
                    ->find('Create')
-                   ->add('Text Note','#')
-                   ->add('Link Note', '#')
-                   ->add('Photo Note', '#');
+                   ->add('Text Note', route('admin.textNotes.create'))
+                   ->add('Link Note', route('admin.linkNotes.create'))
+                   ->add('Photo Note', route('admin.photoNotes.create'));
                    
         $this->menuBuilder->find('Posts')
                    ->setIcon('edit')

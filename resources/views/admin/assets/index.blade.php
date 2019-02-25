@@ -41,7 +41,7 @@
            <tr>
               <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$asset->id}}" /></td>
               <td class="link"> {{$asset->title}} <a href="{{route('admin.'.$asset->asset_type.'s.edit', [$asset->id])}}">{{__('edit')}}</a></td>
-              <td><i class="fa fa-{{$icon->get($asset->asset_type)}}" title="{{$asset->asset_type}}"></i></td>
+              <td><i class="fa fa-{{$icon->get(str_replace('Note', '', $asset->asset_type))}}" title="{{$asset->asset_type}}"></i></td>
               <td>
                 @if($asset->tags)
               

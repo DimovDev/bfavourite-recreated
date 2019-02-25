@@ -46,7 +46,7 @@ class UrlImage extends ImageFile {
             throw new UrlImageException('The OG image\'s format('.$mime_type.') isn\'t allowed.');
         }
 
-        if(filesize($temp) > $this->settings['file_size']['max']) {
+        if(filesize($temp) / 1000 > $this->settings['file_size']['max']) {
 
             unlink($temp);
             throw new UrlImageException('The OG image is too big.');

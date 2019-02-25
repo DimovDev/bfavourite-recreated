@@ -86,10 +86,23 @@ $(document).ready(function() {
     },
 
     });   
-    
+  
+    $('[name="meta[link_url]"]').autocomplete({
+      source: '/admin/assets/auto?types=project,post',
+      minLength: 3,
+
+      select: (event, ui) => {
+
+        $('[name="meta[link_url]"]').val(ui.item.url);
+        return false;
+
+      }
+
+    });
+
     
     let fetch = $('.link_url_fetch');
-    let link = $('[name="link_url"]')
+    let link = $('[name="meta[link_url]"]')
 
     fetch.on('click', ev => {
 
@@ -122,9 +135,9 @@ $(document).ready(function() {
                           photo.load([response.photo]);
                         }
                         if(response.message) link.closest('.form-group').find('.valid-feedback').html(response.message);
-                        if(response.title) $('[name="link_title"]').val(response.title);
-                        if(response.publisher) $('[name="publisher"]').val(response.publisher);
-                        if(response.link_desc) $('[name="link_desc"]').val(response.link_desc);
+                        if(response.title) $('[name="meta[link_title]"]').val(response.title);
+                        if(response.publisher) $('[name="meta[publisher]"]').val(response.publisher);
+                        if(response.link_desc) $('[name="meta[link_desc]"]').val(response.link_desc);
       
 
                      }).fail(response => {

@@ -22,7 +22,7 @@
  </div>
 @endif
 
-<form method="post" action="{{isset($note) ? route('admin.notes.update', [$note->id]) : route('admin.notes.store')}}">
+<form method="post" action="{{isset($note) ? route('admin.textNotes.update', [$note->id]) : route('admin.textNotes.store')}}">
   <input type="hidden" name="_method" value="{{isset($note) ? 'PUT' : 'POST'}}" />
 
 <div class="form-group">
