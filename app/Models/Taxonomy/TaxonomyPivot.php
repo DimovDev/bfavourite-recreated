@@ -12,7 +12,7 @@ class TaxonomyPivot extends Model
          
            $query->join('taxonomies', 'taxonomy_id', '=', 'taxonomies.id')
                  ->where('taxonomy_type', $taxonomy_type)
-                 ->select('taxonomies.*');
+                 ->select('taxonomies.*', 'obj_id', 'obj_type');
 
     }
 }

@@ -8,7 +8,7 @@ use App\Helpers\SlugHelper;
 class Taxonomy extends Model
 {
      
-    protected $fillable = ['name', 'slug', 'taxonomy_status', 'taxonomy_type', 'icon', 'summary'];
+    protected $fillable = ['name', 'slug', 'taxonomy_status', 'taxonomy_type', 'icon_id', 'summary'];
 
     public function setSlugAttribute($value) {
 
@@ -31,14 +31,14 @@ class Taxonomy extends Model
 
     public function user() {
 
-        return $this->morphToMany('App\User', 'obj', 'user_object');
+        return $this->morphToMany('App\Models\User\User', 'obj', 'user_object');
   
       }
 
 
       public function icon() {
 
-        return $this->belongsTo('App\Media', 'icon');
+        return $this->belongsTo('App\Models\Media\Media', 'icon_id');
         
      }
 

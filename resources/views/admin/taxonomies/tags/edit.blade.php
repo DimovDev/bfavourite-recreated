@@ -33,7 +33,7 @@
 
       <div class="col-3">
         <div class="photo">
-          <button type="button" class="btn btn-secondary" data-media-field="icon" data-media-value="{{old('icon') ?? $tag->icon ?? null}}">{{__('Add an icon')}}</button>
+          <button type="button" class="btn btn-secondary" data-media-field="icon_id" data-media-value="{{old('icon_id') ?? $tag->icon ?? null}}">{{__('Add an icon')}}</button>
         </div>
       </div>
 

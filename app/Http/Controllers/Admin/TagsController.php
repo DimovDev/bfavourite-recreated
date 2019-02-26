@@ -49,13 +49,13 @@ class TagsController extends Controller
     {
         $data = $request->validated();
 
-        $icon = $request->only('icon');
-        $data['icon'] = null;
+        $icon = $request->only('icon_id');
+        $data['icon_id'] = null;
 
-        if(isset($icon['icon'])) {
+        if(isset($icon['icon_id'])) {
 
-            $icon = json_decode($icon['icon']);
-            if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
+            $icon = json_decode($icon['icon_id']);
+            if(!empty($icon) && !empty($icon[0]->id)) $data['icon_id'] = (int) $icon[0]->id;
         }
         
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
@@ -116,13 +116,13 @@ class TagsController extends Controller
         
         $tag = Tag::findOrFail($id);
 
-        $icon = $request->only('icon');
-        $data['icon'] = null;
+        $icon = $request->only('icon_id');
+        $data['icon_id'] = null;
 
-        if(isset($icon['icon'])) {
+        if(isset($icon['icon_id'])) {
 
-            $icon = json_decode($icon['icon']);
-            if(!empty($icon) && !empty($icon[0]->id)) $data['icon'] = (int) $icon[0]->id;
+            $icon = json_decode($icon['icon_id']);
+            if(!empty($icon) && !empty($icon[0]->id)) $data['icon_id'] = (int) $icon[0]->id;
          }
 
          if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);

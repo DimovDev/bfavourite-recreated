@@ -62,7 +62,7 @@
 
       <div class="form-group">
         <label for="published_at">{{__('Published at')}}</label>
-        <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $post->published_at ?? date('Y-m-d')}}" />
+        <input type="text" class="form-control" id="published_at" name="published_at" value="{{old('published_at') ?? $note->published_at ?? date('Y-m-d')}}" />
       </div>
 
 </div>
@@ -73,7 +73,7 @@
         <select id="asset_status" name="asset_status" class="form-control">
           @foreach($noteStatus->all() as $status)
             <option {{old('asset_status') == $status || 
-                    (isset($post) && $note->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
+                    (isset($note) && $note->asset_status == $status) ? 'selected' : null}}>{{$status}}</option>
           @endforeach
         </select>
       </div>

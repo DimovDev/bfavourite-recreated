@@ -51,13 +51,13 @@ class UsersController extends Controller
 
       $data['password'] = Hash::make($data['password']);
 
-      $photo = $request->only('photo');
-      $data['photo'] = null;
+      $photo = $request->only('photo_id');
+      $data['photo_id'] = null;
 
-      if(isset($photo['photo'])) {
+      if(isset($photo['photo_id'])) {
 
-          $photo = json_decode($photo['photo']);
-          if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+          $photo = json_decode($photo['photo_id']);
+          if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
        }
 
 
@@ -112,13 +112,13 @@ class UsersController extends Controller
 
        }
 
-       $photo = $request->only('photo');
-       $data['photo'] = null;
+       $photo = $request->only('photo_id');
+       $data['photo_id'] = null;
 
-       if(isset($photo['photo'])) {
+       if(isset($photo['photo_id'])) {
 
-           $photo = json_decode($photo['photo']);
-           if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+           $photo = json_decode($photo['photo_id']);
+           if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
         }
 
 

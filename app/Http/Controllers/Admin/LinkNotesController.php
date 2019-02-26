@@ -40,12 +40,12 @@ class LinkNotesController extends Controller
     {
         $data = $request->validated();
 
-        $photo = $request->only('photo');
+        $photo = $request->only('photo_id');
 
-        if(isset($photo['photo'])) {
+        if(isset($photo['photo_id'])) {
 
-            $photo = json_decode($photo['photo']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+            $photo = json_decode($photo['photo_id']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
          }
 
 
@@ -101,13 +101,13 @@ class LinkNotesController extends Controller
         
         $link = LinkNote::findOrFail($id);
 
-        $photo = $request->only('photo');
-        $data['photo'] = null;
+        $photo = $request->only('photo_id');
+        $data['photo_id'] = null;
 
-        if(isset($photo['photo'])) {
+        if(isset($photo['photo_id'])) {
 
-            $photo = json_decode($photo['photo']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+            $photo = json_decode($photo['photo_id']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
          }
         
     
@@ -140,15 +140,15 @@ class LinkNotesController extends Controller
             if(isset($og['title'])) $data['title'] = $og['title'];
             if(isset($og['description'])) $data['link_desc'] = $og['description'];
             if(isset($og['site_name'])) $data['publisher'] = $og['site_name'];
-            if(isset($og['image'])) $data['photo'] = $og['image'];
-            if(isset($og['image:url'])) $data['photo'] = $og['image:url'];
+            if(isset($og['image'])) $data['photo_id'] = $og['image'];
+            if(isset($og['image:url'])) $data['photo_id'] = $og['image:url'];
 
 
            try {
           //  $data['photo'] = 'http://bfavourite.local/admin/links/create';
            if(!$is_own) {
 
-                $image = new UrlImage($data['photo'], config('media.images'));
+                $image = new UrlImage($data['photo_id'], config('media.images'));
         
                 $image->upload();
         
@@ -165,7 +165,7 @@ class LinkNotesController extends Controller
 
             }
 
-            $data['photo'] = $media->toArray();
+            $data['photo_id'] = $media->toArray();
 
         } catch (UrlImageException $e) { 
 

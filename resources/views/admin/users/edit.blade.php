@@ -1,6 +1,6 @@
 @extends('admin/layouts/main')
-@inject('userRole', 'App\UserRole')
-@inject('userStatus', 'App\UserStatus')
+@inject('userRole', 'App\Models\User\UserRole')
+@inject('userStatus', 'App\Models\User\UserStatus')
 
 @section('main-classes', 'edit users-edit')
 
@@ -25,7 +25,7 @@
 
   <div class="col-3 mr-3">
     <div class="photo">
-      <button type="button" class="btn btn-secondary" data-media-field="photo" data-media-value="{{old('photo') ?? $user->photo ?? null}}">{{__('Add a photo')}}</button>
+      <button type="button" class="btn btn-secondary" data-media-field="photo_id" data-media-value="{{old('photo_id') ?? $user->photo ?? null}}">{{__('Add a photo')}}</button>
     </div>
   </div>
 

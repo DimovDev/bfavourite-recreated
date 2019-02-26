@@ -2,13 +2,14 @@
 
 namespace App\Models\Asset;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Helpers\SlugHelper;
 use App\Models\Asset\AssetMeta;
+use App\Models\Taxonomy\TaxonomyPivot;
+use Illuminate\Database\Eloquent\Model;
 
 class Asset extends Model
 {
-    protected $fillable = ['title', 'slug', 'asset_status', 'summary', 'content', 'published_at', 'photo'];
+    protected $fillable = ['title', 'slug', 'asset_status', 'summary', 'content', 'published_at', 'photo_id'];
 
     protected $dates = ['published_at'];
 
@@ -54,7 +55,7 @@ class Asset extends Model
 
      } else {
 
-       $this->detach();
+       $this->assetsMeta()->delete();
        
      }
   
@@ -87,10 +88,11 @@ class Asset extends Model
   
           return $this->asset_status;
       }
+      
 
       public function photo() {
 
-         return $this->belongsTo('App\Models\Media\Media', 'photo');
+         return $this->belongsTo('App\Models\Media\Media', 'photo_id');
          
       }
 
@@ -130,8 +132,63 @@ class Asset extends Model
 
     public function tags() {
 
-      return $this->morphToMany('App\Models\Taxonomy\Tag', 'obj', 'taxonomy_object', null, 'taxonomy_id');
+      return $this->morphToMany('App\Models\Taxonomy\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
 
+    }
+
+    public function scopePublishedNotes($query) {
+       
+      return  $query->where('asset_type', 'LIKE', '%Note%')
+                    ->where('asset_status', 'publish')
+                    ->where('assets.published_at', '<=', date('Y-m-d h:i:s'))
+                    ->orderBy('assets.published_at', 'DESC')
+                    ->orderBy('assets.id', 'DESC');
+
+    }
+
+
+    public static function loadNotesTags($notes) {
+
+      $notes_ids = $notes->map(function($item, $key) {
+
+        return $item->id;
+
+       });  
+
+       $notes_types = $notes->map(function($item, $key) {
+
+          return $item->asset_type;
+
+        });  
+
+        
+        $tags = TaxonomyPivot::withData('tag')
+                                ->whereIn('obj_id', $notes_ids)
+                                ->whereIn('obj_type', $notes_types)
+        
+                                ->get();
+          
+
+        foreach($notes as $note) {
+          
+            $note->tags = $tags->filter(function($tag, $key) use($note) {
+            
+                return $tag->obj_id == $note->id && $tag->obj_type == $note->asset_type;
+
+            });
+
+
+          }                       
+
+          return $notes;
+    }
+
+    public static function notes() {
+     
+      $notes = Asset::PublishedNotes()->paginate();
+
+      return Asset::loadNotesTags($notes);
+     
     }
 
 

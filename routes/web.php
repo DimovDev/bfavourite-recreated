@@ -11,17 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('siteNavigation');
+
+
+
+Route::group(['middleware' => ['siteNavigation']], function() {
+  
+   Route::get('/', 'Frontend\NewsfeedController@index')->name('home'); 
+   Route::get('/tag/{id}', 'Frontend\NewsfeedController@tag')->name('newsfeed.tag'); 
+   Route::get('/post/{id}', 'Frontend\NewsfeedController@post')->name('newsfeed.post'); 
+   Route::get('/project/{id}', 'Frontend\NewsfeedController@project')->name('newsfeed.project'); 
+
+});
+
 
 Route::group(['middleware' =>['adminMenu','siteNavigation']], function() {
 
-              Auth::routes();
+    Auth::routes();
 
-              });
-
-Route::get('/home', 'HomeController@index')->name('home');
+ });
 
 
 Route::group(['as' => 'admin.',

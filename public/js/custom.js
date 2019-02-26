@@ -41,8 +41,8 @@ $(document).ready(function() {
       
 
 
-     var photo = new MediaLibField($, 'photo');
-     new MediaLibField($, 'icon');
+     var photo = new MediaLibField($, 'photo_id');
+     new MediaLibField($, 'icon_id');
      
      new PillField($, {field: 'tags',
                        source: '/admin/tags/auto'});

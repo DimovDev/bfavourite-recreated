@@ -14,9 +14,9 @@ class PostStatus extends Status
        return $this->system_statuses; 
     }
 
-    public function all($with_sys = false) {
+    public function all($with_system_statuses = false) {
 
-        return !$with_sys ? parent::all() : array_merge($this->statuses, $this->system_statuses);
+        return !$with_system_statuses ? parent::all() : array_merge($this->statuses, $this->system_statuses);
     } 
 }
 

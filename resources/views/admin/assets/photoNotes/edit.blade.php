@@ -52,7 +52,7 @@
 
 <div class="col-5">
   <div class="photo">
-    <button type="button" class="btn btn-secondary" data-media-field="photo" data-media-value="{{old('photo') ?? $photo->photo ?? null}}">{{__('Add a photo')}}</button>
+    <button type="button" class="btn btn-secondary" data-media-field="photo_id" data-media-value="{{old('photo_id') ?? $photo->photo ?? null}}">{{__('Add a photo')}}</button>
   </div>
 </div>
 

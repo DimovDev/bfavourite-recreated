@@ -35,12 +35,12 @@ class PhotoNotesController extends Controller
     {
         $data = $request->validated();
 
-        $photo = $request->only('photo');
+        $photo = $request->only('photo_id');
 
-        if(isset($photo['photo'])) {
+        if(isset($photo['photo_id'])) {
 
-            $photo = json_decode($photo['photo']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+            $photo = json_decode($photo['photo_id']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
           }
 
         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
@@ -95,13 +95,13 @@ class PhotoNotesController extends Controller
         
         $photoNote = PhotoNote::findOrFail($id);
 
-        $photo = $request->only('photo');
+        $photo = $request->only('photo_id');
         $data['photo'] = null;
 
-        if(isset($photo['photo'])) {
+        if(isset($photo['photo_id'])) {
 
-            $photo = json_decode($photo['photo']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo'] = (int) $photo[0]->id;
+            $photo = json_decode($photo['photo_id']);
+            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
          }
         
     

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'user_status', 'photo'
+        'name', 'email', 'password', 'role', 'user_status', 'photo_id'
     ];
 
     /**
@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function photo() {
 
-        return $this->belongsTo('App\Media', 'photo');
+        return $this->belongsTo('App\Models\Media\Media', 'photo_id');
         
      }
 
@@ -50,7 +50,7 @@ class User extends Authenticatable
      
      public function posts() {
 
-        return $this->morphedByMany('App\Post', 'obj', 'user_object');
+        return $this->morphedByMany('App\Models\Asset\Post', 'obj', 'user_object');
      }  
 
          /*
@@ -59,15 +59,15 @@ class User extends Authenticatable
      
     public function projects() {
 
-        return $this->morphedByMany('App\Project', 'obj', 'user_object');
+        return $this->morphedByMany('App\Models\Asset\Project', 'obj', 'user_object');
      }  
 
          /*
-     * Get all categories of the user
+     * Get all tags of the user
      */
      
-    public function categories() {
+    public function tags() {
 
-        return $this->morphedByMany('App\Category', 'obj', 'user_object');
+        return $this->morphedByMany('App\Models\Taxonomy\Tag', 'obj', 'user_object');
      }  
 }
