@@ -1,3 +1,4 @@
+
 body {
         
 
@@ -6,6 +7,14 @@ body {
     padding-bottom: 100px;
 
   }
+
+
+
+ pre[class*="language-"] code {
+
+    white-space: pre-wrap;
+
+ }
 
   ul {
 
@@ -23,7 +32,7 @@ ul li {
   body > .container {
 
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: wrap;
 
@@ -323,7 +332,14 @@ main,
      
     flex-basis: 51%;
     background-color: transparent;
+    margin: 10px 1% 2% 1%;
 
+ }
+
+ main.blog,
+ main.project {
+
+    flex-basis: 65%;
  }
 
 
@@ -349,7 +365,7 @@ main,
 
   .card-content .card-subtitle {
 
-      font: 700 15px Arial, sans-serif;
+      font: 700 15px "Open Sans", Tahoma, sans-serif;
       margin: 0;
       margin-bottom: -3px;
 
@@ -400,17 +416,32 @@ main,
 
       max-height: 300px;
 
+      background-image: linear-gradient(to bottom, white, #f7f7f7)
+
 
   }
 
   .card-content .card-footer .card-link {
+     
+    padding: 5px 15px;
 
-      padding: 5px 15px;
   }
-  .card-content .card-footer .card-link h3 {
+
+  .card-content .card-footer .card-link a {
+
+      color: #000;
+
+  }
+  .card-content .card-footer .card-link a h3 {
 
       margin: 0;
-      color: #000;
+      font-size: 20px;
+      
+  }
+
+  .card-content .card-footer {
+
+    border: 0px;
   }
 
   .card-content .card-tags {
@@ -429,8 +460,15 @@ main,
 
 /* Right Sidebar Styles */
 
+.right-sidebar .card-sidebar .card-header   {
 
-.right-sidebar .card-footer h3 {
+padding-bottom: 0;
+
+}
+
+
+
+.right-sidebar .card-footer .card-link a h3 {
 
     font-size: 16px;
 }
@@ -438,6 +476,7 @@ main,
 .right-sidebar .card-footer {
 
     background-color: #fff;
+    border: 0;
 }
 
 .right-sidebar .tag {

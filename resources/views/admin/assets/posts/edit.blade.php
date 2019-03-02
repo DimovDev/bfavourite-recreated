@@ -53,7 +53,7 @@
 
 <div class="col-5">
   <div class="photo">
-    <button type="button" class="btn btn-secondary" data-media-field="photo_id" data-media-value="{{old('photo_id') ?? $post->photo ?? null}}">{{__('Add a photo')}}</button>
+    <button type="button" class="btn btn-secondary" data-media-field="photo_id" data-media-value="{{old('photo_id') ?? $post->formatted_photo ?? null}}">{{__('Add a photo')}}</button>
   </div>
 </div>
 
@@ -66,7 +66,7 @@
 
     <div class="form-group">
       <label for="tags">{{__('Tags')}}</label>
-      <input type="text" id="tags" class="form-control" name="tags" data-pillfield="{{old('tags') ?? $post->tags ?? null}}" value="" />
+      <input type="text" id="tags" class="form-control" name="tags" data-pillfield="{{old('tags') ?? $post->formatted_tags ?? null}}" value="" />
     </div>
 
       <div class="form-group">

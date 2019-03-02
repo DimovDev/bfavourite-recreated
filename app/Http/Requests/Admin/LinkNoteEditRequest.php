@@ -34,7 +34,8 @@ class LinkNoteEditRequest extends FormRequest
             'meta.link_url' => 'required|active_url',
             'meta.link_title' => 'required|max:255|min:2',
             'meta.link_desc' => 'nullable|max:500',
-            'meta.publisher' => 'required|max:55|min:2'
+            'meta.publisher' => 'required|max:55|min:2',
+            'photo_id' => 'nullable'
 
         ];
 

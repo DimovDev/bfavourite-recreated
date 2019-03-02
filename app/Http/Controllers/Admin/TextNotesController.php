@@ -34,19 +34,11 @@ class TextNotesController extends Controller
     public function store(TextNoteEditRequest $request)
     {
         $data = $request->validated();
-
-
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
-
+        $data['user_id'] = Auth::id();
+ 
+    
         $note = TextNote::create($data);
-        
-        $note->user()->attach(Auth::id());
-        if(!empty($data['tags'])) $note->tags()->attach($data['tags']);
 
-
-
-     
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The note was created.']));
@@ -65,11 +57,6 @@ class TextNotesController extends Controller
     {
         $note = TextNote::findOrFail($id);
     
-
-        $tags = $note->tags()->get();
-        $note->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
-    
-
         return view('admin/assets/textNotes/edit', ['note' => $note]);
     }
 
@@ -86,13 +73,8 @@ class TextNotesController extends Controller
         
         $note = TextNote::findOrFail($id);
 
-        
-    
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
-
         $note->update($data);
-        if(!empty($data['tags'])) $note->tags()->sync($data['tags']);
+   
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The note was edited.']));

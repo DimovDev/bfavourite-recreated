@@ -2,8 +2,10 @@
 
 namespace App\Models\Taxonomy;
 
+use App\Models\Asset\Note;
 use App\Models\Asset\Asset;
 use App\Models\Taxonomy\Taxonomy;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends Taxonomy
@@ -33,6 +35,16 @@ class Tag extends Taxonomy
 
     }
 
+    public function delete() {
+
+        $this->notes()->detach();
+
+        $result = parent::delete();
+  
+        return $result;
+   
+      }
+
         /*
      * Get all posts of the tag
      */
@@ -58,7 +70,7 @@ class Tag extends Taxonomy
 
     public function tags() {
 
-        return $this->morphToMany('App\Models\Taxonomy\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
+        return $this->morphToMany('App\Models\Taxonomy\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id')->withPivot('base_type');
   
       }
 
@@ -73,46 +85,62 @@ class Tag extends Taxonomy
     }
 
 
-    public static function notes(array $tag_ids) {
+    public function scopeActive($query) {
 
-        $tag_id = array_shift($tag_ids);
+        return $query->where('taxonomy_status', 'active');
+    }
 
-        $notes = Asset::PublishedNotes()
-                       ->rightJoin('taxonomy_object', function($join) {
-                          
-                          $join->on('obj_id', '=', 'assets.id')
-                               ->on('obj_type', '=', 'assets.asset_type');
+    public function notes() {
 
-                       })
-                       ->select('assets.*')
-                       ->where('taxonomy_id', $tag_id)
-                       ->with('tags')
-                       ->paginate();
+        return $this->morphedByMany('App\Models\Asset\Note', 'base', 'taxonomy_object', 'taxonomy_id', 'obj_id');
 
-        $notes = $notes->unique('id');       
+   }
+
+
+    public static function notesWithTags(array $tag_ids) {
+
+        $tag_id = (int) array_shift($tag_ids);
+
+        $notes = Note::published()
+                      ->select('assets.*')
+                      ->join('taxonomy_object AS to', function($join){
+                          $join->on('assets.id', '=', 'to.obj_id');
+                          $join->on('assets.asset_type', '=', 'to.obj_type');
+                      })
+                      ->where('to.taxonomy_id', $tag_id);
+
+        foreach ($tag_ids AS $tag) {
+           $tag = (int) $tag;
+           $notes->whereRaw("(SELECT COUNT(to{$tag}.id) FROM taxonomy_object as to{$tag}
+                              WHERE to{$tag}.taxonomy_id = $tag
+                              AND to{$tag}.obj_id = assets.id 
+                              AND to{$tag}.obj_type = assets.asset_type) > 0");
         
-
-  
-        $notes = Asset::loadNotesTags($notes);
-
-        if(count($tag_ids) > 0) {  
-
-            $notes = $notes->filter(function($note, $key) use ($tag_ids) {
-                
-                $tags = $note->tags;
-   
-                foreach($tag_ids AS $id) {
-                    
-                  if(!$tags->where('id', $id)->first()) return;
-                   
-                }
-              
-                return true;
-   
-            });
         }
-   
-          return $notes;
+
+/*         $query = "SELECT assets.* FROM assets 
+                  INNER JOIN taxonomy_object as to1 
+                  ON assets.id = to1.obj_id 
+                  AND assets.asset_type = to1.obj_type 
+                  WHERE taxonomy_id = $tag_id
+                  AND assets.asset_status = 'publish'
+                  AND published_at <= '".date('Y-m-d h:i:s')."'";
+
+        foreach ($tag_ids AS $tag) {
+          
+          $tag = (int) $tag;
+
+          $query .= " AND (SELECT COUNT(to{$tag}.id) FROM taxonomy_object as to{$tag}
+                          WHERE to{$tag}.taxonomy_id = $tag
+                          AND to{$tag}.obj_id = assets.id 
+                          AND to{$tag}.obj_type = assets.asset_type) > 0";
+
+        }
+                  
+
+         $r = DB::select(DB::raw($query)); */
+         
+         return $notes;
        
       }
     

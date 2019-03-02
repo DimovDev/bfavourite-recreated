@@ -31,6 +31,7 @@ class TagEditRequest extends FormRequest
             'summary' => 'nullable|max:500',
             'asset_id' => 'nullable',
             'tags' => 'nullable',
+            'icon_id' => 'nullable',
         ];
 
     }

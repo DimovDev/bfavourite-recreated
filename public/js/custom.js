@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
 
-    feather.replace()
+ 
 
     $('#destroy-btn').on('click', function(){
        
@@ -134,6 +134,7 @@ $(document).ready(function() {
                           photo.destroy();
                           photo.load([response.photo]);
                         }
+                      
                         if(response.message) link.closest('.form-group').find('.valid-feedback').html(response.message);
                         if(response.title) $('[name="meta[link_title]"]').val(response.title);
                         if(response.publisher) $('[name="meta[publisher]"]').val(response.publisher);

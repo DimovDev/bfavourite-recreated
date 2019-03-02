@@ -14,12 +14,14 @@
 
 
 
-Route::group(['middleware' => ['siteNavigation']], function() {
+Route::group(['middleware' => ['siteNavigation', 'sidebar']], function() {
   
    Route::get('/', 'Frontend\NewsfeedController@index')->name('home'); 
    Route::get('/tag/{id}', 'Frontend\NewsfeedController@tag')->name('newsfeed.tag'); 
    Route::get('/post/{id}', 'Frontend\NewsfeedController@post')->name('newsfeed.post'); 
    Route::get('/project/{id}', 'Frontend\NewsfeedController@project')->name('newsfeed.project'); 
+   Route::get('/projects', 'Frontend\NewsfeedController@projects_archive')->name('newsfeed.projects');
+   Route::get('/posts', 'Frontend\NewsfeedController@posts_archive')->name('newsfeed.posts');
 
 });
 

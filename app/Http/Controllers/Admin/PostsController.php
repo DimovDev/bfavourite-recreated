@@ -49,27 +49,11 @@ class PostsController extends Controller
     public function store(PostEditRequest $request)
     {
         $data = $request->validated();
-
-        $photo = $request->only('photo_id');
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-          }
-
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
+        $data['user_id'] = Auth::id();
 
         $post = Post::create($data);
         
-        $post->user()->attach(Auth::id());
-        $post->tags()->attach($data['tags']);
 
-
-
-     
-        
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The post was created.']));
   
@@ -86,13 +70,6 @@ class PostsController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-        $photo = $post->photo()->first();
-        
-        if($photo) $post->photo = json_encode([$photo->toArray()]);
-
-        $tags = $post->tags()->get();
-        $post->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
-    
 
         return view('admin/assets/posts/edit', ['post' => $post]);
     }
@@ -110,22 +87,9 @@ class PostsController extends Controller
         
         $post = Post::findOrFail($id);
 
-        $photo = $request->only('photo_id');
-        $data['photo_id'] = null;
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-         }
-        
-    
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
-
         $post->update($data);
-        $post->tags()->sync($data['tags']);
- 
+
+
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The post was edited.']));
         
@@ -155,17 +119,10 @@ class PostsController extends Controller
            
           $post = Post::find($id);
           
-          if($post) { 
-            $post->user()->detach();
-            $post->tags()->detach();
-            $post->delete();
-          }
-
+          if($post) $post->delete();
+          
         }
          
-        
- 
-      
  
          session()->flash('message', new MessageBag(['status' => 'success',
                                                      'message' => 'Yeah! All selected posts were deleted.']));

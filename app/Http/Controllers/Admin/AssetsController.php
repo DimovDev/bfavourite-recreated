@@ -2,33 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Asset\Note;
+use App\Models\Asset\Asset;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User\UserPivot;
+
 use Illuminate\Support\Facade\DB;
 
+use Illuminate\Support\MessageBag;
 use App\Http\Controllers\Controller;
-
-use App\Models\Asset\Asset;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Taxonomy\TaxonomyPivot;
-use App\Models\User\UserPivot;
 
 class AssetsController extends Controller
 {
      
     public function index() {
 
-      $assets = Asset::whereNotIn('asset_type', ['post', 'project'])->orderBy('created_at', 'DESC')->paginate(25);
+      $assets = Note::whereNotIn('asset_type', ['post', 'project'])->orderBy('created_at', 'DESC')->paginate(25);
         
-      $assets->map(function($item, $key) {
-
-        $item->tags =  TaxonomyPivot::withData('tag') 
-                                    ->where('obj_id', $item->id)
-                                    ->where('obj_type', $item->asset_type)
-                                    ->get();
-
-      });
-
 
       
       return view('admin/assets/index')->with(['assets' => $assets,
@@ -57,25 +49,11 @@ class AssetsController extends Controller
         foreach($assets['destroy'] AS $asset_id) {
 
    
-          $asset = Asset::find($asset_id);
+          $asset = Note::find($asset_id);
 
 
-          if($asset) {
-
-            
-            UserPivot::where('obj_id', $asset->id)
-                       ->where('obj_type', $asset->asset_type)
-                       ->delete();
-
-    
-
-            TaxonomyPivot::where('obj_id', $asset->id)
-                       ->where('obj_type', $asset->asset_type)
-                       ->delete();
-
-            $asset->assetsMeta()->delete();
-            $asset->delete();
-          }
+          if($asset) $asset->delete();
+          
 
         }
  
@@ -108,7 +86,7 @@ class AssetsController extends Controller
 
            $results[] = ['id' => $asset->id,
                          'value'=> $asset->title.' #'.$asset->asset_type,
-                         'url' => route('home')];
+                         'url' => route('newsfeed.'.$asset->asset_type, ['id'=>$asset->id])];
         }
 
        } 

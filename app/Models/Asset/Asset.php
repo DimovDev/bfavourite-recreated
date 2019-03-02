@@ -4,6 +4,7 @@ namespace App\Models\Asset;
 
 use App\Helpers\SlugHelper;
 use App\Models\Asset\AssetMeta;
+use App\Helpers\PillFieldHelper;
 use App\Models\Taxonomy\TaxonomyPivot;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,10 +14,27 @@ class Asset extends Model
 
     protected $dates = ['published_at'];
 
+  
 
     public static function create(array $data = []) {
+
+
+      if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);    
        
       $asset =  static::query()->create($data);
+
+      $asset->user()->attach($data['user_id']);
+      $asset->tags()->attach($data['tags']);
+    
+      $asset->user[0]->pivot->base_type = 'asset';
+      $asset->user[0]->pivot->save();
+
+      $asset->tags->map(function($tag, $index) {
+          
+          $tag->pivot->base_type = 'asset';
+          $tag->pivot->save();
+
+      });
 
       if($asset->id && !empty($data['meta'])) {
        
@@ -32,9 +50,62 @@ class Asset extends Model
    return $asset;
  }
 
+
+
+ public function setPhotoIdAttribute($value) {
+  
+  if(!\is_integer($value)) {
+
+    $value = json_decode($value);
+
+    if(!empty($value) && !empty($value[0]->id)) {
+      
+      $value = (int) $value[0]->id;
+    } else {
+
+      $value = null;
+    }
+    
+  }
+ 
+  $this->attributes['photo_id'] = $value;
+
+ }
+
+ 
+ public function getFormattedPhotoAttribute() {
+   
+  $photo = $this->photo()->first();
+
+  return $photo ? json_encode([$photo->toArray()]) : null;
+
+ }
+
+ public function getFormattedTagsAttribute() {
+       
+  $tags = $this->tags()->get();
+         
+  return PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
+
+ }
+
+
  public function update(array $data = [], array $options = []) {
+    
 
     $result = parent::update($data, $options);
+
+
+    if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']); 
+
+    $this->tags()->sync($data['tags']);
+
+    $this->tags->map(function($tag, $index) {
+          
+      $tag->pivot->base_type = 'asset';
+      $tag->pivot->save();
+
+     });
   
 
      if(!empty($data['meta'])) {
@@ -62,7 +133,19 @@ class Asset extends Model
    return $result;
 
  }    
+      
+    public function delete() {
 
+      $this->user()->detach();
+      $this->tags()->detach();
+
+      $this->assetsMeta()->delete();
+       
+      $result = parent::delete();
+
+      return $result;
+ 
+    }
 
     public function setSlugAttribute($value) {
 
@@ -121,7 +204,7 @@ class Asset extends Model
 
        public function user() {
 
-         return $this->morphToMany('App\Models\User\User', 'obj', 'user_object');
+         return $this->morphToMany('App\Models\User\User', 'obj', 'user_object')->withPivot('base_type');
    
        }
 
@@ -132,7 +215,17 @@ class Asset extends Model
 
     public function tags() {
 
-      return $this->morphToMany('App\Models\Taxonomy\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id');
+      return $this->morphToMany('App\Models\Taxonomy\Tag', 'obj', 'taxonomy_object', 'obj_id', 'taxonomy_id')->withPivot('base_type');
+
+    }
+
+
+    public function scopePublished($query) {
+         
+      return $query->where('asset_status', 'publish')
+                   ->where('published_at', '<=', date('Y-m-d h:i:s'))
+                   ->orderBy('assets.published_at', 'DESC')
+                   ->orderBy('assets.id', 'DESC');
 
     }
 
@@ -147,15 +240,15 @@ class Asset extends Model
     }
 
 
-    public static function loadNotesTags($notes) {
+  /*   public static function loadTags($assets) {
 
-      $notes_ids = $notes->map(function($item, $key) {
+      $assets_ids = $assets->map(function($item, $key) {
 
         return $item->id;
 
        });  
 
-       $notes_types = $notes->map(function($item, $key) {
+       $assets_types = $assets->map(function($item, $key) {
 
           return $item->asset_type;
 
@@ -163,33 +256,49 @@ class Asset extends Model
 
         
         $tags = TaxonomyPivot::withData('tag')
-                                ->whereIn('obj_id', $notes_ids)
-                                ->whereIn('obj_type', $notes_types)
-        
+                                ->whereIn('obj_id', $assets_ids)
+                                ->whereIn('obj_type', $assets_types)
+                                ->where('taxonomy_status', 'active')
                                 ->get();
-          
+           
 
-        foreach($notes as $note) {
+        foreach($assets as $asset) {
           
-            $note->tags = $tags->filter(function($tag, $key) use($note) {
+            $asset->tags = $tags->filter(function($tag, $key) use($asset) {
             
-                return $tag->obj_id == $note->id && $tag->obj_type == $note->asset_type;
+                return $tag->obj_id == $asset->id && $tag->obj_type == $asset->asset_type;
 
             });
 
 
           }                       
 
-          return $notes;
+          return $assets;
     }
+
+    public static function assets() {
+
+      $assets = Asset::published()->paginate();
+
+      return Asset::loadTags($assets);
+
+    }
+
+
 
     public static function notes() {
      
       $notes = Asset::PublishedNotes()->paginate();
 
-      return Asset::loadNotesTags($notes);
+      return Asset::loadTags($notes);
      
+    } */
+
+    public function getPublishDateAttribute() {
+
+      return $this->published_at->format('d M Y');
     }
+
 
 
 }

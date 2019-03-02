@@ -30,14 +30,12 @@
       </svg>
       
       <div class="techs">
-        <h3>Технологии</h3>
-        <a href="#" class="tag"> #PHP (10)</a>
-        <a href="#" class="tag"> #Laravel (13)</a>
-        <a href="#" class="tag"> #HTML5 (5)</a>
-        <a href="#" class="tag"> #CSS3 (21)</a>
-        <a href="#" class="tag"> #JavaScript (7) </a>
-        <a href="#" class="tag"> #jQuery (33) </a>
-        <a href="#" class="tag"> #MySQL (21) </a>
+        <h3>{{__('Technologies')}}</h3>
+
+        @foreach($techs AS $tech)
+          <a href="{{route('newsfeed.tag', ['id' => $tech->id])}}" class="tag"> #{{$tech->name}} ({{$tech->assets_num}})</a>
+        @endforeach
+  
       </div>
 
        <svg class="aside-divider" viewBox="0 0 100 25" preserveAspectRatio="none">
@@ -47,13 +45,14 @@
         <path class="middle" d="M 0 10 l 0 17 L 100 27 L 100 2 L 50 12 L 0 2"  />
       </svg>
 
-      <div class="content">
-        <h3>Съдържание</h3>
-        <a href="#" class="tag"> #Бележки (10)</a>
-        <a href="#" class="tag"> #Линкове (13)</a>
-        <a href="#" class="tag"> #Снимки (5)</a>
-        <a href="#" class="tag"> #Постове (21)</a>
-        <a href="#" class="tag"> #Проекти (7) </a>
+      <div class="content text-white">
+        <h3>{{__('Content')}}</h3>
+        
+        @foreach($content AS $c)
+          <span>{{__(ucfirst($c->obj_type).'s')}} ({{$c->assets_num}})</span>
+        @endforeach
+
+       
       </div>
       
        <svg class="aside-divider" viewBox="0 0 100 25" preserveAspectRatio="none">

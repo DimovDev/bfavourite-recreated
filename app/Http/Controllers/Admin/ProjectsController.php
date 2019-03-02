@@ -49,20 +49,9 @@ class ProjectsController extends Controller
     public function store(ProjectEditRequest $request)
     {
         $data = $request->validated();
-        
-        $photo = $request->only('photo_id');
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-         }
-
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
+        $data['user_id'] = Auth::id();
    
         $project = Project::create($data);
-        $project->user()->attach(Auth::id());
-        $project->tags()->attach($data['tags']);
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The project was created.']));
@@ -79,13 +68,6 @@ class ProjectsController extends Controller
     public function edit($id)
     {
         $project = Project::findOrFail($id);
-        
-        $photo = $project->photo()->first();
-        $tags = $project->tags()->get();
-
-        if($photo) $project->photo = json_encode([$photo->toArray()]);
-        $project->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
-    
 
         return view('admin/assets/projects/edit', ['project' => $project]);
     }
@@ -103,21 +85,8 @@ class ProjectsController extends Controller
         
         $project = Project::findOrFail($id);
 
-        $photo = $request->only('photo_id');
-        $data['photo_id'] = null;
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-         }
-
-         if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
-
-
         $project->update($data);
-        $project->tags()->sync($data['tags']);
+       
  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The project was edited.']));
@@ -146,15 +115,8 @@ class ProjectsController extends Controller
 
    
           $project = Project::find($project_id);
-
-
-          if($project) {
-            $project->user()->detach();
-            $project->tags()->detach();
-
-            $project->assetsMeta()->delete();
-            $project->delete();
-          }
+          if($project)  $project->delete();
+      
         }
  
          session()->flash('message', new MessageBag(['status' => 'success',

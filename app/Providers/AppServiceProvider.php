@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
             'linkNote' => 'App\Models\Asset\LinkNote',
             'textNote' => 'App\Models\Asset\TextNote',
             'tag' => 'App\Models\Taxonomy\Tag',
+            'asset' => 'App\Models\Asset\Asset',
+            'asset' => 'App\Models\Asset\Note'
 
         ]);
         
@@ -39,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
 
         });
 
-
+           
       
 
         Blade::component('frontend/components/link', 'link');

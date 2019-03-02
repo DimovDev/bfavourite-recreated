@@ -1,4 +1,4 @@
-@extends('layouts.main');
+@extends('frontend.layouts.main')
 
 @section('main-classes', 'blog')
 
@@ -9,13 +9,13 @@
          
                 <div>
                  <h3 class="">{{$post->title}}</h3>
-                 <span class="card-info"> @SasheVuchkov &middot; {{$post->published_at->format('d M Y')}} </span>
+                 <span class="card-info"> {{'@' . $post->user->first()->name}} &middot; {{$post->publish_date}} </span>
                 </div>
 
                 
             </div>
             <div class="card-body">
-                 <img src="/storage/bullseye.jpg" class="img-fluid" alt="" />
+                 <img src="{{$post->photo->getSize('medium', true)}}" class="img-fluid" alt="{{$post->title}}" />
                 <p class="card-text">{!!$post->content!!}</p>
             </div>
             <div class="card-footer">
@@ -23,7 +23,7 @@
                <div class="card-link">
                                @foreach($post->tags AS $tag)
 
-              <a href="#" class="tag">#{{$tag->name}}</a>
+              <a href="{{route('newsfeed.tag', ['id' => $tag->id])}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
                </div>
@@ -33,4 +33,4 @@
 
 @endsection
 
-
+@section('right-sidebar', '')

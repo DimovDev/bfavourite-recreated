@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'adminMenu' => \App\Http\Middleware\AdminMenuMiddleware::class,
         'siteNavigation' => \App\Http\Middleware\SiteNavigationMiddleware::class,
+        'sidebar' => \App\Http\Middleware\SidebarMiddleware::class,
     ];
 
     /**

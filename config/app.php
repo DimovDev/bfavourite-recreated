@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'BFavourite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -178,6 +178,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\SimpleMenuProvider::class,
+        App\Providers\MetaTagServiceProvider::class,
+        App\Providers\PageTitleServiceProvider::class,
 
     ],
 

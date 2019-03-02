@@ -34,26 +34,10 @@ class PhotoNotesController extends Controller
     public function store(PhotoNoteEditRequest $request)
     {
         $data = $request->validated();
-
-        $photo = $request->only('photo_id');
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-          }
-
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
+        $data['user_id'] = Auth::id();
+ 
 
         $photoNote = PhotoNote::create($data);
-        
-        $photoNote->user()->attach(Auth::id());
-        if(!empty($data['tags'])) $photoNote->tags()->attach($data['tags']);
-
-
-
-     
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The photo was created.']));
@@ -71,14 +55,7 @@ class PhotoNotesController extends Controller
     public function edit($id)
     {
         $photoNote = PhotoNote::findOrFail($id);
-        $photo = $photoNote->photo()->first();
         
-        if($photo) $photoNote->photo = json_encode([$photo->toArray()]);
-
-        $tags = $photoNote->tags()->get();
-        $photoNote->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
-    
-
         return view('admin/assets/photoNotes/edit', ['photo' => $photoNote]);
     }
 
@@ -95,22 +72,8 @@ class PhotoNotesController extends Controller
         
         $photoNote = PhotoNote::findOrFail($id);
 
-        $photo = $request->only('photo_id');
-        $data['photo'] = null;
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-         }
-        
-    
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
-
         $photoNote->update($data);
-        $photoNote->tags()->sync($data['tags']);
- 
+  
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The photo was edited.']));
         

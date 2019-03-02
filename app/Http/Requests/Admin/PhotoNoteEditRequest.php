@@ -30,7 +30,8 @@ class PhotoNoteEditRequest extends FormRequest
             'content' => 'required',
             'summary' => 'nullable|max:500',
             'published_at' => 'date',
-            'tags' => 'required'
+            'tags' => 'required',
+            'photo_id' => 'nullable'
 
 
         ];

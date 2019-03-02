@@ -39,27 +39,10 @@ class LinkNotesController extends Controller
     public function store(LinkNoteEditRequest $request)
     {
         $data = $request->validated();
-
-        $photo = $request->only('photo_id');
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-         }
-
-
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
+        $data['user_id'] = Auth::id();
 
         $link = LinkNote::create($data);
-        
-        $link->user()->attach(Auth::id());
-        if(!empty($data['tags'])) $link->tags()->attach($data['tags']);
 
-
-
-     
         
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Good job! The link was created.']));
@@ -78,13 +61,6 @@ class LinkNotesController extends Controller
     {
         $link = LinkNote::findOrFail($id);
     
-
-        $tags = $link->tags()->get();
-        $link->tags = PillFieldHelper::dbRowsToJson($tags->toArray(), 'id', 'name');
-
-        $photo = $link->photo()->first();
-        if($photo) $link->photo = json_encode([$photo->toArray()]);
-
         return view('admin/assets/linkNotes/edit', ['link' => $link]);
     }
 
@@ -101,22 +77,8 @@ class LinkNotesController extends Controller
         
         $link = LinkNote::findOrFail($id);
 
-        $photo = $request->only('photo_id');
-        $data['photo_id'] = null;
-
-        if(isset($photo['photo_id'])) {
-
-            $photo = json_decode($photo['photo_id']);
-            if(!empty($photo) && !empty($photo[0]->id)) $data['photo_id'] = (int) $photo[0]->id;
-         }
-        
-    
-        if(!empty($data['tags'])) $data['tags'] = PillFieldHelper::toArray($data['tags']);
-
-
         $link->update($data);
-        if(!empty($data['tags'])) $link->tags()->sync($data['tags']);
- 
+
         session()->flash('message', new MessageBag(['status' => 'success',
                                                     'message' => 'Excellent! The link was edited.']));
         
@@ -132,23 +94,23 @@ class LinkNotesController extends Controller
 
         $host = parse_url(route('home'), PHP_URL_HOST);
         
-        $is_own = stripos($url, $host) === 0 ? true : false;
-
+        $is_own = stripos($url, $host) > 0 ? true : false;
+        
         if(!empty($og)) {
 
             if(isset($og['url'])) $data['link_url'] = $og['url'];
             if(isset($og['title'])) $data['title'] = $og['title'];
             if(isset($og['description'])) $data['link_desc'] = $og['description'];
             if(isset($og['site_name'])) $data['publisher'] = $og['site_name'];
-            if(isset($og['image'])) $data['photo_id'] = $og['image'];
-            if(isset($og['image:url'])) $data['photo_id'] = $og['image:url'];
+            if(isset($og['image'])) $data['photo'] = $og['image'];
+            if(isset($og['image:url'])) $data['photo'] = $og['image:url'];
 
 
            try {
           //  $data['photo'] = 'http://bfavourite.local/admin/links/create';
            if(!$is_own) {
 
-                $image = new UrlImage($data['photo_id'], config('media.images'));
+                $image = new UrlImage($data['photo'], config('media.images'));
         
                 $image->upload();
         
@@ -160,12 +122,13 @@ class LinkNotesController extends Controller
                                         'sizes' => $sizes ? json_encode($sizes) : null]);
 
             } else {
-
-               $media = Media::where('url', $url)->get();
+               $image_url = preg_replace('#^/.+?(?=/)#iu', '' , parse_url($data['photo'], PHP_URL_PATH));
+               $media = Media::where('url', $image_url)->first();
 
             }
 
-            $data['photo_id'] = $media->toArray();
+            $data['photo'] = $media->toArray();
+            $data['message'] = __('The url was fetched successfuly.');
 
         } catch (UrlImageException $e) { 
 
@@ -178,7 +141,7 @@ class LinkNotesController extends Controller
        }
 
        if(empty($data)) abort(404, __('No Open Graph data is available!'));
-
+  
         return response()->json($data);
 
     }

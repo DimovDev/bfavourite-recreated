@@ -26,11 +26,28 @@ import feather from 'feather-icons';
 window.popper = popper;
 window.feather = feather; 
 
+import Prism from 'prismjs';
+
+window.Prism = Prism;
+
+/* Prism.plugins.NormalizeWhitespace.setDefaults({
+    'remove-trailing': true,
+    'remove-indent': true,
+    'left-trim': true,
+    'right-trim': true,
+    'break-lines': 60
+}); */
+
+
 /* Bootstrap 4.0 */
 import 'bootstrap';
 
 /* Laravel Bootstrap JS */
 import './bootstrap';
+
+
+
+
 
 /* window.Vue = require('vue');
  */

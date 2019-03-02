@@ -54,7 +54,7 @@
 <div class="col-4">
    <div class="form-group">
       <label for="tags">{{__('Tags')}}</label>
-      <input type="text" id="tags" class="form-control" name="tags" data-pillfield="{{old('tags') ?? $note->tags ?? null}}" value="" />
+      <input type="text" id="tags" class="form-control" name="tags" data-pillfield="{{old('tags') ?? $note->formatted_tags ?? null}}" value="" />
     </div>
 </div>
 

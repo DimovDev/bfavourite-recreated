@@ -9,7 +9,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Dashboard Template · Bootstrap</title>
+    @foreach($meta_tags AS $tag) 
+       <meta {{stripos($tag['name'], 'og') === 0 ? 'property' : 'name'}}="{{$tag['name']}}" content="{{$tag['content']}}" />
+    @endforeach
+
+       <meta property="og:locale" content="bg_BG" />
+       <meta property="og:site_name" content="{{config('app.name')}}" />
+
+    <title>{!! $page_title->push(config('app.name'))->get() !!}</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -41,17 +48,17 @@
 
 <div class="container">
    
-  @section('left-sidebar') 
-   @include('frontend/partials/left-sidebar')
-  @show
+  @yield('left-sidebar') 
+  
+
   
    <main class="@yield('main-classes')">
      @yield('main')
    </main>
 
-   @section('right-sidebar')
-     @include('frontend/partials/right-sidebar')
-   @show
+   @yield('right-sidebar')
+
+
 </div>
 
 
