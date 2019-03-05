@@ -24,5 +24,11 @@
     @endcomponent
 @endforeach
 
+@if($notes->lastPage() != 1)
+
+{{$notes->links()}}
+
+@endif
+
 @endsection
 

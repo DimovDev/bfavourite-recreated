@@ -23,6 +23,8 @@ Route::group(['middleware' => ['siteNavigation', 'sidebar']], function() {
    Route::get('/projects', 'Frontend\NewsfeedController@projects_archive')->name('newsfeed.projects');
    Route::get('/posts', 'Frontend\NewsfeedController@posts_archive')->name('newsfeed.posts');
 
+   Route::get('/about', 'Frontend\PagesController@about')->name('pages.about');
+
 });
 
 

@@ -96,6 +96,19 @@ class Tag extends Taxonomy
 
    }
 
+   public function scopeTechs($query, $count) {
+
+       $query->join('taxonomy_object', function ($join) {
+          
+          $join->on('obj_id', '=', 'taxonomies.id');
+          $join->on('obj_type', '=', 'taxonomy_type');
+
+       })->where('taxonomy_status', 'active')
+         ->where('taxonomy_id', 41)
+         ->take($count);
+
+   }
+
 
     public static function notesWithTags(array $tag_ids) {
 

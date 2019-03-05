@@ -2,6 +2,62 @@
 
 $(document).ready(function() {
 
+   let popper_config = {placement: 'top-start',
+                        positionFixed: true,
+                        modifiers: 
+                          {offset: 
+                            {enabled: true,
+                             offset: 40 },
+                           flip:
+                             {enabled: false}}};
+    
+    
+    $('#interests-link').on('mouseover mouseout',  ev => {
+       
+      let container = $('#popper-interests') 
+      container.css('visibility', container.css('visibility') == 'hidden' ? 'visible' : 'hidden');
+
+    });
+
+
+    $('#projects-link').on('mouseover mouseout',  ev => {
+      let container = $('#popper-projects') 
+      container.css('visibility', container.css('visibility') == 'hidden' ? 'visible' : 'hidden');
+
+    });
+
+    $('#techs-link').on('mouseover mouseout',  ev => {
+          
+      let container = $('#popper-techs') 
+      container.css('visibility', container.css('visibility') == 'hidden' ? 'visible' : 'hidden');
+
+    });
+
+    $('#notes-link').on('mouseover mouseout',  ev => {
+          
+      let container = $('#popper-notes') 
+      container.css('visibility', container.css('visibility') == 'hidden' ? 'visible' : 'hidden');
+
+    });
+
+
+    $('.header-bar-avatar').on('mouseover mouseout',  ev => {
+          
+      let container = $('#popper-avatar') 
+      container.css('visibility', container.css('visibility') == 'hidden' ? 'visible' : 'hidden');
+
+    });
+
+   
+   let p = new popper($('#interests-link')[0], $('#popper-interests')[0], popper_config);
+
+
+    new popper($('#projects-link')[0], $('#popper-projects')[0], popper_config);
+    new popper($('#techs-link')[0], $('#popper-techs')[0], popper_config);
+    new popper($('#notes-link')[0], $('#popper-notes')[0], popper_config);
+    
+    popper_config.modifiers.offset.offset = 100;
+    new popper($('.header-bar-avatar')[0], $('#popper-avatar')[0], popper_config);
  
 
     $('#destroy-btn').on('click', function(){

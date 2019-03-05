@@ -23,6 +23,19 @@ class Project extends Asset
       });
 
   }
+
+  public function scopeFeatured($query, $count) {
+
+     return $query->join('taxonomy_object', function($join) {
+          
+        $join->on('obj_id', '=', 'assets.id');
+        $join->on('obj_type', '=', 'assets.asset_type');
+      
+     })->where('taxonomy_id', 51)
+       ->where('asset_status', 'publish')
+       ->take($count);
+
+  }
   
 
 }

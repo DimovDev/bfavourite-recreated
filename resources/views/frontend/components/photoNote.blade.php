@@ -15,7 +15,7 @@
                <img src="{{$note->photo->getSize('medium', true)}}" class="img-fluid" alt="{{$note->title}}" />
             </div>
             <div class="card-body card-tags">
-              @foreach($note->tags AS $tag)
+              @foreach($note->tags()->active()->get() AS $tag)
 
               <a href="{{route('newsfeed.tag', ['id' => $tag->id])}}" class="tag">#{{$tag->name}}</a>
               

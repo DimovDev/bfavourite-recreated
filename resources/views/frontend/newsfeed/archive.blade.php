@@ -3,7 +3,7 @@
 @section('main')
 
     @foreach($assets AS $asset)
-        @component('frontend.components.archive', ['asset' => $asset])
+        @component('frontend.components.archive', ['note' => $asset])
         @endcomponent
     @endforeach
 

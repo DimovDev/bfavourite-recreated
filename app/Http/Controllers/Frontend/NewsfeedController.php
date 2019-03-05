@@ -28,7 +28,7 @@ class NewsfeedController extends Controller
 
     public function index() {
        
-        $notes = Note::published()->paginate();
+        $notes = Note::published()->paginate(5);
  
         return view('frontend/newsfeed/index', ['notes' => $notes]);
 
@@ -38,13 +38,13 @@ class NewsfeedController extends Controller
        
         $tag_ids = explode(',', $tag_ids);
 
-        $tags = Tag::where('taxonomy_status', 'active')->whereIn('id', $tag_ids)->get();
+        $tags = Tag::active()->whereIn('id', $tag_ids)->get();
            
         if($tags->count() < 1) abort(404);
 
      
 
-        $notes = Tag::notesWithTags($tag_ids)->paginate();
+        $notes = Tag::notesWithTags($tag_ids)->paginate(5);
     
     
         return view('frontend/newsfeed/tag', ['tags' => $tags,
@@ -56,7 +56,7 @@ class NewsfeedController extends Controller
 
     public function post(int $post_id) {
         
-        $post = Post::findOrFail($post_id);
+        $post = Post::with('user', 'tags')->findOrFail($post_id);
 
         $this->page_title->push($post->title);
         $this->page_title->push('#'.$post->tags()->first()->name);
@@ -72,7 +72,7 @@ class NewsfeedController extends Controller
 
     public function project(int $project_id) {
         
-        $project = Project::findOrFail($project_id);
+        $project = Project::with('user', 'tags')->findOrFail($project_id);
         
         $this->page_title->push($project->title);
         $this->page_title->push('#'.$project->tags()->first()->name);

@@ -27,6 +27,7 @@ window.popper = popper;
 window.feather = feather; 
 
 import Prism from 'prismjs';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
 
 window.Prism = Prism;
 
