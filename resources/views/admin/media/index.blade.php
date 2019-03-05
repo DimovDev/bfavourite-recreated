@@ -34,7 +34,7 @@
 
            <tr>
               <td><input type="checkbox" class="destroy" name="destroy[]" value="{{$m->id}}" /></td>
-              <td class="thumb"><img src="@thumbnail($m->url)" alt="{{$m->title}}" /></td>
+              <td class="thumb"><img src="{{$m->getSize('small', true)}}" alt="{{$m->title}}" /></td>
               <td class="title">{{$m->title}}</td>
               <td>{{$m->created_at->format('d M Y')}}</td>
               <td>{{$m->updated_at->format('d M Y')}}</td>

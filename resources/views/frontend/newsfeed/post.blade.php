@@ -16,14 +16,15 @@
             </div>
             <div class="card-body">
                  <img src="{{$post->photo->getSize('medium', true)}}" class="img-fluid" alt="{{$post->title}}" />
-                <p class="card-text">{!!$post->content!!}</p>
+                {!!$post->content!!}
             </div>
             <div class="card-footer">
                
                <div class="card-link">
                                @foreach($post->tags AS $tag)
 
-              <a href="{{route('newsfeed.tag', ['id' => $tag->id])}}" class="tag">#{{$tag->name}}</a>
+              <a href="{{route('newsfeed.tag', ['id' => $tag->id,
+                                                'slug'=>$tag->slug])}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
                </div>

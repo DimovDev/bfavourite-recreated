@@ -21,6 +21,9 @@ class PhotoNotesController extends Controller
      */
     public function create()
     {   
+          
+        $this->page_title->unshift('Create Photo Note');
+        $this->menu->find('Photo Note')->setActive(true, true);
 
         return view('admin/assets/photoNotes/edit');
     }
@@ -54,7 +57,11 @@ class PhotoNotesController extends Controller
      */
     public function edit($id)
     {
-        $photoNote = PhotoNote::findOrFail($id);
+        $photoNote = PhotoNote::with('tags', 'user', 'photo')->findOrFail($id);
+
+                  
+        $this->page_title->unshift('Edit Photo Note');
+        $this->menu->find('Photo Note')->setActive(true, true);
         
         return view('admin/assets/photoNotes/edit', ['photo' => $photoNote]);
     }

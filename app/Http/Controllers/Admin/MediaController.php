@@ -23,16 +23,17 @@ class MediaController extends Controller
     {
     
       $media = Media::orderBy('created_at', 'DESC')->paginate(15);
-        
-      foreach($media AS $m) {
-        
-        if(strpos($m->media_type, 'image') !== false) {
-           
-            $m->icon = ImageFile::imgExists($m->url, storage_path(config('media.images.upload_path')), 'small');
-        }
 
-      }  
-       
+      $this->page_title->unshift('All Media');
+      $this->menu->find('All Media')->setActive(true, true);
+
+      foreach($media as $m) {
+  
+        $m->icon = ImageFile::imgExists($m->url, storage_path(config('media.images.upload_path')), 'small');
+      }
+
+   
+      
    
        if($request->ajax()) return response()->json(['message' => session('message'), 'paginator' => $media]);
    
@@ -48,6 +49,9 @@ class MediaController extends Controller
      */
     public function create()
     { 
+
+      $this->page_title->unshift('Upload Media');
+      $this->menu->find('Upload Media')->setActive(true, true);
        
        return view('admin/media/create');
     }

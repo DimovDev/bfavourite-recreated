@@ -23,8 +23,10 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('tags')->orderBy('created_at', 'DESC')->paginate(25);
-
+        $projects = Project::with('tags', 'user', 'photo')->orderBy('created_at', 'DESC')->paginate(25);
+  
+        $this->page_title->unshift('All Projects');
+        $this->menu->find('All Projects')->setActive(true, true);
 
         return view('admin/assets/projects/index')->with(['projects' => $projects,
                                                        'message' => session('message')]);
@@ -36,7 +38,10 @@ class ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        $this->page_title->unshift('Create Project');
+        $this->menu->find('Create Project')->setActive(true, true);
+
         return view('admin/assets/projects/edit');
     }
 
@@ -67,7 +72,10 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::with('tags', 'user', 'photo')->findOrFail($id);
+
+        $this->page_title->unshift('Edit Project');
+        $this->menu->find('Create Project')->setActive(true, true);
 
         return view('admin/assets/projects/edit', ['project' => $project]);
     }

@@ -96,7 +96,7 @@ class Tag extends Taxonomy
 
    }
 
-   public function scopeTechs($query, $count) {
+   public function scopeTechs($query, $count = null) {
 
        $query->join('taxonomy_object', function ($join) {
           
@@ -104,8 +104,11 @@ class Tag extends Taxonomy
           $join->on('obj_type', '=', 'taxonomy_type');
 
        })->where('taxonomy_status', 'active')
-         ->where('taxonomy_id', 41)
-         ->take($count);
+         ->where('taxonomy_id', 41);
+        
+         if($count) $query->take($count);
+
+         return $query;
 
    }
 

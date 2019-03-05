@@ -6,7 +6,7 @@
 <div class="card-header">
     <i class="fa fa-tag"></i>
     <div>
-        <h3 class="card-subtitle">{{__('All notes with tag: ')}} {{$tags->reduce(function($carry, $item) {
+        <h3 class="card-subtitle">{{__('All notes with tag:')}}  {{$tags->reduce(function($carry, $item) {
                                                                                  $carry .= (!$carry ? null : ', ').'#'.$item->name;
                                                                                  return $carry; 
                                                                                 })}}</h3>

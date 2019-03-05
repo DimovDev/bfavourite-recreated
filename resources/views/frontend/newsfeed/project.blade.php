@@ -24,14 +24,15 @@
                       <a class="btn {{$project->getMeta('github_url') ? 'btn-primary' : 'btn-dark'}} text-white" href="{{$project->getMeta('live_url')}}"><i class="fa fa-link"></i> {{__('View Online')}} </a>
                     @endif
                 </div>
-                <p class="card-text">{!!$project->content!!}</p>
+                {!!$project->content!!}
             </div>
             <div class="card-footer">
                
                <div class="card-link">
                                @foreach($project->tags AS $tag)
 
-              <a href="{{route('newsfeed.tag', ['id' => $tag->id])}}" class="tag">#{{$tag->name}}</a>
+              <a href="{{route('newsfeed.tag', ['id' => $tag->id,
+                                                'slug'=>$tag->slug])}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
                </div>

@@ -22,8 +22,11 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('tags')->orderBy('created_at', 'DESC')->paginate(25);
-
+        $posts = Post::with('tags', 'user', 'photo')->orderBy('created_at', 'DESC')->paginate(25);
+        
+                  
+        $this->page_title->unshift('All Posts');
+        $this->menu->find('All Posts')->setActive(true, true);
       
         return view('admin/assets/posts/index')->with(['posts' => $posts,
                                                        'message' => session('message')]);
@@ -36,6 +39,8 @@ class PostsController extends Controller
      */
     public function create()
     {   
+        $this->page_title->unshift('Create Post');
+        $this->menu->find('Create Post')->setActive(true, true);
 
         return view('admin/assets/posts/edit');
     }
@@ -70,6 +75,9 @@ class PostsController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+
+        $this->page_title->unshift('Edit Post');
+        $this->menu->find('Create Post')->setActive(true, true);
 
         return view('admin/assets/posts/edit', ['post' => $post]);
     }

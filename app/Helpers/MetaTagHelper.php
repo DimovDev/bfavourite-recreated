@@ -5,7 +5,29 @@ namespace App\Helpers;
 use App\Helpers\CollectionHelper;
 
 class MetaTagHelper extends CollectionHelper {
- 
+   
+  public function set(string $name, string $content) {
+
+    $items = array_filter($this->items, function($item) use ($name) {
+                
+        return $name == $item['name'];
+       
+    });
+
+   
+
+    if(!empty($items)) {
+
+      $items = array_keys($items);
+
+      
+      $this->remove($items[0]);
+
+      $this->push($name, $content);
+
+    } 
+
+  }
 
   public function push(string $name, string $content, array $attributes = null) {
 
@@ -42,13 +64,16 @@ class MetaTagHelper extends CollectionHelper {
 
 public function remove(int $index) : ?array {
    
-    if(isset($this->item[$index])) {
+    if(isset($this->items[$index])) {
 
         $item = $this->items[$index];
         unset($this->items[$index]);
+        $this->items = array_values($this->items);
 
-        return $tag;
+        return $item;
     }
+
+    return null;
     
   }
 

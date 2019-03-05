@@ -22,8 +22,10 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $tags = Tag::orderBy('created_at', 'DESC')->paginate(25);
+        $tags = Tag::with('tags', 'user', 'icon')->orderBy('created_at', 'DESC')->paginate(25);
 
+        $this->page_title->unshift('All Tags');
+        $this->menu->find('All Tags')->setActive(true, true);
 
         return view('admin/taxonomies/tags/index')->with(['tags' => $tags,
                                                           'message' => session('message')]);
@@ -36,6 +38,10 @@ class TagsController extends Controller
      */
     public function create()
     {
+
+        $this->page_title->unshift('Create Tag');
+        $this->menu->find('Create Tag')->setActive(true, true);
+
         return view('admin/taxonomies/tags/edit');
     }
 
@@ -68,7 +74,10 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = Tag::with('tags', 'user', 'icon')->findOrFail($id);
+
+        $this->page_title->unshift('Edit Tag');
+        $this->menu->find('Create Tag')->setActive(true, true);
 
 
         return view('admin/taxonomies/tags/edit', ['tag' => $tag]);

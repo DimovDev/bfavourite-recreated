@@ -1,7 +1,21 @@
 {
   
-   "Users": "Потребители",
-   "All Users": "Всички потребители",
-   "Create User": "Създай потребител" 
-
+ "Technologies": "Технологии",
+ "Content": "Съдържание",
+ "LinkNotes": "Линкове",
+ "PhotoNotes": "Фотоси",
+ "TextNotes": "Бележки",
+ "Projects": "Проекти",
+ "Posts": "Постове",
+ "Tags": "Тагове",
+ "Current Project": "Актуален проект",
+ "Recent Projects": "Скорошни проекти",
+ "Recent Posts": "Скорошни постове",
+ "Home": "Начало",
+ "About Sashe": "За Саше",
+ "Blog": "Блог",
+ "Contacts": "Контакти",
+ "All notes with tag:": "Всички бележки с таг:",
+ "Notes": "Бележки",
+ "Interests": "Хоби"
 }

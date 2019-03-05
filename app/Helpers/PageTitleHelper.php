@@ -37,7 +37,7 @@ class PageTitleHelper extends CollectionHelper {
     
       public function unshift(string $part) {
          
-        array_unshift($part);
+        array_unshift($this->items, $part);
     
         return $this;                 
     

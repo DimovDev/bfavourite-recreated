@@ -26,6 +26,9 @@ class LinkNotesController extends Controller
      */
     public function create()
     {   
+        
+        $this->page_title->unshift('Create Link Note');
+        $this->menu->find('Link Note')->setActive(true, true);
 
         return view('admin/assets/linkNotes/edit');
     }
@@ -59,7 +62,10 @@ class LinkNotesController extends Controller
      */
     public function edit($id)
     {
-        $link = LinkNote::findOrFail($id);
+        $link = LinkNote::with('tags', 'user', 'photo')->findOrFail($id);
+
+        $this->page_title->unshift('Edit Link Note');
+        $this->menu->find('Link Note')->setActive(true, true);
     
         return view('admin/assets/linkNotes/edit', ['link' => $link]);
     }

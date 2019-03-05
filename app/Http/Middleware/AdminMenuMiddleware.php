@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Helpers\PageTitleHelper;
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\Menu\SimpleMenuBuilder as MenuBuilder;
 
 class AdminMenuMiddleware
@@ -10,9 +12,12 @@ class AdminMenuMiddleware
   
   protected $menuBuilder;
 
-  public function __construct(MenuBuilder $menuBuilder) {
+  public function __construct(MenuBuilder $menuBuilder, PageTitleHelper $page_title) {
 
     $this->menuBuilder = $menuBuilder;
+
+    $page_title->push('Admin');
+    
      
   }
     /**
@@ -32,7 +37,7 @@ class AdminMenuMiddleware
                    ->add('menu');
 
         $this->menuBuilder->find('Current User') 
-                   ->add('Edit Your Profile', '#')
+                   ->add('Edit Your Profile', route('admin.users.edit', ['id' => Auth::id()]))
                    ->add('Go to Home', route('home'))
                    ->add('Logout', route('logout'));          
         
@@ -68,7 +73,7 @@ class AdminMenuMiddleware
                    ->find('Tags')
                    ->setIcon('tags')
                    ->add('All Tags', route('admin.tags.index'))
-                   ->add('Create Tags', route('admin.tags.create'))
+                   ->add('Create Tag', route('admin.tags.create'))
                    ->find('Media')
                    ->setIcon('images')
                    ->add('All Media', route('admin.media.index'))

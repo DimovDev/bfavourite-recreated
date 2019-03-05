@@ -2,7 +2,7 @@
 
 @push('styles')
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+  
 @endpush
 
 @section('left-sidebar') 

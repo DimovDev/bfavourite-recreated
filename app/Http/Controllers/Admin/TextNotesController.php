@@ -21,6 +21,8 @@ class TextNotesController extends Controller
      */
     public function create()
     {   
+        $this->page_title->unshift('Create Text Note');
+        $this->menu->find('Text Note')->setActive(true, true);
 
         return view('admin/assets/textNotes/edit');
     }
@@ -55,7 +57,10 @@ class TextNotesController extends Controller
      */
     public function edit($id)
     {
-        $note = TextNote::findOrFail($id);
+        $note = TextNote::with('tags', 'user')->findOrFail($id);
+
+        $this->page_title->unshift('Edit Text Note');
+        $this->menu->find('Text Note')->setActive(true, true);
     
         return view('admin/assets/textNotes/edit', ['note' => $note]);
     }

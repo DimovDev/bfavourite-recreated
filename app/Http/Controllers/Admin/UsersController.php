@@ -21,6 +21,9 @@ class UsersController extends Controller
     {   
         $users = User::orderBy('created_at', 'DESC')->paginate(25);
 
+        $this->page_title->unshift('All Users');
+        $this->menu->find('All Users')->setActive(true, true);
+
 
         return view('admin/users/index')->with(['users' => $users,
                                                 'message' => session('message')]);
@@ -33,7 +36,9 @@ class UsersController extends Controller
      */
     public function create()
     {
-        
+      $this->page_title->unshift('Create User');
+      $this->menu->find('Create User')->setActive(true, true);
+
       return view('admin/users/edit');
     }
 
@@ -82,6 +87,9 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
+        $this->page_title->unshift('Edit User');
+        $this->menu->find('Create User')->setActive(true, true);
 
         $photo = $user->photo()->first();
         
@@ -158,7 +166,7 @@ class UsersController extends Controller
            if($user) {
             
              $user->posts()->detach();
-             $user->categories()->detach();
+             $user->tags()->detach();
              $user->projects()->detach();
              $user->delete();
            }

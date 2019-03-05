@@ -23,11 +23,10 @@ class SiteNavigationMiddleware
         
         SimpleMenu::find('Site Navigation')
         ->add('Home', url('/'))
-        ->add('About Sashe', '#')
-        ->add('Projects', '#')
-        ->add('Blog', '#')
-        ->add('Admin Panel', '#')
-        ->add('Contacts', '#');
+        ->add('About Sashe', route('pages.about'))
+        ->add('Projects', route('newsfeed.projects'))
+        ->add('Blog', route('newsfeed.posts'))
+        ->add('Contacts', route('pages.contacts'));
 
         SimpleMenu::execute();
 
@@ -38,13 +37,7 @@ class SiteNavigationMiddleware
 
             SimpleMenu::findByUrl($url)->setActive(true)->execute();
         }
-        
-        if(strpos($url, '/admin/') !== false ) {
-
-            SimpleMenu::find('Admin Panel')->setActive(true)->execute();
-        }
-
-        
+          
 
         return $next($request);
     }

@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'adminMenu' => \App\Http\Middleware\AdminMenuMiddleware::class,
         'siteNavigation' => \App\Http\Middleware\SiteNavigationMiddleware::class,
         'sidebar' => \App\Http\Middleware\SidebarMiddleware::class,
+        'stats' => \App\Http\Middleware\StatsMiddleware::class,
     ];
 
     /**

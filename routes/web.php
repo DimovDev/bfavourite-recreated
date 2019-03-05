@@ -14,21 +14,22 @@
 
 
 
-Route::group(['middleware' => ['siteNavigation', 'sidebar']], function() {
+Route::group(['middleware' => ['siteNavigation', 'sidebar', 'stats']], function() {
   
    Route::get('/', 'Frontend\NewsfeedController@index')->name('home'); 
-   Route::get('/tag/{id}', 'Frontend\NewsfeedController@tag')->name('newsfeed.tag'); 
-   Route::get('/post/{id}', 'Frontend\NewsfeedController@post')->name('newsfeed.post'); 
-   Route::get('/project/{id}', 'Frontend\NewsfeedController@project')->name('newsfeed.project'); 
+   Route::get('/tag/{id}/{slug}', 'Frontend\NewsfeedController@tag')->name('newsfeed.tag'); 
+   Route::get('/post/{id}/{slug}', 'Frontend\NewsfeedController@post')->name('newsfeed.post'); 
+   Route::get('/project/{id}/{slug}', 'Frontend\NewsfeedController@project')->name('newsfeed.project'); 
    Route::get('/projects', 'Frontend\NewsfeedController@projects_archive')->name('newsfeed.projects');
    Route::get('/posts', 'Frontend\NewsfeedController@posts_archive')->name('newsfeed.posts');
 
    Route::get('/about', 'Frontend\PagesController@about')->name('pages.about');
+   Route::get('/contacts', 'Frontend\PagesController@contacts')->name('pages.contacts');
 
 });
 
 
-Route::group(['middleware' =>['adminMenu','siteNavigation']], function() {
+Route::group(['middleware' =>['adminMenu','siteNavigation','stats']], function() {
 
     Auth::routes();
 
@@ -36,7 +37,7 @@ Route::group(['middleware' =>['adminMenu','siteNavigation']], function() {
 
 
 Route::group(['as' => 'admin.',
-              'middleware' =>['adminMenu', 'siteNavigation']], function() {
+              'middleware' =>['adminMenu', 'siteNavigation','stats']], function() {
   
     Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
     Route::get('admin/test', 'Admin\HomeController@test')->name('test');

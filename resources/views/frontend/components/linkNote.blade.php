@@ -21,7 +21,8 @@
             <div class="card-body card-tags">
               @foreach($note->tags()->active()->get() AS $tag)
 
-              <a href="{{route('newsfeed.tag', ['id' => $tag->id])}}" class="tag">#{{$tag->name}}</a>
+             <a href="{{route('newsfeed.tag', ['id' => $tag->id,
+                                                'slug'=>$tag->slug])}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
             </div>

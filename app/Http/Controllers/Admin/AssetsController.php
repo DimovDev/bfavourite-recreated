@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Taxonomy\TaxonomyPivot;
 
 class AssetsController extends Controller
-{
+{   
+
      
     public function index() {
 
-      $assets = Note::whereNotIn('asset_type', ['post', 'project'])->orderBy('created_at', 'DESC')->paginate(25);
+      $assets = Note::with('tags', 'user', 'photo')->whereNotIn('asset_type', ['post', 'project'])->orderBy('created_at', 'DESC')->paginate(25);
         
-
+      $this->page_title->unshift('All Notes');
       
       return view('admin/assets/index')->with(['assets' => $assets,
                                                'message' => session('message')]);

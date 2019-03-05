@@ -21,8 +21,8 @@
     <!-- Bootstrap core CSS -->
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link href="{{ asset('css/site.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/site.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/frontend.css') }}" rel="stylesheet" />
 
     @stack('styles') 
   
@@ -34,12 +34,14 @@
 <header class="site-header">
   <div class="header-bar">
    <div class="container d-flex">
-    <img class="header-bar-avatar" src="/storage/sashe.jpg"  alt="Sashe Vuchkov" />
+   
+     <img class="header-bar-avatar" src="/storage/sashe.jpg"  alt="Sashe Vuchkov" />
+
     <ul class="header-bar-stats">
-      <li id="notes-link"class="d-none d-md-block">Бележки <span>59</span></li>
-      <li id="techs-link" class="d-none d-md-block">Технологии <span>24</span></li>
-      <li id="projects-link" class="d-none d-md-block"><a href="{{url('/projects')}}">Проекти <span>7</span></a></li>
-      <li id="interests-link" class="d-none d-md-block"><a href="{{url('/about')}}#interests">Хобита <span>4</span></a></li>
+      <li id="notes-link"class="d-none d-md-block">{{__('Notes')}} <span>{{$total_assets}}</span></li>
+      <li id="techs-link" class="d-none d-md-block">{{__('Technologies')}} <span>{{$total_techs}}</span></li>
+      <li id="projects-link" class="d-none d-md-block"><a href="{{url('/projects')}}">{{__('Проекти')}} <span>{{$total_projects}}</span></a></li>
+      <li id="interests-link" class="d-none d-md-block"><a href="{{url('/about')}}#interests">{{__('Interests')}} <span>4</span></a></li>
     </ul>
    </div>
   </div>
@@ -180,9 +182,8 @@
 @section('scripts') 
 
 
-    <script src="{{ asset('js/site.js') }}" ></script>
-    <script type="module" src="{{ asset('js/custom.js') }}" ></script>
-    
+    <script src="{{ asset('js/site.js') }}" ></script>    
+    <script src="{{ asset('js/frontend.js') }}" ></script>   
 
 @show
 

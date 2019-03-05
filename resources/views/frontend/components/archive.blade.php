@@ -10,11 +10,13 @@
                 {!!$note->summary!!}
             </div>        
             <div class="card-footer">
-              <a href="{{route('newsfeed.'.$note->asset_type, ['id' => $note->id])}}">
+              <a href="{{route('newsfeed.'.$note->asset_type, ['id' => $note->id,
+                                                               'slug' => $note->slug])}}">
                 <img src="{{$note->photo->getSize('medium', true)}}" class="img-fluid" alt="{{$note->title}}"  />
               </a>
                <div class="card-link">
-                 <a href="{{route('newsfeed.'.$note->asset_type, ['id' => $note->id])}}"><h3>{{$note->title}}</h3></a>
+                 <a href="{{route('newsfeed.'.$note->asset_type, ['id' => $note->id,
+                                                                  'slug' => $note->slug])}}"><h3>{{$note->title}}</h3></a>
                </div>
            
             </div>
@@ -23,7 +25,8 @@
               
               @foreach($note->tags()->active()->get() AS $tag)
 
-              <a href="{{route('newsfeed.tag', ['id' => $tag->id])}}" class="tag">#{{$tag->name}}</a>
+              <a href="{{route('newsfeed.tag', ['id' => $tag->id,
+                                                'slug'=>$tag->slug])}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
             </div>

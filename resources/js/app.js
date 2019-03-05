@@ -8,6 +8,7 @@
 
 
 import $ from 'jquery';
+
 window.$ = window.jQuery = $; 
 var jQuery = $;
 
@@ -17,18 +18,14 @@ import 'jquery-ui/ui/widgets/datepicker.js';
 
 import {MediaLib, MediaLibPagination, MediaLibField}  from './medialib.classes.js';
 
+
 window.MediaLibField = MediaLibField;
 window.MediaLib = MediaLib;
 
 import popper from 'popper.js';
-import feather from 'feather-icons';
-
 window.popper = popper;
-window.feather = feather; 
 
 import Prism from 'prismjs';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
-
 window.Prism = Prism;
 
 /* Prism.plugins.NormalizeWhitespace.setDefaults({
@@ -45,9 +42,6 @@ import 'bootstrap';
 
 /* Laravel Bootstrap JS */
 import './bootstrap';
-
-
-
 
 
 /* window.Vue = require('vue');

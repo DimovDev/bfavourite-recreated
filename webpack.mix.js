@@ -33,6 +33,8 @@ const mix = require('laravel-mix');
    });  */
 
  mix.js('resources/js/app.js', 'public/js/site.js')
+ .styles(['resources/css/frontend.css'], 'public/css/frontend.css')
+ .scripts(['resources/js/custom.js'], 'public/js/frontend.js')
 .sass('resources/sass/app.scss', 'public/css/site.css')
 .sass('resources/sass/admin.scss', 'public/css/admin.css')
 .options({

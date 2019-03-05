@@ -8,11 +8,14 @@
                 </div>
             </div>
             <div class="card-footer">
-               <a href="{{route('newsfeed.project', ['id'=>$current_project->id])}}">
+               <a href="{{route('newsfeed.project', ['id'=>$current_project->id,
+                                                     'slug' =>$current_project->slug])}}">
+
                  <img src="{{$current_project->photo->getSize('small', true)}}" class="img-fluid" alt="{{$current_project->title}}" />
                </a>
                <div class="card-link text-center">
-                 <a href="{{route('newsfeed.project', ['id'=>$current_project->id])}}"><h3>{{$current_project->title}}</h3></a>
+                 <a href="{{route('newsfeed.project', ['id'=>$current_project->id,
+                                                       'slug'=>$current_project->slug])}}"><h3>{{$current_project->title}}</h3></a>
                </div>
             </div>
         </div>
@@ -26,7 +29,8 @@
             </div>
             <ul class="list-group list-group-flush">
               @foreach ( $recent_projects as $project)
-                 <li class="list-group-item"><a href="{{route('newsfeed.project', ['id' => $project->id])}}"><i class="fa fa-angle-double-right"></i> {{$project->title}}</a></li>         
+                 <li class="list-group-item"><a href="{{route('newsfeed.project', ['id' => $project->id,
+                                                                                   'slug' => $project->slug])}}"><i class="fa fa-angle-double-right"></i> {{$project->title}}</a></li>         
               @endforeach
                 
               
@@ -41,7 +45,8 @@
             </div>
             <ul class="list-group list-group-flush">
               @foreach ($recent_posts as $post)
-                 <li class="list-group-item"><a href="{{route('newsfeed.post', ['id' => $post->id])}}"><i class="fa fa-angle-double-right"></i> {{str_limit($post->title, '55')}}</a></li>         
+                 <li class="list-group-item"><a href="{{route('newsfeed.post', ['id' => $post->id,
+                                                                                'slug' => $post->slug])}}"><i class="fa fa-angle-double-right"></i> {{str_limit($post->title, '55')}}</a></li>         
               @endforeach
             </ul>
 
