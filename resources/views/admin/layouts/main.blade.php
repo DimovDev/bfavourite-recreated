@@ -6,9 +6,11 @@
 @endpush
 
 @section('left-sidebar') 
-      
- @simpleMenu('Admin Menu', 'admin.partials.menu')
 
+  @if(auth()->check())    
+   @simpleMenu('Admin Menu', 'admin.partials.menu')
+  @endif
+  
 @endsection
 
 @section('right-sidebar') 

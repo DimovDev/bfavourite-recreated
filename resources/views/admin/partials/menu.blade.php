@@ -19,6 +19,8 @@
              <li class="list-group-item"><a href="{{$link->getUrl()}}"><i class="fa fa-angle-double-right"></i> {{__($link->getText())}}</a></li>
        @endforeach
 
+       <li class="list-group-item"><form method="post" action="{{route('logout')}}" > @csrf <a onclick="$(this).closest('form').submit()" href="#"><i class="fa fa-angle-double-right"></i> {{__('Logout')}}</a></form></li>
+
     </ul>
  </div>
 

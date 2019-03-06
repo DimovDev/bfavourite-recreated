@@ -38,8 +38,7 @@ class AdminMenuMiddleware
 
         $this->menuBuilder->find('Current User') 
                    ->add('Edit Your Profile', route('admin.users.edit', ['id' => Auth::id()]))
-                   ->add('Go to Home', route('home'))
-                   ->add('Logout', route('logout'));          
+                   ->add('Go to Home', route('home'));      
         
         $this->menuBuilder->find('menu')
                    ->add('Newsfeed')
@@ -80,6 +79,8 @@ class AdminMenuMiddleware
                    ->add('Upload Media', route('admin.media.create'));           
         
         $this->menuBuilder->execute();
+
+    
 
         $url = url()->current();         
         

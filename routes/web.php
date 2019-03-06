@@ -29,15 +29,18 @@ Route::group(['middleware' => ['siteNavigation', 'sidebar', 'stats']], function(
 });
 
 
-Route::group(['middleware' =>['adminMenu','siteNavigation','stats']], function() {
+Route::group(['middleware' =>['adminMenu', 'siteNavigation','stats']], function() {
 
-    Auth::routes();
+  // Auth::routes();
 
+    Route::get('/login', 'Auth\LoginController@showLoginForm ')->name('login');
+    Route::post('/logout', 'Auth\LoginController@logout ')->name('logout');
+    Route::post('/login', 'Auth\LoginController@login ');
  });
 
 
 Route::group(['as' => 'admin.',
-              'middleware' =>['adminMenu', 'siteNavigation','stats']], function() {
+              'middleware' =>['adminMenu', 'siteNavigation','stats', 'auth']], function() {
   
     Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
     Route::get('admin/test', 'Admin\HomeController@test')->name('test');
@@ -105,3 +108,7 @@ Route::group(['as' => 'admin.',
 
 });
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

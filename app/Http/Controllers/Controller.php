@@ -21,6 +21,11 @@ class Controller extends BaseController
      
         $this->page_title = $page_title;
         $this->menu = $menu;
+        
+
+/*         if (auth()->guest()) {
+            return redirect('login')->send();
+        } */
       
     }
 }

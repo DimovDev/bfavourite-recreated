@@ -3,22 +3,14 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic');
 
 
+@import '../../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
 // Variables
 @import 'variables';
 
 // Bootstrap
+
 @import '~bootstrap/scss/bootstrap';
 
 
-/* @import '../../node_modules/jquery-ui/themes/base/core.css';
-@import '../../node_modules/jquery-ui/themes/base/base.css';
-@import '../../node_modules/jquery-ui/themes/base/menu.css';
-@import '../../node_modules/jquery-ui/themes/base/autocomplete.css';
-*/
-
-
-//@import '../css/frontend.css';
-/* 
-@import '../../node_modules/prismjs/themes/prism.css';*/
 @import '../../node_modules/prismjs/themes/prism.css'; 
