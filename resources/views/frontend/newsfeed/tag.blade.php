@@ -2,7 +2,7 @@
 
 @section('main')
 
-<div class="card card-content">
+<div id="first-screen" class="card card-content">
 <div class="card-header">
     <i class="fa fa-tag"></i>
     <div>
@@ -26,7 +26,7 @@
 
 @if($notes->lastPage() != 1)
 
-{{$notes->links()}}
+{{$notes->fragment('first-screen')->links()}}
 
 @endif
 

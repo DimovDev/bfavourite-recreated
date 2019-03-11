@@ -1,11 +1,39 @@
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("/webfonts/open_sans/OpenSans-Regular.ttf");
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("/webfonts/open_sans/OpenSans-Bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("/webfonts/open_sans/OpenSans-Italic.ttf");
+  font-style: italic;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("/webfonts/open_sans/OpenSans-BoldItalic.ttf");
+  font-weight: bold;
+  font-style: italic;
+}
+
 body {
         
 
     background-color: #f0f0f0;
-
+    
   }
 
 
+  .anchor {
+    display: block;
+    position: relative;
+    top: -2.40rem;
+    visibility: hidden;
+  }
 
  pre[class*="language-"] code {
 
@@ -79,6 +107,10 @@ ul li {
  
   }
 
+  .site-nav  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+
   .tag:hover {
 
       text-decoration: underline;
@@ -92,7 +124,7 @@ ul li {
       position: relative;
 
       background: #000 url('/storage/header-large.jpg') no-repeat center center;
-      background-attachment: cover;
+      background-size: cover;
       
       width: 100%;
       min-height: 500px;
@@ -101,6 +133,8 @@ ul li {
       align-items: flex-end;
 
       z-index: 10;
+
+      border: 0;
   }
 
   @media(min-width: 1400px) {
@@ -108,6 +142,7 @@ ul li {
     .site-header {
 
         background: #000 url('/storage/header-extra.jpg') no-repeat center center;
+        background-size: cover;
     }
 
   }
@@ -116,7 +151,8 @@ ul li {
     
     .site-header {
 
-        background: #000 url('/storage/header-medum.jpg') no-repeat center center;
+        background: #000 url('/storage/header-medium.jpg') no-repeat center center;
+        background-size: cover;
     }
 
   }
@@ -126,6 +162,7 @@ ul li {
     .site-header {
 
         background: #000 url('/storage/header-mobile.jpg') no-repeat center center;
+        background-size: cover;
     }
 
   }
@@ -301,7 +338,7 @@ padding-bottom: 0.625rem;
 .left-sidebar .techs,
 .left-sidebar .content {
    
-padding:  0 .3125rem .625rem .3125rem;
+padding:  0 .5rem .625rem .5rem;
 
 }
 
@@ -399,7 +436,7 @@ padding-top: 0.937rem;
 main,
 .right-sidebar {
 
-    flex-basis: 25%;
+    flex-basis: 24%;
 
     margin-top: 0.625rem;
 
@@ -407,9 +444,9 @@ main,
 
  main {
      
-    flex-basis: 51%;
+    flex-basis: 50%;
     background-color: transparent;
-    margin: 0.625rem 1% 2% 1%;
+    margin: 0.625rem 0.5% 2% 0.5%;
 
  }
 
@@ -458,9 +495,9 @@ main,
 
   .card-content .card-header i {
 
-      padding: 0.625rem 0;
+      padding: 0.525rem 0;
       font-size: 1.25rem;
-      min-width: 2.5rem;
+      min-width: 2.4rem;
       color: #fff;
 
       margin-right: 0.625rem;
@@ -561,6 +598,45 @@ padding-bottom: 0.3rem;
 .right-sidebar .tag {
 
     font-size: 0.75rem;
+}
+
+/* Posts & Projects Conent Styles*/
+
+.blog ul li,
+.project ul li {
+
+  list-style: disc;
+
+}
+
+.blog ul,
+.project ul {
+
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+
+}
+
+
+.blog h1,
+.project h1 { 
+
+  font-size: 1.25rem;
+}
+
+.blog h2,
+.project h2 {
+
+   font-size: 1.4rem;
+   margin-bottom: 0.6rem;
+}
+
+.blog h3,
+.project h3 {
+
+   font-size: 1.2rem;
+   margin-bottom: 0.6rem;
 }
 
 

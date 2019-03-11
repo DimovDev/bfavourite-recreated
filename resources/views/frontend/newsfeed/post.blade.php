@@ -8,23 +8,23 @@
             <div class="card-header">
          
                 <div>
-                 <h3 class="">{{$post->title}}</h3>
+                 <h1 class="">{{$post->title}}</h1>
                  <span class="card-info"> {{'@' . $post->user->first()->name}} &middot; {{$post->publish_date}} </span>
                 </div>
 
                 
             </div>
             <div class="card-body">
-                 <img src="{{$post->photo->getSize('medium', true)}}" class="img-fluid" alt="{{$post->title}}" />
+                 <img src="{{$post->photo->getSize('medium', true)}}" class="img-fluid mb-4" alt="{{$post->title}}" />
                 {!!$post->content!!}
             </div>
             <div class="card-footer">
                
                <div class="card-link">
-                               @foreach($post->tags AS $tag)
+                               @foreach($post->tags()->active()->get() AS $tag)
 
               <a href="{{route('newsfeed.tag', ['id' => $tag->id,
-                                                'slug'=>$tag->slug])}}" class="tag">#{{$tag->name}}</a>
+                                                'slug'=>$tag->slug]).'#first-screen'}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
                </div>

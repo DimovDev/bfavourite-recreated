@@ -27,7 +27,7 @@ class PhotoNoteEditRequest extends FormRequest
             'title'=>'required|max:255|min:2',
             'slug' => 'nullable|max:500|min:2|regex:/[a-z0-9 _-]+/iu',
             'asset_status' => 'required|regex:/[a-z0-9 _-]+/iu|max:50',
-            'content' => 'required',
+            'content' => 'nullable',
             'summary' => 'nullable|max:500',
             'published_at' => 'date',
             'tags' => 'required',

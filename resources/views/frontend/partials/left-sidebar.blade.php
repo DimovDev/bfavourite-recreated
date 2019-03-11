@@ -34,7 +34,7 @@
 
         @foreach($techs AS $tech)
           <a href="{{route('newsfeed.tag', ['id' => $tech->id,
-                                            'slug' => $tech->slug])}}" class="tag"> #{{$tech->name}} ({{$tech->assets_num}})</a>
+                                            'slug' => $tech->slug]).'#first-screen'}}" class="tag"> #{{$tech->name}} ({{$tech->assets_num}})</a>
         @endforeach
   
       </div>

@@ -110,7 +110,8 @@ $(document).ready(function() {
      $( "#published_at" ).datepicker({
        changeMonth: true,
        changeYear: true,
-       dateFormat: 'yy-mm-dd'
+       dateFormat: 'yy-mm-dd',
+       constrainInput: false,
       });                   
    
      $('textarea.tinymce-light').tinymce({theme: 'silver',

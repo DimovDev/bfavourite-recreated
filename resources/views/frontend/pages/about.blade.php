@@ -1,4 +1,5 @@
 @extends('frontend.layouts.main')
+@inject('projects', 'App\Models\Asset\Project')
 
 @section('main-classes', 'blog page')
 
@@ -101,25 +102,19 @@
 
                 <div class="row no-gutters">
 
-                <div class="col-12 col-lg-4">
-                    <img src="/storage/bfavourite-refactoring.png" alt="Wordpress" class="img-fluid" />
-                    <a href="#"> BFavourite Refactoring</a>
-                </div>
+                   @foreach($projects->featured(3)->get() as $p)
 
-                <div class="col-12 col-lg-4">
-                    <img src="/storage/wordpress.png" alt="Wordpress"  class="img-fluid"/>
-                    <a href="#"> Dev Projects</a>
-                </div>
+                    <div class="col-12 col-lg-4 mb-3">
+                        <img src="{{$p->photo->getSize('medium')}}" alt="{{$p->title}}" class="img-fluid" />
+                        <a href="{{route('newsfeed.project', ['id' => $p->id,
+                                                              'slug' => $p->slug]).'#first-screen'}}">{{$p->title}}</a>
+                    </div>
 
-
-                <div class="col-12 col-lg-4">
-                <img src="/storage/moiatdom.png" alt="Wordpress" class="img-fluid" />
-                <a href="#"> Моят дом</a>
-                </div>
+                   @endforeach
 
 
                 <div class="col-12">
-                    <a class="read-more btn btn-primary"  href="#" role="button">
+                    <a class="read-more btn btn-primary"  href="{{route('newsfeed.projects').'#first-screen'}}" role="button">
                     Виж всички проекти
                     </a>
                 </div>

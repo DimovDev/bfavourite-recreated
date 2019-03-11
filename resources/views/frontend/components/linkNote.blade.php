@@ -22,7 +22,7 @@
               @foreach($note->tags()->active()->get() AS $tag)
 
              <a href="{{route('newsfeed.tag', ['id' => $tag->id,
-                                                'slug'=>$tag->slug])}}" class="tag">#{{$tag->name}}</a>
+                                                'slug'=>$tag->slug]).'#first-screen'}}" class="tag">#{{$tag->name}}</a>
               
               @endforeach
             </div>

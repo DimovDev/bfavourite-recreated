@@ -7,4 +7,10 @@
         @endcomponent
     @endforeach
 
+    @if($assets->lastPage() != 1)
+
+      {{$assets->fragment('first-screen')->links()}}
+
+    @endif
+
 @endsection

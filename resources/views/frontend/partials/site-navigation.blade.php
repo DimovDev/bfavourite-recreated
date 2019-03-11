@@ -1,7 +1,7 @@
      
  <nav class="navbar navbar-expand-lg fixed-top site-nav">
   <div class="container">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/#first-screen">
       <img src="/storage/bfavourite-logo-transparent35.png" alt="BFavourite.com" />
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +14,7 @@
          @foreach($menu as $link)
            
             <li class="nav-item {{$link->getActive() ? 'active' : null}}">
-                <a class="nav-link" href="{{$link->getUrl()}}">{{__($link->getText())}}</a>
+                <a class="nav-link" href="{{$link->getUrl().'#first-screen'}}">{{__($link->getText())}}</a>
             </li>
 
           @endforeach

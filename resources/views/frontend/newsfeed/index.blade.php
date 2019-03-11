@@ -14,7 +14,7 @@
 
 @if($notes->lastPage() != 1)
 
-{{$notes->links()}}
+{{$notes->fragment('first-screen')->links()}}
 
 @endif
 

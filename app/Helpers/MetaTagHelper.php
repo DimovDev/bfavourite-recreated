@@ -25,7 +25,13 @@ class MetaTagHelper extends CollectionHelper {
 
       $this->push($name, $content);
 
-    } 
+    }  else {
+
+      $this->push($name, $content);
+      
+    }
+
+    return $this;
 
   }
 

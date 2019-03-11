@@ -25,7 +25,7 @@ class NewsfeedController extends Controller
         $this->page_title = $page_title;
         $this->top_navigation = $top_navigation;
 
-        $this->meta_tags->push('og:title', $this->page_title->get());
+        
         $this->meta_tags->push('og:image', url('storage/fb-default.jpg'));
         $this->meta_tags->push('og:description', "BFavourite.com е онлайн визитката на Саше Вучков, с която да демонстрира своите знания и умнения в сферата на уеб програмирането.");
         $this->meta_tags->push('og:url', route('home'));
@@ -43,7 +43,7 @@ class NewsfeedController extends Controller
 
         $this->page_title->push(__('Home'));
 
-        $this->meta_tags->push('og:title', $this->page_title->get());
+        $this->meta_tags->set('og:title', $this->page_title->get());
  
         return view('frontend/newsfeed/index', ['notes' => $notes]);
 

@@ -24,6 +24,7 @@
 <form method="post" action="{{isset($project) ? route('admin.projects.update', [$project->id]) : route('admin.projects.store')}}">
   <input type="hidden" name="_method" value="{{isset($project) ? 'PUT' : 'POST'}}" />
 
+
 <div class="form-group">
   <label for="title">{{__('Title')}}</label>
   <input type="text" class="form-control" id="title" name="title" value="{{old('title') ?? $project->title ?? null}}" />
@@ -43,6 +44,11 @@
 </div>
 
 <div class="form-group">
+  <label for="note_title">{{__('Note Title')}}</label>
+  <input type="text" class="form-control" id="note_title" name="meta[note_title]" value="{{old('meta.note_title') ?? (isset($project) ? $project->getMeta('note_title'): null)}}" />
+</div>
+
+<div class="form-group">
   <label for="summary">{{__('Summary')}} <small>({{__('Can be generated automatically.')}})</small></label>
   <textarea class="form-control" name="summary" id="summary">{{old('summary') ?? $project->summary ?? null}}</textarea>
 
@@ -54,14 +60,14 @@
 
     <div class="form-group">
       <label for="github">{{__('Github Url')}}</label>
-      <input type="text" class="form-control" id="github" name="meta[github_url]" value="{{old('meta.github_url') ?? isset($project) ? $project->getMeta('github_url'): null}}" />
+      <input type="text" class="form-control" id="github" name="meta[github_url]" value="{{old('meta.github_url') ?? (isset($project) ? $project->getMeta('github_url') : null)}}" />
     </div>
 
   </div><!-- .col -->
   <div class="col-7">
     <div class="form-group">
       <label for="live">{{__('Live Url')}}</label>
-      <input type="text" class="form-control" id="live" name="meta[live_url]" value="{{old('meta.live_url') ?? isset($project) ? $project->getMeta('live_url'): null}}" />
+      <input type="text" class="form-control" id="live" name="meta[live_url]" value="{{old('meta.live_url') ?? (isset($project) ? $project->getMeta('live_url'): null)}}" />
     </div>
 
   </div><!-- .col -->

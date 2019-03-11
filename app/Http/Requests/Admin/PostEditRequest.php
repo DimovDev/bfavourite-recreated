@@ -31,7 +31,8 @@ class PostEditRequest extends FormRequest
             'summary' => 'nullable|max:500',
             'published_at' => 'date',
             'tags' => 'required',
-            'photo_id' => 'nullable'
+            'photo_id' => 'nullable',
+            'meta.note_title' => 'required|max:44',
 
 
         ];

@@ -44,6 +44,11 @@
 </div>
 
 <div class="form-group">
+  <label for="note_title">{{__('Note Title')}}</label>
+  <input type="text" class="form-control" id="note_title" name="meta[note_title]" value="{{old('meta.note_title') ?? (isset($post) ? $post->getMeta('note_title'): null)}}" />
+</div>
+
+<div class="form-group">
   <label for="summary">{{__('Summary')}} <small>({{__('Can be generated automatically.')}})</small></label>
   <textarea class="form-control" name="summary" id="summary">{{old('summary') ?? $post->summary ?? null}}</textarea>
 

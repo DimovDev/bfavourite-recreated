@@ -32,6 +32,7 @@ class ProjectEditRequest extends FormRequest
         'published_at' => 'date',
         'meta.github_url' =>'bail|nullable|active_url',
         'meta.live_url' => 'bail|nullable|active_url',
+        'meta.note_title' => 'required|max:44',
         'tags' => 'required',
         'photo_id' => 'nullable'
 

@@ -1,27 +1,38 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
+
+    <title>{!! $page_title->push(config('app.name'))->get() !!}</title>
+
     <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
     <meta name="author" content="Sashe Vuchkov">
+
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @php
+      $meta_tags->set('og:title', $page_title->get());
+    @endphp
+
     @foreach($meta_tags AS $tag) 
+
+
        <meta {{stripos($tag['name'], 'og') === 0 ? 'property' : 'name'}}="{{$tag['name']}}" content="{{$tag['content']}}" />
     @endforeach
 
        <meta property="og:locale" content="bg_BG" />
        <meta property="og:site_name" content="{{config('app.name')}}" />
 
-    <title>{!! $page_title->push(config('app.name'))->get() !!}</title>
+    
 
     <!-- Bootstrap core CSS -->
 
     <link href="{{ asset('css/site.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('/storage/bfavourite-logo-icon3.png') }}" />
 
     @stack('styles') 
   
@@ -37,10 +48,10 @@
      <img class="header-bar-avatar" src="/storage/sashe.jpg"  alt="Sashe Vuchkov" />
 
     <ul class="header-bar-stats">
-      <li id="notes-link"class="d-none d-md-block">{{__('Notes')}} <span>{{$total_assets}}</span></li>
-      <li id="techs-link" class="d-none d-md-block">{{__('Technologies')}} <span>{{$total_techs}}</span></li>
-      <li id="projects-link" class="d-none d-md-block"><a href="{{url('/projects')}}">{{__('Проекти')}} <span>{{$total_projects}}</span></a></li>
-      <li id="interests-link" class="d-none d-md-block"><a href="{{url('/about')}}#interests">{{__('Interests')}} <span>4</span></a></li>
+      <li id="notes-link"class="d-none d-lg-block">{{__('Notes')}} <span>{{$total_assets}}</span></li>
+      <li id="techs-link" class="d-none d-lg-block">{{__('Technologies')}} <span>{{$total_techs}}</span></li>
+      <li id="projects-link" class="d-none d-lg-block"><a href="{{url('/projects').'#first-screen'}}">{{__('Проекти')}} <span>{{$total_projects}}</span></a></li>
+      <li id="interests-link" class="d-none d-lg-block"><a href="{{url('/about')}}#interests">{{__('Interests')}} <span>4</span></a></li>
     </ul>
    </div>
   </div>
@@ -64,21 +75,21 @@
 
             <div class="card-body py-2">
                 <i class="fa fa-star" aria-hidden="true"></i>
-                <h4>Дигитален маркетинг</h4>
+                <span>Дигитален маркетинг</span>
             </div>
 
              <div class="card-body py-2">
                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-               <h4>Фитнес</h4>
+               <span>Фитнес</span>
              </div>     
 
             <div class="card-body py-2">
               <i class="fa fa-cogs" aria-hidden="true"></i>
-              <h4>Ускорено учене</h4>  
+              <span>Ускорено учене</span>  
             </div>
             <div class="card-body py-2">
                 <i class="fa fa-lightbulb" aria-hidden="true"></i>
-                <h4>Работа с подсъзнанието</h4>  
+                <span>Работа с подсъзнанието</span>  
             </div>    
 
         </div> 
@@ -90,7 +101,7 @@
 
               <div class="card-body py-0">
                 <i class="fa fa-star" aria-hidden="true"></i>
-                <h4>{{$p->title}}</h4>
+                <span>{{$p->title}}</span>
                </div>
 
 
@@ -104,25 +115,25 @@
          <div  id="popper-techs" class="card card-popup py-2">
            <div class="card-body py-0">
                 
-                <h4>#PHP 7 </h4>&nbsp;&nbsp;
+                <span>#PHP 7 </span>&nbsp;&nbsp;
                
-                <h4>#Laravel </h4>&nbsp;&nbsp;
+                <span>#Laravel </span>&nbsp;&nbsp;
                
-                <h4>#JavaScript </h4>&nbsp;&nbsp;
+                <span>#JavaScript </span>&nbsp;&nbsp;
 
                  <br />
 
-                <h4>#jQuery </h4>&nbsp;&nbsp;
+                <span>#jQuery </span>&nbsp;&nbsp;
 
-                <h4>#HTML5 </h4>&nbsp;&nbsp;
+                <span>#HTML5 </span>&nbsp;&nbsp;
 
-                <h4>#CSS3 </h4>&nbsp;&nbsp;
+                <span>#CSS3 </span>&nbsp;&nbsp;
 
                  <br />
                
-                <h4>#MySQL </h4>&nbsp;&nbsp;
+                <span>#MySQL </span>&nbsp;&nbsp;
             
-                 <h4>и други...</h4>
+                 <span>и други...</span>
              </div>
         </div> 
 
@@ -140,8 +151,8 @@
   @yield('left-sidebar') 
   
 
-  
    <main class="@yield('main-classes')">
+      <a id="first-screen" class="anchor"></a>
      @yield('main')
    </main>
 

@@ -21,23 +21,26 @@ class Sidebar {
                     ->join('taxonomy_object AS to', 'taxonomies.id', '=' , 'to.taxonomy_id')
                     ->join('assets', 'assets.id', '=', 'to.obj_id')
                     ->selectRaw('taxonomies.*, COUNT(to.id) AS assets_num')
-                    ->where('taxonomy_object.taxonomy_id', 41)
+                    ->where('taxonomy_object.taxonomy_id', 52)
                     ->where('taxonomies.taxonomy_status', '=', 'active')
                     ->where('asset_status', 'publish')
-                    ->where('taxonomies.taxonomy_status', 'active')
                     ->groupBy('taxonomies.id')
                     ->get();
-           
-     
+  
         return $techs;
 
     }
     
     public function content() {
 
-        $content = DB::table('taxonomy_object')
-                     ->selectRaw('obj_type, COUNT(id) AS assets_num')
-                     ->groupBy('obj_type')
+        $tags = DB::table('taxonomies')
+                    ->selectRaw('taxonomy_type as obj_type, COUNT(id) AS assets_num')
+                    ->groupBy('taxonomy_type');
+
+        $content = DB::table('assets')
+                     ->selectRaw('asset_type as obj_type, COUNT(id) AS assets_num')
+                     ->groupBy('asset_type')
+                     ->union($tags)
                      ->get();
         
           
@@ -66,13 +69,13 @@ class Sidebar {
 
     public function recent_projects() {
 
-        return Project::where('asset_status', 'publish')->orderBy('created_at', 'DESC')->take(3)->get();
+        return Project::where('asset_status', 'publish')->orderBy('published_at', 'DESC')->take(3)->get();
     
     }
 
     public function recent_posts() {
 
-        return Post::where('asset_status', 'publish')->orderBy('created_at', 'DESC')->take(5)->get();
+        return Post::where('asset_status', 'publish')->orderBy('published_at', 'DESC')->take(5)->get();
 
     }
 
