@@ -42,7 +42,7 @@ Route::group(['middleware' =>['adminMenu', 'siteNavigation','stats']], function(
 Route::group(['as' => 'admin.',
               'middleware' =>['adminMenu', 'siteNavigation','stats', 'auth']], function() {
   
-    Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
+    Route::get('/admin/home', 'Admin\HomeController@index')->name('admin.home');
     Route::get('admin/test', 'Admin\HomeController@test')->name('test');
 
     Route::get('admin/users', 'Admin\UsersController@index')->name('users.index');

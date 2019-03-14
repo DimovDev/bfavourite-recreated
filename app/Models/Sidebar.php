@@ -11,22 +11,22 @@ class Sidebar {
 
     public function technologies() {
 
-       $techs = DB::table('taxonomies')
-                    ->join('taxonomy_object', function($join) {
-                                            
-                            $join->on('obj_id', '=', 'taxonomies.id')
-                                ->on('obj_type', '=', 'taxonomies.taxonomy_type');
+        $techs = DB::table('taxonomies')
+        ->join('taxonomy_object', function($join) {
+                                
+                $join->on('obj_id', '=', 'taxonomies.id')
+                    ->on('obj_type', '=', 'taxonomies.taxonomy_type');
 
-                        })  
-                    ->join('taxonomy_object AS to', 'taxonomies.id', '=' , 'to.taxonomy_id')
-                    ->join('assets', 'assets.id', '=', 'to.obj_id')
-                    ->selectRaw('taxonomies.*, COUNT(to.id) AS assets_num')
-                    ->where('taxonomy_object.taxonomy_id', 52)
-                    ->where('taxonomies.taxonomy_status', '=', 'active')
-                    ->where('asset_status', 'publish')
-                    ->groupBy('taxonomies.id')
-                    ->get();
-  
+            })  
+        ->join('taxonomy_object AS to', 'taxonomies.id', '=' , 'to.taxonomy_id')
+        ->join('assets', 'assets.id', '=', 'to.obj_id')
+        ->selectRaw('taxonomies.id as id, taxonomies.name as name, taxonomies.slug as slug, COUNT(to.id) AS assets_num')
+        ->where('taxonomy_object.taxonomy_id', 52)
+        ->where('taxonomies.taxonomy_status', '=', 'active')
+        ->where('asset_status', 'publish')
+        ->groupBy('taxonomies.id')
+        ->get();
+
         return $techs;
 
     }

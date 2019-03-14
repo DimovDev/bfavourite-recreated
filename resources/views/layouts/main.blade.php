@@ -25,6 +25,7 @@
 
        <meta property="og:locale" content="bg_BG" />
        <meta property="og:site_name" content="{{config('app.name')}}" />
+       <meta property="og:type" content="page" />
 
     
 
@@ -50,8 +51,8 @@
     <ul class="header-bar-stats">
       <li id="notes-link"class="d-none d-lg-block">{{__('Notes')}} <span>{{$total_assets}}</span></li>
       <li id="techs-link" class="d-none d-lg-block">{{__('Technologies')}} <span>{{$total_techs}}</span></li>
-      <li id="projects-link" class="d-none d-lg-block"><a href="{{url('/projects').'#first-screen'}}">{{__('Проекти')}} <span>{{$total_projects}}</span></a></li>
-      <li id="interests-link" class="d-none d-lg-block"><a href="{{url('/about')}}#interests">{{__('Interests')}} <span>4</span></a></li>
+      <li id="projects-link" class="d-none d-lg-block"><a href="{{url('/projects').'#first-screen'}}">{{__('Projects')}} <span>{{$total_projects}}</span></a></li>
+      <li id="interests-link" class="d-none d-lg-block"><a href="{{url('/about')}}#interests">{{__('Interests')}} <span>3</span></a></li>
     </ul>
    </div>
   </div>
@@ -86,11 +87,7 @@
             <div class="card-body py-2">
               <i class="fa fa-cogs" aria-hidden="true"></i>
               <span>Ускорено учене</span>  
-            </div>
-            <div class="card-body py-2">
-                <i class="fa fa-lightbulb" aria-hidden="true"></i>
-                <span>Работа с подсъзнанието</span>  
-            </div>    
+            </div>   
 
         </div> 
            

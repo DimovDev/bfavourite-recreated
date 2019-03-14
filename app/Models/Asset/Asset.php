@@ -119,7 +119,9 @@ class Asset extends Model
                                             ['meta_value' => $value]); 
           } else {
           
-              AssetMeta::where('meta_key', $key)->delete();
+              AssetMeta::where('meta_key', $key)
+                        ->where('asset_id', $this->id)
+                        ->delete();
           }
 
        }

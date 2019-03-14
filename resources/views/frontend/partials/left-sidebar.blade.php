@@ -39,11 +39,11 @@
   
       </div>
 
-       <svg class="aside-divider" viewBox="0 0 100 25" preserveAspectRatio="none">
+       <svg class="tech-divider aside-divider" viewBox="0 0 100 25" preserveAspectRatio="none">
 
-        <path class="bottom" d="M 0 0 L 100 0 L 50 10 L 0 0" />
+        <path class="bottom" d="M 0 0 L 100 0 L 100 3 L 0 3 M 100 3 L 50 13 L 0 3" />
 
-        <path class="middle" d="M 0 10 l 0 17 L 100 27 L 100 2 L 50 12 L 0 2"  />
+        <path class="middle" d="M 0 13 L 0 25 L 100 30 L 100 5 L 50 15 L 0 5"  />
       </svg>
 
       <div class="content text-white">
